@@ -12,13 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CPRFeedbackApp"
         tools:targetApi="31">
+
         <activity
             android:name=".CprPerformanceActivity"
+            android:label="Live CPR Performance"
+            android:parentActivityName=".MainActivity"
             android:exported="false">
             <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
