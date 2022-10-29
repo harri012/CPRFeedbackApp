@@ -20,7 +20,6 @@ public class CprPerformanceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setup();
-
     }
 
     @Override
@@ -42,10 +41,19 @@ public class CprPerformanceActivity extends AppCompatActivity {
                 new DataPoint(3, 4),
                 new DataPoint(4, 12)
         });
+
         graph.addSeries(series1);
         graph.addSeries(series2);
 
+        graphSetup();
+    }
 
+    protected void graphSetup()
+    {
+        graph.setTitle("Live Depth Recorded per Compression");
+        graph.setTitleTextSize((float)60);
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Time");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Depth");
     }
 
     protected void setup()
