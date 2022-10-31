@@ -2,6 +2,8 @@ package com.example.cprfeedbackapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
+
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -10,6 +12,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 public class CprPerformanceActivity extends AppCompatActivity {
 
     protected GraphView graph;
+    protected TextView depthTextView;
+    protected TextView forceTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,5 +63,7 @@ public class CprPerformanceActivity extends AppCompatActivity {
     protected void setup()
     {
         graph = findViewById(R.id.graph);
+        depthTextView = findViewById(R.id.depthTextView);
+        forceTextView = findViewById(R.id.forceTextView);
     }
 }
