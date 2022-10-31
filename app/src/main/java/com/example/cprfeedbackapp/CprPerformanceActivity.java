@@ -11,25 +11,30 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class CprPerformanceActivity extends AppCompatActivity {
 
-    protected GraphView graph;
-    protected TextView depthTextView;
-    protected TextView forceTextView;
+    //Declaring graph views and text views
+    protected GraphView cprGraph;
+    protected TextView depthTextView, forceTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cpr_performance);
 
-        // Up Navigation
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setup();
+
+        setupUI();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        setupUI();
+    }
+
+
+    protected void graphSetup()
+    {
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<DataPoint>(new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
@@ -46,24 +51,23 @@ public class CprPerformanceActivity extends AppCompatActivity {
                 new DataPoint(4, 12)
         });
 
-        graph.addSeries(series1);
-        graph.addSeries(series2);
-
-        graphSetup();
+        cprGraph.addSeries(series1);
+        cprGraph.addSeries(series2);
+        cprGraph.setTitle("Live Depth Recorded per Compression");
+        cprGraph.setTitleTextSize((float)50);
+        cprGraph.getGridLabelRenderer().setHorizontalAxisTitle("Time");
+        cprGraph.getGridLabelRenderer().setVerticalAxisTitle("Depth");
     }
 
-    protected void graphSetup()
+    protected void setupUI()
     {
-        graph.setTitle("Live Depth Recorded per Compression");
-        graph.setTitleTextSize((float)60);
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("Time");
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Depth");
-    }
+        // Up Navigation
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    protected void setup()
-    {
-        graph = findViewById(R.id.graph);
+        cprGraph = findViewById(R.id.graph);
         depthTextView = findViewById(R.id.depthTextView);
         forceTextView = findViewById(R.id.forceTextView);
+
+        graphSetup();
     }
 }
