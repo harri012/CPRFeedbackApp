@@ -1,38 +1,77 @@
 package com.example.cprfeedbackapp;
 
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
-import android.widget.Button;
+import com.example.cprfeedbackapp.databinding.ActivityMainBinding;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    protected Button cprButton;
+
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        setup();
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        switchFragmentView(new HomeFragment());
+
+        binding.bottomNavigation.setOnItemSelectedListener(item ->
+        {
+            switch (item.getItemId())
+            {
+                case R.id.Home:
+                    switchFragmentView(new HomeFragment());
+                    break;
+
+                case R.id.GraphView:
+                    switchFragmentView(new CprPerformanceFragment());
+                    break;
+
+                case R.id.Monitoring:
+                    switchFragmentView(new healthMonitoringFragment());
+                    break;
+
+                case R.id.Tutorial:
+                    switchFragmentView(new tutorialFragment());
+                    break;
+
+                case R.id.Settings:
+                    switchFragmentView(new SettingsFragment());
+                    break;
+            }
+
+            return true;
+        });
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        cprButton.setOnClickListener(view -> goToCprPerformance());
+
     }
 
-    protected void setup()
-    {
-        cprButton = findViewById(R.id.cprButton);
-    }
 
-    protected void goToCprPerformance()
+    private void switchFragmentView (Fragment fragment)
     {
-        Intent intent = new Intent(this, CprPerformanceActivity.class);
-        startActivity(intent);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+
     }
 }
+
+
+
+
+
