@@ -1,6 +1,7 @@
 package com.example.cprfeedbackapp;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -36,6 +37,7 @@ public class Bluetooth {
     }
 
     //Checks if bluetooth is enabled
+    //Returns true if bluetooth is now enabled else returns false
     public boolean checkBluetoothEnabled(){
         //Returns null if it doesn't support Bluetooth
         if (btAdapter == null) {
@@ -44,20 +46,23 @@ public class Bluetooth {
         }
         else
         {
+            //Prompts with dialog to activate bluetooth
             if (!btAdapter.isEnabled()) {
-
-                /*if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.BLUETOOTH ) != PackageManager.PERMISSION_GRANTED )
+                if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.BLUETOOTH ) != PackageManager.PERMISSION_GRANTED )
                 {
-                    ActivityCompat.requestPermissions(activity, new String [] { android.Manifest.permission.BLUETOOTH }, RequestCode.BLUETOOTH_PERMISSION);
+                    ActivityCompat.requestPermissions(activity, new String [] { Manifest.permission.BLUETOOTH_CONNECT }, RequestCode.BLUETOOTH_PERMISSION);
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     activity.startActivityForResult(enableBtIntent,  RequestCode.IMPORT);
-                }*/
-                msg("Bluetooth not on");
+                    if (!btAdapter.isEnabled())
+                        return false;
+                    else
+                        return true;
+                }
             }
         }
-
         return true;
     }
+
 
 
 
@@ -87,6 +92,10 @@ public class Bluetooth {
     private void msg(String str) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show();
     }
+
+
 }
+
+
 
 
