@@ -50,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+
+
+        Bluetooth bt = new Bluetooth(this, this);
+        bt.checkBluetoothEnabled();
     }
 
 
