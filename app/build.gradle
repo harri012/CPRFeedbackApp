@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.example.cprfeedbackapp'
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.cprfeedbackapp"
