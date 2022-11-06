@@ -39,6 +39,7 @@ public class Bluetooth {
     public boolean checkBluetoothEnabled(){
         //Returns null if it doesn't support Bluetooth
         if (btAdapter == null) {
+            msg("Device Does Not Support Bluetooth!");
             return false;
         }
         else
