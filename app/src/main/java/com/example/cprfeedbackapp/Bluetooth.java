@@ -118,12 +118,12 @@ public class Bluetooth {
     // Linked to a scan button
     public void discoverDevices ()
     {
-        if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED )
-            btAdapter.startDiscovery();
-
         // Register for broadcast when a device is discovered
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         context.registerReceiver(receiver, filter);
+
+        if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED )
+            btAdapter.startDiscovery();
     }
 
 
