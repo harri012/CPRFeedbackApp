@@ -18,10 +18,14 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
-public class Bluetooth {
+public class BluetoothServiceManager {
     //Declaring data members for bluetooth connection
     private BluetoothManager btManager;
     private BluetoothAdapter btAdapter;
@@ -32,6 +36,8 @@ public class Bluetooth {
     private Context context;
     private Activity activity;
     protected HashMap<String, String> previouslyConnectedDevicesInfo;
+    private OutputStream outputStream;
+    private InputStream inputStream;
 
     // Create a Broadcast receiver for ACTION.FOUND
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -51,7 +57,7 @@ public class Bluetooth {
         }
     };
 
-    public Bluetooth(Context aContext, Activity anActivity) {
+    public BluetoothServiceManager(Context aContext, Activity anActivity) {
         this.context  = aContext;
         this.btManager = context.getSystemService(BluetoothManager.class);
         this.btAdapter = btManager.getAdapter();
@@ -84,8 +90,6 @@ public class Bluetooth {
         }
         return true;
     }
-
-
 
 
     //Search for discoverable devices
@@ -144,7 +148,12 @@ public class Bluetooth {
     }
 
     //Creates connection
-    public void connectBluetoothDevice(){}
+    public void connectBluetoothDevice(){
+
+        // Creates a new thread
+        AcceptThread thread = new AcceptThread();
+        thread.run();
+    }
 
 
     //Input Stream of Bluetooth Data
@@ -165,6 +174,75 @@ public class Bluetooth {
     }
 
 
+
+
+    // Helper class for Bluetooth connection
+    // Will run on a separate thread
+    private class AcceptThread extends Thread {
+
+        private final BluetoothServerSocket mmServerSocket;
+
+        // Get a BluetoothServerSocket object
+        public AcceptThread() {
+            BluetoothServerSocket tmp = null;
+
+            try{
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
+                    tmp = btAdapter.listenUsingRfcommWithServiceRecord("CPR Feedback", UUID.randomUUID());
+            }
+
+            catch (IOException e) {
+                msg("Socket's listen() method failed.");
+            }
+
+            mmServerSocket = tmp;
+        }
+
+        public void run() {
+            BluetoothSocket socket = null;
+
+            while (true)
+            {
+                // Start listening for connection request
+                try {
+                    socket = mmServerSocket.accept();
+                }
+
+                catch(IOException e) {
+                    msg("Socket's accept() method failed.");
+                }
+
+                if (socket != null) {
+                    //TODO: Perform work associated with the connection in a separate thread
+
+                    try {
+                        outputStream = socket.getOutputStream();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        inputStream = socket.getInputStream();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    cancel();
+
+                    break;
+                }
+            }
+        }
+
+        public void cancel() {
+            try {
+                mmServerSocket.close();
+            }
+
+            catch(IOException e) {
+                msg("could not close the connect socket.");
+            }
+        }
+    }
 }
 
 

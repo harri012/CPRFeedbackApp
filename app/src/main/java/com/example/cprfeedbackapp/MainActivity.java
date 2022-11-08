@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Bluetooth bt = new Bluetooth(this, this);
+        BluetoothServiceManager bt = new BluetoothServiceManager(this, this);
         bt.checkBluetoothEnabled();
     }
 
