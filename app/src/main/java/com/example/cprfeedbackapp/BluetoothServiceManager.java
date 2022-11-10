@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.ParcelUuid;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
+
 
 public class BluetoothServiceManager {
     //Declaring data members for bluetooth connection
@@ -44,27 +46,24 @@ public class BluetoothServiceManager {
     private static final String TAG = "MY_APP_DEBUG_TAG";
     private OutputStream outputStream;
     private InputStream inputStream;
+    private String MY_UUID = "5cd11816-90c9-4883-9a7a-9cb5a1116568";
 
     // Create a Broadcast receiver for ACTION.FOUND
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (BluetoothDevice.ACTION_FOUND.equals(action))
-            {
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Discovery has found a device. Get the BluetoothDevice
                 // object and its info from the Intent.
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 pairedDevices.add(device);
-
-
-                // TODO: Add Connect Code, Setup the recycler view to display the deviceInfo hashmap
             }
         }
     };
 
     public BluetoothServiceManager(Context aContext, Activity anActivity) {
-        this.context  = aContext;
+        this.context = aContext;
         this.btManager = context.getSystemService(BluetoothManager.class);
         this.btAdapter = btManager.getAdapter();
         this.activity = anActivity;
@@ -72,21 +71,18 @@ public class BluetoothServiceManager {
 
     //Checks if bluetooth is enabled
     //Returns true if bluetooth is now enabled else returns false
-    public boolean checkBluetoothEnabled(){
+    public boolean checkBluetoothEnabled() {
         //Returns null if it doesn't support Bluetooth
         if (btAdapter == null) {
             msg("Device Does Not Support Bluetooth!");
             return false;
-        }
-        else
-        {
+        } else {
             //Prompts with dialog to activate bluetooth
             if (!btAdapter.isEnabled()) {
-                if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.BLUETOOTH ) != PackageManager.PERMISSION_GRANTED )
-                {
-                    ActivityCompat.requestPermissions(activity, new String [] { Manifest.permission.BLUETOOTH_CONNECT }, RequestCode.BLUETOOTH_PERMISSION);
+                if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, RequestCode.BLUETOOTH_PERMISSION);
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    activity.startActivityForResult(enableBtIntent,  RequestCode.IMPORT);
+                    activity.startActivityForResult(enableBtIntent, RequestCode.IMPORT);
                     if (!btAdapter.isEnabled())
                         return false;
                     else
@@ -99,66 +95,65 @@ public class BluetoothServiceManager {
 
 
     //Search for discoverable devices
-    private void findBluetoothDevice()
-    {
+    private void findBluetoothDevice() {
         queryPairedDevice();
 
         // If there is a previously connected device, connect to it
-        if (pairedDevices.size() > 0)
-        {
-            if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED )
-            {
+        if (pairedDevices.size() > 0) {
+            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
                 // Store the MAC address of the device for the connection phase
                 for (BluetoothDevice device : pairedDevices) {
                     // Adds the name and MAC address of all devices to a Hashmap
                     previouslyConnectedDevicesInfo.put(device.getName(), device.getAddress());
                 }
-
-                // TODO: Add Connect Code, Setup the recycler view to display the deviceInfo hashmap
             }
         }
-
-        // If no devices were connected previously, search for a new one
-        else
-            discoverDevices();
     }
 
 
     // Searches for nearby Bluetooth devices
     // Linked to a scan button
-    public void discoverDevices ()
-    {
+    public void discoverDevices() {
+
         // Register for broadcast when a device is discovered
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         context.registerReceiver(receiver, filter);
 
-        if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED )
+        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED)
             btAdapter.startDiscovery();
     }
 
 
     // Unregister the ACTION_FOUND receiver
-    public void unregisterDevice()
-    {
+    public void unregisterDevice() {
         context.unregisterReceiver(receiver);
     }
 
 
     //Checks devices that are already paired
-    public void queryPairedDevice(){
+    public void queryPairedDevice() {
 
-        if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED )
+        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED)
             // Gets all the previously connected Bluetooth devices
             pairedDevices = btAdapter.getBondedDevices();
 
     }
 
     //Creates connection
-    public void connectBluetoothDevice(){
+    public void connectBluetoothDevice() {
 
         // Creates a new thread
         AcceptThread thread = new AcceptThread();
         thread.run();
+    }
+
+    // Checks if the android application is connected to the right hardware
+    public boolean isThisTheDevice(BluetoothDevice device) {
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
+            return device.getName().startsWith("");
+
+        return false;
     }
 
 
@@ -169,6 +164,7 @@ public class BluetoothServiceManager {
         connectedThread.run();
         return "";
     }
+
 
 
     //Request Code Class
@@ -184,12 +180,9 @@ public class BluetoothServiceManager {
 
 
 
-
     // Helper class for Bluetooth connection
     // Will run on a separate thread
     private class AcceptThread extends Thread {
-
-        private final BluetoothServerSocket mmServerSocket;
 
         // Get a BluetoothServerSocket object
         public AcceptThread() {
@@ -197,14 +190,14 @@ public class BluetoothServiceManager {
 
             try{
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
-                    tmp = btAdapter.listenUsingRfcommWithServiceRecord("CPR Feedback", UUID.randomUUID());
+                    tmp = btAdapter.listenUsingRfcommWithServiceRecord("CPR Feedback", UUID.fromString(MY_UUID));
             }
 
             catch (IOException e) {
                 msg("Socket's listen() method failed.");
             }
 
-            mmServerSocket = tmp;
+            btServerSocket = tmp;
         }
 
         public void run() {
@@ -212,39 +205,33 @@ public class BluetoothServiceManager {
 
             while (true)
             {
-                // Start listening for connection request
+                // Start listening for connection requests
+                // Returns when either a connection has been accepted or an exception has occurred
                 try {
-                    socket = mmServerSocket.accept();
+                    socket = btServerSocket.accept();
                 }
 
                 catch(IOException e) {
                     msg("Socket's accept() method failed.");
                 }
 
-                if (socket != null) {
+                // If the android application is connected to the correct device
+                if (socket.isConnected() && isThisTheDevice(socket.getRemoteDevice())) {
+
                     //TODO: Perform work associated with the connection in a separate thread
 
-                    try {
-                        outputStream = socket.getOutputStream();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        inputStream = socket.getInputStream();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
 
                     cancel();
-
                     break;
                 }
             }
         }
 
+        // Cancels all attempts to a connection except the one that is currently connected
         public void cancel() {
             try {
-                mmServerSocket.close();
+                btServerSocket.close();
             }
 
             catch(IOException e) {
