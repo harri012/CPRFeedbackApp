@@ -164,6 +164,9 @@ public class BluetoothServiceManager {
 
     //Input Stream of Bluetooth Data
     public String getInputData(){
+
+        ConnectedThread connectedThread = new ConnectedThread(btSocket);
+        connectedThread.run();
         return "";
     }
 
@@ -299,7 +302,11 @@ public class BluetoothServiceManager {
                     // Send the obtained bytes to the UI activity.
                     Message readMsg = handler.obtainMessage(MessageConstants.MESSAGE_READ, numBytes, -1, mmBuffer);
                     readMsg.sendToTarget();
-                } catch (IOException e) {
+                    final String string = new String(mmBuffer,"UTF-8");
+                    Log.i("Bt Service Manager",string);
+
+                }
+                catch (IOException e) {
                     Log.d(TAG, "Input stream was disconnected", e);
                     break;
                 }
@@ -312,18 +319,16 @@ public class BluetoothServiceManager {
                 mmOutStream.write(bytes);
 
                 // Share the sent message with the UI activity.
-                Message writtenMsg = handler.obtainMessage(
-                        MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
+                Message writtenMsg = handler.obtainMessage(MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
                 writtenMsg.sendToTarget();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 Log.e(TAG, "Error occurred when sending data", e);
 
                 // Send a failure message back to the activity.
-                Message writeErrorMsg =
-                        handler.obtainMessage(MessageConstants.MESSAGE_TOAST);
+                Message writeErrorMsg = handler.obtainMessage(MessageConstants.MESSAGE_TOAST);
                 Bundle bundle = new Bundle();
-                bundle.putString("toast",
-                        "Couldn't send data to the other device");
+                bundle.putString("toast", "Couldn't send data to the other device");
                 writeErrorMsg.setData(bundle);
                 handler.sendMessage(writeErrorMsg);
             }
