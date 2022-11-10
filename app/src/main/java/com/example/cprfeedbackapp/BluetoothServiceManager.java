@@ -58,6 +58,8 @@ public class BluetoothServiceManager {
                 // object and its info from the Intent.
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 pairedDevices.add(device);
+
+                Log.d("Devices found", pairedDevices.toString());
             }
         }
     };
@@ -115,12 +117,12 @@ public class BluetoothServiceManager {
     // Linked to a scan button
     public void discoverDevices() {
 
+        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED)
+            btAdapter.startDiscovery();
+
         // Register for broadcast when a device is discovered
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         context.registerReceiver(receiver, filter);
-
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED)
-            btAdapter.startDiscovery();
     }
 
 
@@ -217,6 +219,9 @@ public class BluetoothServiceManager {
 
                 // If the android application is connected to the correct device
                 if (socket.isConnected() && isThisTheDevice(socket.getRemoteDevice())) {
+
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
+                        Log.d("Bluetooth device connected: ", socket.getRemoteDevice().getName());
 
                     //TODO: Perform work associated with the connection in a separate thread
 
