@@ -1,13 +1,21 @@
 package com.example.cprfeedbackapp;
 
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,8 +24,12 @@ import android.widget.Button;
  */
 public class SettingsFragment extends Fragment {
 
-    private Button connectButton;
-    private Button scanButton;
+    protected Button scanButton;
+
+    protected BluetoothServiceManager bluetoothServiceManager;
+    protected RecyclerView deviceRecyclerView;
+    protected DeviceRecyclerViewAdapter deviceRecyclerViewAdapter;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,16 +79,27 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    protected void setupRecylerView() {
 
+        List<BluetoothDevice> devices = bluetoothServiceManager.getPairedDevices();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SettingsFragment.this.getContext());
+        deviceRecyclerViewAdapter = new DeviceRecyclerViewAdapter(devices, SettingsFragment.this.getContext());
+
+        deviceRecyclerView.setLayoutManager(linearLayoutManager);
+        deviceRecyclerView.setAdapter(deviceRecyclerViewAdapter);
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
-        BluetoothServiceManager bluetoothServiceManager = new BluetoothServiceManager(SettingsFragment.this.getContext(), SettingsFragment.this.getActivity());
+
+        bluetoothServiceManager = new BluetoothServiceManager(SettingsFragment.this.getContext(), SettingsFragment.this.getActivity());
 
         scanButton = fragmentView.findViewById(R.id.scanButton);
-
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,14 +107,9 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        connectButton = fragmentView.findViewById(R.id.connectButton);
+        deviceRecyclerView = fragmentView.findViewById(R.id.devicesRecyclerView);
+        setupRecylerView();
 
-        connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bluetoothServiceManager.connectBluetoothDevice();
-            }
-        });
         return fragmentView;
     }
 }

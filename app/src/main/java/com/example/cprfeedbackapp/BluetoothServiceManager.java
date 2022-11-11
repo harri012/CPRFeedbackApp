@@ -26,19 +26,22 @@ import androidx.core.content.ContextCompat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 
 public class BluetoothServiceManager {
+
     //Declaring data members for bluetooth connection
     private BluetoothManager btManager;
     private BluetoothAdapter btAdapter;
     private BluetoothDevice btDevice;
     private BluetoothSocket btSocket;
     private BluetoothServerSocket btServerSocket;
-    private Set<BluetoothDevice> pairedDevices;
+    private List<BluetoothDevice> bluetoothDeviceList = new ArrayList<>();
     private Context context;
     private Activity activity;
     private Handler handler;
@@ -57,9 +60,9 @@ public class BluetoothServiceManager {
                 // Discovery has found a device. Get the BluetoothDevice
                 // object and its info from the Intent.
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                pairedDevices.add(device);
+                bluetoothDeviceList.add(device);
 
-                Log.d("Devices found", pairedDevices.toString());
+                Log.d(TAG, bluetoothDeviceList.toString());
             }
         }
     };
@@ -96,23 +99,6 @@ public class BluetoothServiceManager {
     }
 
 
-    //Search for discoverable devices
-    private void findBluetoothDevice() {
-        queryPairedDevice();
-
-        // If there is a previously connected device, connect to it
-        if (pairedDevices.size() > 0) {
-            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
-                // Store the MAC address of the device for the connection phase
-                for (BluetoothDevice device : pairedDevices) {
-                    // Adds the name and MAC address of all devices to a Hashmap
-                    previouslyConnectedDevicesInfo.put(device.getName(), device.getAddress());
-                }
-            }
-        }
-    }
-
-
     // Searches for nearby Bluetooth devices
     // Linked to a scan button
     public void discoverDevices() {
@@ -136,9 +122,11 @@ public class BluetoothServiceManager {
     public void queryPairedDevice() {
 
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED)
-            // Gets all the previously connected Bluetooth devices
-            pairedDevices = btAdapter.getBondedDevices();
 
+            // Gets all the previously connected Bluetooth devices
+            // and add them to the list of bluetooth devices
+            for (BluetoothDevice device : btAdapter.getBondedDevices())
+                bluetoothDeviceList.add(device);
     }
 
     //Creates connection
@@ -180,7 +168,21 @@ public class BluetoothServiceManager {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show();
     }
 
+    // Returns the list of discovered devices
+    public List<BluetoothDevice> getPairedDevices() {
 
+        if (!bluetoothDeviceList.isEmpty()) {
+
+            List<BluetoothDevice> deviceList = new ArrayList<>();
+
+            for (BluetoothDevice device : bluetoothDeviceList)
+                deviceList.add(device);
+
+            return deviceList;
+        }
+
+        return new ArrayList<>();
+    }
 
     // Helper class for Bluetooth connection
     // Will run on a separate thread
@@ -221,7 +223,7 @@ public class BluetoothServiceManager {
                 if (socket.isConnected() && isThisTheDevice(socket.getRemoteDevice())) {
 
                     if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
-                        Log.d("Bluetooth device connected: ", socket.getRemoteDevice().getName());
+                        Log.d(TAG, socket.getRemoteDevice().getName());
 
                     //TODO: Perform work associated with the connection in a separate thread
 
