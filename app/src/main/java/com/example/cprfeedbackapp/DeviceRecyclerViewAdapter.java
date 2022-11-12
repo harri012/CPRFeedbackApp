@@ -66,7 +66,7 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
             @Override
             public void onClick(View v) {
 
-                // Create a BluetoothServiceManager instance
+
 
             }
         });
