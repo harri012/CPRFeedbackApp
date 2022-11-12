@@ -61,15 +61,7 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
             holder.getDeviceNameTextView().setText(localDataSet.get(position).getName());
         }
 
-        // TODO by Harrisson
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-            }
-        });
+        // TODO: Onclick listener event
 
     }
 
