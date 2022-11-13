@@ -1,5 +1,6 @@
 package com.example.cprfeedbackapp;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,8 @@ public class tutorialFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    VideoView CprVideoView;
 
     public tutorialFragment() {
         // Required empty public constructor
@@ -59,6 +64,16 @@ public class tutorialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_tutorial, container, false);
+        CprVideoView = fragmentView.findViewById(R.id.videoView);
+        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/-NodDRTsV88"));
+        CprVideoView.setOnPreparedListener(mediaPlayer -> CprVideoView.start());
+        CprVideoView.start();
+
+        MediaController videoMediaController = new MediaController(this.getContext());
+        videoMediaController.setMediaPlayer(CprVideoView);
+        CprVideoView.setMediaController(videoMediaController);
+
+        return fragmentView;
     }
 }
