@@ -1,5 +1,6 @@
 package com.example.cprfeedbackapp;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -67,12 +68,15 @@ public class CprPerformanceFragment extends Fragment {
         graph = fragmentView.findViewById(R.id.graph);
 
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<DataPoint>(new DataPoint[] {
+
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
                 new DataPoint(2, 3),
                 new DataPoint(3, 2),
                 new DataPoint(4, 6)
         });
+        //setting graph line color
+        series1.setColor(Color.RED);
 
         LineGraphSeries<DataPoint> series2 = new LineGraphSeries<DataPoint>(new DataPoint[] {
                 new DataPoint(0, 2),

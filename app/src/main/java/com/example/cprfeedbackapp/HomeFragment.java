@@ -1,5 +1,6 @@
 package com.example.cprfeedbackapp;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +61,72 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //setting up play and stop sound button
+        View rootView = inflater.inflate(R.layout.fragment_home,container,false);
+
+        //play button
+        final MediaPlayer mp = MediaPlayer.create(getActivity(), R.raw.beep);
+        Button playButton = (Button) rootView.findViewById(R.id.play_button);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mp.setLooping(true);
+                mp.start();
+            }
+        });
+
+        //stop button
+        Button stopButton = (Button) rootView.findViewById(R.id.stop_button);
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mp.release();
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return rootView;
     }
+
+/*
+Mediaplayer sound;
+    public void playSound (View v){
+        if (sound == null){
+            sound = MediaPlayer.create(getActivity(), R.raw.beep);
+            sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    stop();
+                }
+            });
+        }
+        sound.setLooping(true);
+        sound.start();
+    }
+
+    public  void stopSound (View v){
+        stop();
+    }
+
+    private void stop() {
+        if(sound != null) {
+            sound.release();
+            sound = null;
+            Toast.makeText(getActivity(), "Sound Stop Playing", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        stop();
+    }
+
+ */
+
 }
+
+
+
