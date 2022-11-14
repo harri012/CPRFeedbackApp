@@ -3,6 +3,7 @@ package com.example.cprfeedbackapp;
 import android.Manifest;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecyclerViewAdapter.ViewHolder>
 {
 
-    private List<BluetoothDevice> localDataSet;
+    protected List<BluetoothDevice> localDataSet;
+    protected Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -37,8 +40,9 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
         }
     }
 
-    public DeviceRecyclerViewAdapter(Set<BluetoothDevice> localDataSet) {
-        this.localDataSet.addAll(localDataSet);
+    public DeviceRecyclerViewAdapter(List<BluetoothDevice> localDataSet, Context context) {
+        this.localDataSet = localDataSet;
+        this.context = context;
     }
 
     @NonNull
@@ -56,6 +60,9 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
         if (ActivityCompat.checkSelfPermission(holder.itemView.getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             holder.getDeviceNameTextView().setText(localDataSet.get(position).getName());
         }
+
+        // TODO: Onclick listener event
+
     }
 
     @Override
