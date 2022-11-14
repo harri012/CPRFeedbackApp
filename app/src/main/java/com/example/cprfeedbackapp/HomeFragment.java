@@ -26,7 +26,6 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    protected Button buttonGetData;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -64,21 +63,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        buttonGetData = fragmentView.findViewById(R.id.buttonDisplayData);
-        buttonGetData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BluetoothServiceManager bt = new BluetoothServiceManager(HomeFragment.this.getContext(), HomeFragment.this.getActivity());
-                if(bt.checkBluetoothEnabled())
-                {
-                    bt.getInputData();
-                }
-
-            }
-        });
-
-
 
         // Inflate the layout for this fragment
         return fragmentView;

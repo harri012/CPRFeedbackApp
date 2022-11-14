@@ -18,6 +18,8 @@ public class SettingsFragment extends Fragment {
 
     private Button connectButton;
     private Button scanButton;
+    private Button buttonGetData;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -90,6 +92,19 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 bluetoothServiceManager.connectBluetoothDevice();
+            }
+        });
+
+        buttonGetData = fragmentView.findViewById(R.id.buttonDisplayData);
+        buttonGetData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BluetoothServiceManager bt = new BluetoothServiceManager(SettingsFragment.this.getContext(), SettingsFragment.this.getActivity());
+                if(bt.checkBluetoothEnabled())
+                {
+                    bt.getInputData();
+                }
+
             }
         });
         return fragmentView;
