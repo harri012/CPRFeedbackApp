@@ -66,7 +66,7 @@ public class BluetoothServiceManager {
     public BluetoothServiceManager(Context aContext, Activity anActivity) {
         this.context = aContext;
         this.btManager = context.getSystemService(BluetoothManager.class);
-        this.btAdapter = btManager.getAdapter();
+        this.btAdapter = BluetoothAdapter.getDefaultAdapter();
         this.activity = anActivity;
     }
 
@@ -91,6 +91,8 @@ public class BluetoothServiceManager {
                 }
             }
         }
+
+        Log.i("Bt Service Manager", "Bluetooth On");
         return true;
     }
 
@@ -138,9 +140,15 @@ public class BluetoothServiceManager {
     //Checks devices that are already paired
     public Set<BluetoothDevice> queryPairedDevice() {
 
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED)
-            // Gets all the previously connected Bluetooth devices
-            pairedDevices = btAdapter.getBondedDevices();
+        // Gets all the previously connected Bluetooth devices
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
+
+        pairedDevices = btAdapter.getBondedDevices();
+            msg("has permission");
+        }
+        else {
+            msg("no permission");
+        }
 
         return pairedDevices;
     }
@@ -156,7 +164,7 @@ public class BluetoothServiceManager {
     // Checks if the android application is connected to the right hardware
     public boolean isThisTheDevice(BluetoothDevice device) {
 
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED)
             return device.getName().startsWith("");
 
         return false;
@@ -166,8 +174,20 @@ public class BluetoothServiceManager {
     //Input Stream of Bluetooth Data
     public String getInputData(){
 
-        ConnectedThread connectedThread = new ConnectedThread(btSocket);
-        connectedThread.run();
+        if(false) {
+            ConnectedThread connectedThread = new ConnectedThread(btSocket);
+            connectedThread.run();
+        }
+        else
+        {
+            while(true)
+            {
+                for(int i= 0; i<10; i++) {
+                    Log.i("Bt Service Manager", Integer.toString(i));
+                }
+                break;
+            }
+        }
         return "";
     }
 
@@ -195,7 +215,7 @@ public class BluetoothServiceManager {
             BluetoothServerSocket tmp = null;
 
             try{
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED)
                     tmp = btAdapter.listenUsingRfcommWithServiceRecord("CPR Feedback", UUID.fromString(MY_UUID));
             }
 
@@ -224,7 +244,7 @@ public class BluetoothServiceManager {
                 // If the android application is connected to the correct device
                 if (socket.isConnected() && isThisTheDevice(socket.getRemoteDevice())) {
 
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED)
                         Log.d("Bluetooth device connected: ", socket.getRemoteDevice().getName());
 
                     //TODO: Perform work associated with the connection in a separate thread

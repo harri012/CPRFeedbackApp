@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,22 +125,24 @@ public class SettingsFragment extends Fragment {
 //
 //            }
 //        });
-        Set<BluetoothDevice> pairedDevices = new BluetoothServiceManager(SettingsFragment.this.getContext(),
-                                        SettingsFragment.this.getActivity()).queryPairedDevice();
+        BluetoothServiceManager btServiceManager = new BluetoothServiceManager(SettingsFragment.this.getContext(), SettingsFragment.this.getActivity());
+
+        Set<BluetoothDevice> pairedDevices = btServiceManager.queryPairedDevice();
 
         deviceList = new ArrayList<>();
 
         if (pairedDevices != null){
+
             if (pairedDevices.size() > 0) {
                 for (BluetoothDevice device : pairedDevices) {
 
-                    if (ActivityCompat.checkSelfPermission(SettingsFragment.this.getContext(),
-                            Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(SettingsFragment.this.getContext(), Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
 
                         String deviceName = device.getName();
                         String deviceHardwareAddress = device.getAddress();
                         DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
                         deviceList.add(deviceInfoModel);
+
                     }
                 }
 
@@ -164,4 +167,11 @@ public class SettingsFragment extends Fragment {
         DeviceRecyclerViewAdapter deviceListAdapter = new DeviceRecyclerViewAdapter(deviceList, SettingsFragment.this.getContext());
         recyclerView.setAdapter(deviceListAdapter);
     }
+
+
+    //For toasts
+    private void msg(String str) {
+        Toast.makeText(SettingsFragment.this.getContext(), str, Toast.LENGTH_LONG).show();
+    }
+
 }

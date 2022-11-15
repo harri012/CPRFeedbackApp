@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 interface MessageConstants {
-    public static final int MESSAGE_READ = 0;
+    public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 1;
     public static final int MESSAGE_TOAST = 2;
 }
@@ -23,48 +23,60 @@ public class ConnectedThread implements MessageConstants{
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
-    private byte[] mmBuffer; // mmBuffer store for the stream
-    protected Handler handler;
+    protected final Handler handler;
 
     private static final String TAG = "MY_APP_DEBUG_TAG";
 
-    public ConnectedThread(BluetoothSocket socket) {
+    public ConnectedThread(BluetoothSocket socket, Handler handler) {
         mmSocket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
+        this.handler = handler;
 
         // Get the input and output streams; using temp objects because
         // member streams are final.
         try {
             tmpIn = socket.getInputStream();
+            Log.e("Bt Service Manager", "Created input stream");
+
         } catch (IOException e) {
-            Log.e(TAG, "Error occurred when creating input stream", e);
+            Log.e("Bt Service Manager", "Error occurred when creating input stream");
         }
         try {
             tmpOut = socket.getOutputStream();
         } catch (IOException e) {
-            Log.e(TAG, "Error occurred when creating output stream", e);
+            Log.e("Bt Service Manager", "Error occurred when creating output stream");
         }
 
         mmInStream = tmpIn;
+
+        if (mmInStream == null)
+            Log.e("Bt Service Manager", "Null input Stream");
+
         mmOutStream = tmpOut;
     }
 
     public void run() {
-        mmBuffer = new byte[1024];
-        int numBytes; // bytes returned from read()
+        byte[] mmBuffer = new byte[1024];
+        int numBytes = 0; // bytes returned from read()
 
         // Keep listening to the InputStream until an exception occurs.
         while (true) {
             try {
-                // Read from the InputStream.
-                numBytes = mmInStream.read(mmBuffer);
-                // Send the obtained bytes to the UI activity.
-                Message readMsg = handler.obtainMessage(MessageConstants.MESSAGE_READ, numBytes, -1, mmBuffer);
-                readMsg.sendToTarget();
-                final String string = new String(mmBuffer,"UTF-8");
-                Log.i("Bt Service Manager",string);
 
+                mmBuffer[numBytes] = (byte) mmInStream.read();
+                String readMessage;
+                if (mmBuffer[numBytes] == '\n'){
+                    readMessage = new String(mmBuffer,0,numBytes);
+                    Log.e("Bt Service Data",readMessage);
+                    if(handler == null)
+                        Log.e("Bt Service Manager","no handler");
+                    handler.obtainMessage(MESSAGE_READ,readMessage).sendToTarget();
+                    numBytes = 0;
+                }
+                else {
+                    numBytes++;
+                }
             }
             catch (IOException e) {
                 Log.d(TAG, "Input stream was disconnected", e);
@@ -73,7 +85,7 @@ public class ConnectedThread implements MessageConstants{
         }
     }
 
-    // Call this from the main activity to send data to the remote device.
+    /*// Call this from the main activity to send data to the remote device.
     public void write(byte[] bytes) {
         try {
             mmOutStream.write(bytes);
@@ -92,7 +104,7 @@ public class ConnectedThread implements MessageConstants{
             writeErrorMsg.setData(bundle);
             handler.sendMessage(writeErrorMsg);
         }
-    }
+    }*/
 
     // Call this method from the main activity to shut down the connection.
     public void cancel() {

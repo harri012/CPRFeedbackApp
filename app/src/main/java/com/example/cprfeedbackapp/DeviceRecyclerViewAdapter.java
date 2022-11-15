@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,10 +67,11 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
     @Override
     public void onBindViewHolder(@NonNull DeviceRecyclerViewAdapter.ViewHolder holder, int position) {
 
-        final DeviceInfoModel deviceInfoModel = (DeviceInfoModel) localDataSet.get(position);
+        DeviceInfoModel deviceInfoModel = (DeviceInfoModel) localDataSet.get(position);
 
         holder.deviceNameTextView.setText(deviceInfoModel.getDeviceName());
         holder.deviceAddressTextView.setText(deviceInfoModel.getDeviceHardwareAddress());
+
 
         // When a device is selected
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -79,14 +81,19 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
                 // Gets position of the selected device
                 int position = holder.getLayoutPosition();
 
-                // Calls a new thread and creates a bluetooth connection to the selected device
+                /*// Calls a new thread and creates a bluetooth connection to the selected device
                 BluetoothAdapter btAdapter = new BluetoothServiceManager(context, (Activity)context).getBtAdapter();
                 CreateConnectThread createConnectThread = new CreateConnectThread(btAdapter, localDataSet.get(position).getDeviceHardwareAddress(), context);
-                createConnectThread.start();
+                createConnectThread.start();*/
+
 
                 // Call dataActivity
                 Intent intent = new Intent(context, dataActivity.class);
+                intent.putExtra("deviceName", localDataSet.get(position).getDeviceName());
+                intent.putExtra("deviceAddress",localDataSet.get(position).getDeviceHardwareAddress());
+
                 context.startActivity(intent);
+
             }
         });
     }
