@@ -92,7 +92,6 @@ public class SettingsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
-
 //      BluetoothServiceManager bluetoothServiceManager = new BluetoothServiceManager(SettingsFragment.this.getContext(), SettingsFragment.this.getActivity());
 
 //        scanButton = fragmentView.findViewById(R.id.scanButton);
@@ -125,31 +124,35 @@ public class SettingsFragment extends Fragment {
 //
 //            }
 //        });
-
         Set<BluetoothDevice> pairedDevices = new BluetoothServiceManager(SettingsFragment.this.getContext(),
                                         SettingsFragment.this.getActivity()).queryPairedDevice();
 
         deviceList = new ArrayList<>();
 
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
+        if (pairedDevices != null){
+            if (pairedDevices.size() > 0) {
+                for (BluetoothDevice device : pairedDevices) {
 
-                if (ActivityCompat.checkSelfPermission(SettingsFragment.this.getContext(),
-                        Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(SettingsFragment.this.getContext(),
+                            Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
 
-                    String deviceName = device.getName();
-                    String deviceHardwareAddress = device.getAddress();
-                    DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
-                    deviceList.add(deviceInfoModel);
+                        String deviceName = device.getName();
+                        String deviceHardwareAddress = device.getAddress();
+                        DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
+                        deviceList.add(deviceInfoModel);
+                    }
                 }
+
+                recyclerView = fragmentView.findViewById(R.id.deviceRecyclerView);
+                setupRecyclerView();
             }
 
-            recyclerView = fragmentView.findViewById(R.id.deviceRecyclerView);
-            setupRecyclerView();
+            else
+                Toast.makeText(SettingsFragment.this.getContext(), "Pair a Bluetooth Device.", Toast.LENGTH_LONG).show();
         }
 
         else
-            Toast.makeText(SettingsFragment.this.getContext(), "Pair a Bluetooth Device.", Toast.LENGTH_LONG).show();
+            Toast.makeText(SettingsFragment.this.getContext(), "Can't Display a device", Toast.LENGTH_LONG).show();
 
         return fragmentView;
     }
