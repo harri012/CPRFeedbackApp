@@ -1,10 +1,11 @@
 package com.example.cprfeedbackapp;
 
+
+//import static android.support.v4.media.session.MediaControllerCompatApi21.getPackageName;
+
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,8 +68,9 @@ public class tutorialFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.fragment_tutorial, container, false);
         CprVideoView = fragmentView.findViewById(R.id.videoView);
         CprVideoView.setVideoURI(Uri.parse("https://youtu.be/-NodDRTsV88"));
-        CprVideoView.setOnPreparedListener(mediaPlayer -> CprVideoView.start());
-        CprVideoView.start();
+//        CprVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.howtocpr));
+//        CprVideoView.setOnPreparedListener(mediaPlayer -> CprVideoView.start());
+//        CprVideoView.start();
 
         MediaController videoMediaController = new MediaController(this.getContext());
         videoMediaController.setMediaPlayer(CprVideoView);
