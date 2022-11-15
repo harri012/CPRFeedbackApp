@@ -5,11 +5,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,15 +69,49 @@ public class HomeFragment extends Fragment {
         //setting up play and stop sound button
         View rootView = inflater.inflate(R.layout.fragment_home,container,false);
 
-        //play button
-        final MediaPlayer mp = MediaPlayer.create(getActivity(), R.raw.beep);
+
+        final MediaPlayer[] mp = {MediaPlayer.create(getActivity(), R.raw.beep)};
         Button playButton = (Button) rootView.findViewById(R.id.play_button);
+
+        //Timer for the interval to play the beep at around 120bpm
+        Timer timer = new Timer("MetronomeTimer", true);
+        final TimerTask[] tone = {new TimerTask() {
+            @Override
+            public void run() {
+                //Play sound
+                mp[0].start();
+            }
+        }};
+
+
+        //play button
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                mp.setLooping(true);
-                mp.start();
+                if(mp[0] == null){
+                    mp[0] = MediaPlayer.create(getActivity(), R.raw.beep);
+                    tone[0] = new TimerTask() {
+                        @Override
+                        public void run() {
+                            mp[0].start();
+                        }
+                    };
+                    mp[0].setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            if(mp[0] != null) {
+                                mp[0].release();
+                                mp[0] = null;
+                                Toast.makeText(getActivity(), "Sound Stop Playing", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
+                //mp[0].setLooping(true);
+                //mp[0].start();
+                timer.scheduleAtFixedRate(tone[0], 500, 500); //120 BPM. Executes every 500 ms.
             }
         });
 
@@ -82,13 +120,22 @@ public class HomeFragment extends Fragment {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mp.release();
+                if(mp[0] != null) {
+                    mp[0].release();
+                    mp[0] = null;
+                    Toast.makeText(getActivity(), "Sound Stop Playing", Toast.LENGTH_SHORT).show();
+                    tone[0].cancel();
+                }
             }
         });
+
+
 
         // Inflate the layout for this fragment
         return rootView;
     }
+
+
 
 /*
 Mediaplayer sound;
