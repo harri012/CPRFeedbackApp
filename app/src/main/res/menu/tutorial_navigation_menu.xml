@@ -2,6 +2,14 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/InstructionManualMenuItem" />
-    <item android:title="@string/CprVideoName" />
+    <item
+        android:enabled="true"
+        android:title="@string/InstructionManualMenuItem"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+    <item
+        android:enabled="true"
+        android:title="@string/CprVideoName"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>

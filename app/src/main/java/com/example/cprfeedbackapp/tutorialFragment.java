@@ -68,6 +68,7 @@ public class tutorialFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.fragment_tutorial, container, false);
         CprVideoView = fragmentView.findViewById(R.id.videoView);
 //        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/-NodDRTsV88"));
+//        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/A5PnI4I-vd8"));
         CprVideoView.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.howtocpr));
 //        CprVideoView.setOnPreparedListener(mediaPlayer -> CprVideoView.start());
         CprVideoView.start();
