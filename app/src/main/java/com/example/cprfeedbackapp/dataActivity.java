@@ -29,6 +29,7 @@ public class dataActivity extends AppCompatActivity {
     public static Handler handler;
     protected Boolean boolRecordData = false;
     protected int nbRecordedData = 0;
+    protected int dataSampleSize = 30;
     protected ArrayList<String> listRecordedData = new ArrayList<>();
 
     public ConnectedThread connectedThread;
@@ -60,21 +61,17 @@ public class dataActivity extends AppCompatActivity {
                     case CONNECTING_STATUS:
                         switch(msg.arg1){
                             case 1:
+                                //If connected Properly
                                 connectionStatusTextView.setText("Connection Status: Connected to " + deviceName);
-    /*                          progressBar.setVisibility(View.GONE);
-                                buttonConnect.setEnabled(true);
-                                buttonToggle.setEnabled(true);*/
                                 buttonRecordData.setEnabled(true);
                                 buttonConnect.setEnabled(false);
                                 Log.i("Bt Service Manager", "1");
 
                                 break;
                             case -1:
+                                //Cant connect
                                 connectionStatusTextView.setText("Connection Status: Device fails to connect");
-                                //progressBar.setVisibility(View.GONE);
-                                //buttonConnect.setEnabled(true);
                                 Log.i("Bt Service Manager", "-1");
-
                                 break;
                         }
                         break;
@@ -83,13 +80,13 @@ public class dataActivity extends AppCompatActivity {
                         arduinoMsg = msg.obj.toString(); // Read message from Arduino
                         forceTextView.setText(arduinoMsg);
 
-                        //If true record data
-                        if(boolRecordData == true && nbRecordedData <= 20)
+                        //If true record data until it reached dataSampleSize
+                        if(boolRecordData == true && nbRecordedData <= dataSampleSize)
                         {
 
                             listRecordedData.add(arduinoMsg);
 
-                            if(nbRecordedData == 20)
+                            if(nbRecordedData == dataSampleSize)
                             {
                                 //Set back to false
                                 boolRecordData = false;
@@ -133,7 +130,7 @@ public class dataActivity extends AppCompatActivity {
         depthTexView.setText("0");
         forceTextView.setText("0");
 
-
+        //On Click for save connect button
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +151,7 @@ public class dataActivity extends AppCompatActivity {
             }
         });
 
+        //On Click for save record data button
         buttonRecordData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,12 +161,12 @@ public class dataActivity extends AppCompatActivity {
             }
         });
 
+        //On Click for save data button
         buttonSaveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
-
                 buttonSaveData.setEnabled(false);
                 buttonRecordData.setEnabled(true);
                 nbRecordedData = 0;

@@ -104,9 +104,7 @@ public class BluetoothServiceManager {
 
         // Gets all the previously connected Bluetooth devices
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
-
         pairedDevices = btAdapter.getBondedDevices();
-            msg("has permission");
         }
         else {
             msg("no permission");

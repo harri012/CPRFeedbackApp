@@ -77,7 +77,9 @@ public class CprPerformanceFragment extends Fragment {
         // activate horizontal zooming and scrolling
         graph.getViewport().setScalable(true);
         graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(900);
+        graph.getViewport().setMaxY(1000);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(40);
         // activate horizontal scrolling
         graph.getViewport().setScrollable(true);
 
