@@ -2,4 +2,25 @@
     <string name="app_name">CPR Feedback App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="Data">Data</string>
+    <string name="Element">Element</string>
+
+    <string name="sharedPreferences">SharedPreferences</string>
+    <string name="SharedPreferences_Event_Names">Events</string>
+
+    <string name="SharedPreferences_MaxCount">MaxCount</string>
+    <string name="SharedPreferences_Current_Count">currentCount</string>
+
+    <string name="EventNameStatus_size">EventNameStatus_size</string>
+    <string name="EventNameStatus_">EventNameStatus_</string>
+
+    <string name="CountStatus_size">CountStatus_size</string>
+    <string name="CountStatus_">CountStatus_</string>
+
+    <string name="EventListStatus_size">EventListStatus_size</string>
+    <string name="EventListStatus_">EventListStatus_</string>
+
+    <string name="SharedPreferences_DisplayNameState">DisplayNameState</string>
 </resources>

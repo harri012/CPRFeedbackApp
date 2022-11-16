@@ -64,10 +64,11 @@
         android:id="@+id/textViewDeviceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="66dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="287dp"
+        android:layout_marginEnd="200dp"
         android:text="Device Name"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.56"
@@ -88,10 +89,38 @@
         app:layout_constraintTop_toBottomOf="@+id/depthDataTextView" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/textViewConnectionStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="184dp"
-        tools:layout_editor_absoluteY="369dp" />
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="12dp"
+        android:text="Connection Status: Not Connected"
+        app:layout_constraintBottom_toTopOf="@+id/buttonConnect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/depthDataTextView" />
+
+    <Button
+        android:id="@+id/buttonRecordData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Record Data"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSendData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonConnect" />
+
+    <Button
+        android:id="@+id/buttonSendData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Save Data"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonRecordData" />
 </androidx.constraintlayout.widget.ConstraintLayout>
