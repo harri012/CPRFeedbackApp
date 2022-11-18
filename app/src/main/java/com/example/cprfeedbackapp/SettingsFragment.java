@@ -93,38 +93,7 @@ public class SettingsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
-//      BluetoothServiceManager bluetoothServiceManager = new BluetoothServiceManager(SettingsFragment.this.getContext(), SettingsFragment.this.getActivity());
 
-//        scanButton = fragmentView.findViewById(R.id.scanButton);
-//
-//        scanButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                bluetoothServiceManager.discoverDevices();
-//            }
-//        });
-//
-//        connectButton = fragmentView.findViewById(R.id.connectButton);
-//
-//        connectButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                bluetoothServiceManager.connectBluetoothDevice();
-//            }
-//        });
-//
-//        buttonGetData = fragmentView.findViewById(R.id.buttonDisplayData);
-//        buttonGetData.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                BluetoothServiceManager bt = new BluetoothServiceManager(SettingsFragment.this.getContext(), SettingsFragment.this.getActivity());
-//                if(bt.checkBluetoothEnabled())
-//                {
-//                    bt.getInputData();
-//                }
-//
-//            }
-//        });
         BluetoothServiceManager btServiceManager = new BluetoothServiceManager(SettingsFragment.this.getContext(), SettingsFragment.this.getActivity());
 
         Set<BluetoothDevice> pairedDevices = btServiceManager.queryPairedDevice();
