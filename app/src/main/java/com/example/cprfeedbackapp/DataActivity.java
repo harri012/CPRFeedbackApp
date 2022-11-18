@@ -2,7 +2,6 @@ package com.example.cprfeedbackapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,9 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class dataActivity extends AppCompatActivity {
+public class DataActivity extends AppCompatActivity {
     protected TextView forceTextView, depthTexView, nameTextView, connectionStatusTextView;
     protected Button buttonConnect, buttonRecordData, buttonSaveData;
 
@@ -144,7 +142,7 @@ public class dataActivity extends AppCompatActivity {
                     deviceAddress = getIntent().getStringExtra("deviceAddress");
 
                     // Calls a new thread and creates a bluetooth connection to the selected device
-                    BluetoothAdapter btAdapter = new BluetoothServiceManager(getApplicationContext(), dataActivity.this).getBtAdapter();
+                    BluetoothAdapter btAdapter = new BluetoothServiceManager(getApplicationContext(), DataActivity.this).getBtAdapter();
                     CreateConnectThread createConnectThread = new CreateConnectThread(btAdapter, deviceAddress, getApplicationContext());
                     createConnectThread.start();
                 }
@@ -179,7 +177,7 @@ public class dataActivity extends AppCompatActivity {
 
     //For toasts
     private void msg(String str) {
-        Toast.makeText(dataActivity.this, str, Toast.LENGTH_LONG).show();
+        Toast.makeText(DataActivity.this, str, Toast.LENGTH_LONG).show();
     }
 
 

@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.Tutorial:
-                    switchFragmentView(new tutorialFragment());
+                    switchFragmentView(new TutorialFragment());
                     break;
 
                 case R.id.Settings:

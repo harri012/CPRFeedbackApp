@@ -22,7 +22,7 @@
         android:theme="@style/Theme.CPRFeedbackApp"
         tools:targetApi="31">
         <activity
-            android:name=".dataActivity"
+            android:name=".DataActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

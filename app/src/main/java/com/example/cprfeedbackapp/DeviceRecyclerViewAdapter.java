@@ -1,24 +1,13 @@
 package com.example.cprfeedbackapp;
 
-import android.Manifest;
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -88,7 +77,7 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
 
 
                 // Call dataActivity
-                Intent intent = new Intent(context, dataActivity.class);
+                Intent intent = new Intent(context, DataActivity.class);
                 intent.putExtra("deviceName", localDataSet.get(position).getDeviceName());
                 intent.putExtra("deviceAddress",localDataSet.get(position).getDeviceHardwareAddress());
 

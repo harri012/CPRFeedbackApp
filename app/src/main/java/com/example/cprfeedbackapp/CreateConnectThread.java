@@ -1,6 +1,6 @@
 package com.example.cprfeedbackapp;
 
-import static com.example.cprfeedbackapp.dataActivity.handler;
+import static com.example.cprfeedbackapp.DataActivity.handler;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
