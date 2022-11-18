@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'com.example.cprfeedbackapp'
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.cprfeedbackapp"
-        minSdk 21
-        targetSdk 31
+        minSdk 23
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
