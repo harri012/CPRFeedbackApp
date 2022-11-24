@@ -17,41 +17,55 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class DataActivity extends AppCompatActivity {
+
+    //Declaring UI Widgets
     protected TextView forceTextView, depthTexView, nameTextView, connectionStatusTextView;
     protected Button buttonConnect, buttonRecordData, buttonSaveData;
 
+    //Declaring Bluetooth Variables
     private String deviceName = null;
     private String deviceAddress;
     private String arduinoMsg = "0";
-
     public static Handler handler;
+
+    //Declaring Data Variables
     protected Boolean boolRecordData = false;
     protected int nbRecordedData = 0;
-    protected int dataSampleSize = 30;
+    protected int dataSampleSize = 120;
     protected ArrayList<String> listRecordedData = new ArrayList<>();
 
+    //Declaring Threads
     public ConnectedThread connectedThread;
     public CreateConnectThread createConnectThread;
 
     protected SharedPreferencesHelper sharedPreferencesHelper;
 
-    private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
+    //Declaring Constants
     private final static int MESSAGE_READ = 0; // used in bluetooth handler to identify message update
-    private final static int MESSAGE_WRITE = 2;
-    private final static int MESSAGE_TOAST = 3;
-    private SharedPreferences sharedPreferences;
+    private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Log.i("Bt Service Manager", "Inside Fragment");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
 
         sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
-        Log.i("Bt Service Manager", "Before handler");
+        setupHandler();
+        setup();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Missing ConnectedThread Code here.
+    }
+
+
+
+    public void setupHandler()
+    {
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
@@ -63,27 +77,25 @@ public class DataActivity extends AppCompatActivity {
                                 connectionStatusTextView.setText("Connection Status: Connected to " + deviceName);
                                 buttonRecordData.setEnabled(true);
                                 buttonConnect.setEnabled(false);
-                                Log.i("Bt Service Manager", "1");
-
                                 break;
                             case -1:
                                 //Cant connect
                                 connectionStatusTextView.setText("Connection Status: Device fails to connect");
-                                Log.i("Bt Service Manager", "-1");
                                 break;
                         }
                         break;
 
                     case MESSAGE_READ:
-                        arduinoMsg = msg.obj.toString(); // Read message from Arduino
+                        // Read message from Arduino
+                        arduinoMsg = msg.obj.toString();
                         forceTextView.setText(arduinoMsg);
 
                         //If true record data until it reached dataSampleSize
                         if(boolRecordData == true && nbRecordedData <= dataSampleSize)
                         {
 
+                            //Add value to list
                             listRecordedData.add(arduinoMsg);
-
                             if(nbRecordedData == dataSampleSize)
                             {
                                 //Set back to false
@@ -98,31 +110,20 @@ public class DataActivity extends AppCompatActivity {
                 }
             }
         };
-
-
-        setup();
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Missing ConnectedThread Code here.
     }
 
     public void setup() {
+        //Setting up UI widgets
         forceTextView = findViewById(R.id.forceDataTextView);
         depthTexView = findViewById(R.id.depthDataTextView);
         nameTextView = findViewById(R.id.textViewDeviceName);
         buttonConnect = findViewById(R.id.buttonConnect);
         buttonRecordData = findViewById(R.id.buttonRecordData);
-        buttonRecordData.setEnabled(false);
         buttonSaveData = findViewById(R.id.buttonSendData);
-        buttonSaveData.setEnabled(false);
         connectionStatusTextView = findViewById(R.id.textViewConnectionStatus);
 
+        buttonRecordData.setEnabled(false);
+        buttonSaveData.setEnabled(false);
         deviceName = getIntent().getStringExtra("deviceName");
         nameTextView.setText("Device Name: " + deviceName);
         depthTexView.setText("0");
@@ -163,7 +164,6 @@ public class DataActivity extends AppCompatActivity {
         buttonSaveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
                 buttonSaveData.setEnabled(false);
                 buttonRecordData.setEnabled(true);
@@ -174,6 +174,9 @@ public class DataActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     //For toasts
     private void msg(String str) {
