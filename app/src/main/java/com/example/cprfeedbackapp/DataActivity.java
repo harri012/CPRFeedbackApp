@@ -3,12 +3,10 @@ package com.example.cprfeedbackapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,7 +29,7 @@ public class DataActivity extends AppCompatActivity {
     //Declaring Data Variables
     protected Boolean boolRecordData = false;
     protected int nbRecordedData = 0;
-    protected int dataSampleSize = 120;
+    protected int dataSampleSize = 1465; //1465 for 150 sec session
     protected ArrayList<String> listRecordedData = new ArrayList<>();
 
     //Declaring Threads
@@ -115,7 +113,7 @@ public class DataActivity extends AppCompatActivity {
     public void setup() {
         //Setting up UI widgets
         forceTextView = findViewById(R.id.forceDataTextView);
-        depthTexView = findViewById(R.id.depthDataTextView);
+        depthTexView = findViewById(R.id.textViewDepthData);
         nameTextView = findViewById(R.id.textViewDeviceName);
         buttonConnect = findViewById(R.id.buttonConnect);
         buttonRecordData = findViewById(R.id.buttonRecordData);
@@ -175,8 +173,99 @@ public class DataActivity extends AppCompatActivity {
         });
     }
 
+    protected int amountDataPoint = 0;
+    private int previousData;
+    private Integer frequencyCalculator(int aData)
+    {
+        int returnedVal = -1;
+        if(aData == 0 && previousData != 0) {
+            returnedVal = amountDataPoint;
+            amountDataPoint = 0;
+        }
+        else
+            amountDataPoint++;
+
+        previousData = aData;
+        return returnedVal;
+    }
 
 
+    private double timePerDataPoint = 0.1;
+    private int lowerFrequency = 2;
+    private int higherFrequency = 2;
+
+    private void frequencyFeedback(int aData){
+        double frequency = frequencyCalculator(aData);
+        if(frequency != -1)
+        {
+            frequency = frequency * timePerDataPoint;
+
+            if(frequency < lowerFrequency)
+            {
+                //SetTextView too slow
+            }
+            if(frequency > higherFrequency)
+            {
+                //SetTextView too fast
+            }
+            else
+            {
+                //SetTextView good
+            }
+        }
+    }
+
+    private int maxForce = 0;
+    private int lowerForce= 2;
+    private int higherForce = 2;
+    private void forceFeedback(int aData)
+    {
+        int frequency = frequencyCalculator(aData);
+        if (aData > maxForce)
+            maxForce = aData;
+        if(frequency != -1)
+        {
+            if(maxForce < lowerForce)
+            {
+                //set text view
+            }
+            if(maxForce > higherForce)
+            {
+                //set text view
+            }
+            else
+            {
+                //set text view
+            }
+            maxForce = 0;
+        }
+
+    }
+    protected int maxDepth = 0;
+    private int lowerDepth= 2;
+    private int higherDepth = 2;
+    private void depthFeedback(int aData)
+    {
+        int frequency = frequencyCalculator(aData);
+        if (aData > maxDepth)
+            maxDepth = aData;
+        if(frequency != -1)
+        {
+            if(maxDepth < lowerDepth)
+            {
+                //set text view
+            }
+            if(maxDepth > higherDepth)
+            {
+                //set text view
+            }
+            else
+            {
+                //set text view
+            }
+            maxDepth = 0;
+        }
+    }
 
     //For toasts
     private void msg(String str) {
