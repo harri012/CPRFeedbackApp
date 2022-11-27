@@ -17,7 +17,8 @@ import java.util.ArrayList;
 public class DataActivity extends AppCompatActivity {
 
     //Declaring UI Widgets
-    protected TextView forceTextView, depthTexView, nameTextView, connectionStatusTextView;
+    protected TextView forceTextView, depthTexView, frequencyTextView, nameTextView, connectionStatusTextView;
+    protected TextView forceComment, depthComment, frequencyComment, recordingStatusTextView;
     protected Button buttonConnect, buttonRecordData, buttonSaveData;
 
     //Declaring Bluetooth Variables
@@ -28,8 +29,10 @@ public class DataActivity extends AppCompatActivity {
 
     //Declaring Data Variables
     protected Boolean boolRecordData = false;
+    protected Boolean boolCancel = false;
+    protected Boolean boolStopRecording = false;
     protected int nbRecordedData = 0;
-    protected int dataSampleSize = 1465; //1465 for 150 sec session
+    protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
 
     //Declaring Threads
@@ -89,7 +92,7 @@ public class DataActivity extends AppCompatActivity {
                         forceTextView.setText(arduinoMsg);
 
                         //If true record data until it reached dataSampleSize
-                        if(boolRecordData == true && nbRecordedData <= dataSampleSize)
+                        if(boolRecordData == true && nbRecordedData <= dataSampleSize )
                         {
 
                             //Add value to list
@@ -99,6 +102,7 @@ public class DataActivity extends AppCompatActivity {
                                 //Set back to false
                                 boolRecordData = false;
                                 buttonSaveData.setEnabled(true);
+                                recordingStatusTextView.setText("Recording Complete!");
                                 msg("Finished Recording Data");
                             }
                             else
@@ -112,20 +116,37 @@ public class DataActivity extends AppCompatActivity {
 
     public void setup() {
         //Setting up UI widgets
-        forceTextView = findViewById(R.id.forceDataTextView);
-        depthTexView = findViewById(R.id.textViewDepthData);
         nameTextView = findViewById(R.id.textViewDeviceName);
+        forceTextView = findViewById(R.id.textViewForceData);
+        depthTexView = findViewById(R.id.textViewDepthData);
+        frequencyTextView = findViewById(R.id.textViewFrequencyData);
+        forceComment = findViewById(R.id.textViewForceComment);
+        depthComment = findViewById(R.id.textViewDepthComment);
+        frequencyComment = findViewById(R.id.textViewFrequencyComment);
+        recordingStatusTextView = findViewById(R.id.textViewRecordingStatus);
+
         buttonConnect = findViewById(R.id.buttonConnect);
         buttonRecordData = findViewById(R.id.buttonRecordData);
         buttonSaveData = findViewById(R.id.buttonSendData);
         connectionStatusTextView = findViewById(R.id.textViewConnectionStatus);
 
+
         buttonRecordData.setEnabled(false);
         buttonSaveData.setEnabled(false);
         deviceName = getIntent().getStringExtra("deviceName");
-        nameTextView.setText("Device Name: " + deviceName);
+        buttonRecordData.setText("Record Session");
+        nameTextView.setText(deviceName);
+
+        //Data TextView
         depthTexView.setText("0");
         forceTextView.setText("0");
+        frequencyTextView.setText("0");
+
+        //Comment TextView
+        depthComment.setText("Feedback");
+        forceComment.setText("Feedback");
+        frequencyComment.setText("Feedback");
+        recordingStatusTextView.setText(" ");
 
         //On Click for save connect button
         buttonConnect.setOnClickListener(new View.OnClickListener() {
@@ -152,9 +173,26 @@ public class DataActivity extends AppCompatActivity {
         buttonRecordData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolRecordData = true;
-                buttonRecordData.setEnabled(false);
-                msg("Recording Data");
+                if(boolCancel == false) {
+                    boolRecordData = true;
+                    buttonRecordData.setText("Cancel");
+                    recordingStatusTextView.setText("Recording...");
+                    msg("Recording Data");
+                    boolCancel = true;
+                }
+                else
+                {
+                    //Stop Recording
+                    boolRecordData = false;
+                    //Set button back to record behaviour
+                    boolCancel = false;
+                    buttonRecordData.setText("Record Session");
+
+                    buttonRecordData.setEnabled(false);
+                    buttonSaveData.setEnabled(true);
+                    recordingStatusTextView.setText("Recording Cancelled");
+                    msg("Stopped Recording!");
+                }
             }
         });
 
@@ -167,6 +205,8 @@ public class DataActivity extends AppCompatActivity {
                 buttonRecordData.setEnabled(true);
                 nbRecordedData = 0;
                 listRecordedData.clear();
+                recordingStatusTextView.setText("Recording Saved");
+
                 msg("Saved Data");
 
             }
@@ -202,15 +242,15 @@ public class DataActivity extends AppCompatActivity {
 
             if(frequency < lowerFrequency)
             {
-                //SetTextView too slow
+                frequencyComment.setText("Too Slow");
             }
             if(frequency > higherFrequency)
             {
-                //SetTextView too fast
+                frequencyComment.setText("Too Fast");
             }
             else
             {
-                //SetTextView good
+                frequencyComment.setText("Good!");
             }
         }
     }
@@ -227,15 +267,15 @@ public class DataActivity extends AppCompatActivity {
         {
             if(maxForce < lowerForce)
             {
-                //set text view
+                forceComment.setText("Too Weak");
             }
             if(maxForce > higherForce)
             {
-                //set text view
+                forceComment.setText("Too Strong");
             }
             else
             {
-                //set text view
+                forceComment.setText("Good!");
             }
             maxForce = 0;
         }
@@ -253,15 +293,15 @@ public class DataActivity extends AppCompatActivity {
         {
             if(maxDepth < lowerDepth)
             {
-                //set text view
+                depthComment.setText("Too Shallow");
             }
             if(maxDepth > higherDepth)
             {
-                //set text view
+                depthComment.setText("Too Deep");
             }
             else
             {
-                //set text view
+                depthComment.setText("Good");
             }
             maxDepth = 0;
         }

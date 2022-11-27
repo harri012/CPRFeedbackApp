@@ -7,120 +7,205 @@
     tools:context=".DataActivity">
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/textViewDeviceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:text="Measured Force"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="200dp"
+        android:text="Device Name"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/forceDataTextView"
+        android:id="@+id/titleForce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
         android:layout_marginTop="20dp"
-        android:text="TextView"
+        android:layout_marginEnd="200dp"
+        android:text="Force"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewDeviceName" />
 
     <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewForceData"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Measured Depth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forceDataTextView" />
-
-    <TextView
-        android:id="@+id/depthDataTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="20dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewForceComment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintTop_toBottomOf="@+id/titleForce" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/textViewForceComment"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        android:text="Comment"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewForceData"
+        app:layout_constraintTop_toBottomOf="@+id/titleForce" />
+
+    <TextView
+        android:id="@+id/titleDepth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="294dp"
-        android:layout_marginBottom="660dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="200dp"
+        android:text="Depth"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewForceData" />
 
     <TextView
-        android:id="@+id/textViewDeviceName"
+        android:id="@+id/textViewDepthData"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewDepthComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleDepth" />
+
+    <TextView
+        android:id="@+id/textViewDepthComment"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        android:text="Comment"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewDepthData"
+        app:layout_constraintTop_toBottomOf="@+id/titleDepth" />
+
+    <TextView
+        android:id="@+id/titleFrequency"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="200dp"
+        android:text="Frequency"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDepthData" />
+
+    <TextView
+        android:id="@+id/textViewFrequencyData"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewFrequencyComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleFrequency" />
+
+    <Button
+        android:id="@+id/buttonRecordData"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:text="Record Session"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSendData"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFrequencyData" />
+
+    <Button
+        android:id="@+id/buttonSendData"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="200dp"
-        android:text="Device Name"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView11"
+        android:layout_marginEnd="100dp"
+        android:text="Save Session"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.56"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/buttonRecordData"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFrequencyComment" />
 
     <Button
         android:id="@+id/buttonConnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="200dp"
         android:text="Connect"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/depthDataTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRecordingStatus" />
 
     <TextView
         android:id="@+id/textViewConnectionStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="100dp"
         android:text="Connection Status: Not Connected"
-        app:layout_constraintBottom_toTopOf="@+id/buttonConnect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/depthDataTextView" />
-
-    <Button
-        android:id="@+id/buttonRecordData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Record Data"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSendData"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonConnect" />
-
-    <Button
-        android:id="@+id/buttonSendData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Save Data"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonRecordData" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonConnect" />
+
+    <TextView
+        android:id="@+id/textViewFrequencyComment"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        android:text="Comment"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewFrequencyData"
+        app:layout_constraintTop_toBottomOf="@+id/titleFrequency" />
+
+    <TextView
+        android:id="@+id/textViewRecordingStatus"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="200dp"
+        android:text="Recording Status"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRecordData" />
 </androidx.constraintlayout.widget.ConstraintLayout>
