@@ -7,6 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +29,9 @@ public class healthMonitoringFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    //Python Integration Test Variable (to be deleted when test is done)
+    protected TextView pythonTextView;
+
     public healthMonitoringFragment() {
         // Required empty public constructor
     }
@@ -36,6 +44,7 @@ public class healthMonitoringFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment healthMonitoringFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static healthMonitoringFragment newInstance(String param1, String param2) {
         healthMonitoringFragment fragment = new healthMonitoringFragment();
@@ -59,6 +68,25 @@ public class healthMonitoringFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_health_monitoring, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_health_monitoring, container, false);
+
+        //Python Test (can be deleted later)
+        pythonTextView = fragmentView.findViewById(R.id.pythonTextViewTest);
+
+        //Python Integration Test
+        if (! Python.isStarted()) {
+            Python.start(new AndroidPlatform(this.getContext()));
+        }
+
+        Python py = Python.getInstance();
+        PyObject pyobj = py.getModule("script");
+
+
+        PyObject obj = pyobj.callAttr("main");
+
+        pythonTextView.setText(obj.toString());
+
+        return fragmentView;
+
     }
 }
