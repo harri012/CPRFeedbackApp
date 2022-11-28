@@ -2,18 +2,26 @@ package com.example.cprfeedbackapp;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+
+
 public class SettingsFragment extends Fragment {
+
+    protected Switch darkModeSwitch;
+    protected SharedPreferencesHelper sharedPreferencesHelper;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,12 +61,50 @@ public class SettingsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        sharedPreferencesHelper = new SharedPreferencesHelper(this.getContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        // Link the switch to the variable
+        darkModeSwitch = fragmentView.findViewById(R.id.darkModeSwitch);
+        darkModeSwitch.setChecked(sharedPreferencesHelper.getDarkModeState());
+
+        // Getting the darkMode state from shared preferences
+        boolean isNightModeOn = sharedPreferencesHelper.getDarkModeState();
+
+        // OnClickListener for the switch
+        darkModeSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isNightModeOn) {
+
+                    // Sets the app's theme to light mode
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+                    // Saving the current theme to the shared preferences
+                    sharedPreferencesHelper.saveDarkModeState(false);
+                }
+
+                else {
+
+                    // Setting the app's theme to dark mode
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+                    // Saving the current theme to the shared preferences
+                    sharedPreferencesHelper.saveDarkModeState(true);
+                }
+
+                sharedPreferencesHelper.saveSwitchState(darkModeSwitch.isChecked());
+            }
+        });
+
+        return fragmentView;
     }
 }
