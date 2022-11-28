@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:enabled="true"
+        android:title="@string/InstructionManualMenuItem"
+        android:visible="true"
+        app:showAsAction="never"
+        android:id="@+id/InstructionManual"/>
+    <item
+        android:enabled="true"
+        android:title="@string/CprVideoName"
+        android:visible="true"
+        app:showAsAction="never"
+        android:id="@+id/CprVideo"/>
+</menu>
