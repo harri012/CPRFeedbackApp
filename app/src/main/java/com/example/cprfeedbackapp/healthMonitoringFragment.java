@@ -1,6 +1,8 @@
 package com.example.cprfeedbackapp;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +22,8 @@ import java.util.TimerTask;
  * create an instance of this fragment.
  */
 public class healthMonitoringFragment extends Fragment {
+
+    Button emergencyCallButton;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,11 +68,6 @@ public class healthMonitoringFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-
-
 
             //setting up play and stop sound button
             View rootView = inflater.inflate(R.layout.fragment_health_monitoring,container,false);
@@ -86,7 +85,6 @@ public class healthMonitoringFragment extends Fragment {
                     mp[0].start();
                 }
             }};
-
 
             //play button
             playButton.setOnClickListener(new View.OnClickListener() {
@@ -128,18 +126,27 @@ public class healthMonitoringFragment extends Fragment {
                         mp[0].release();
                         mp[0] = null;
                         Toast.makeText(getActivity(), "Sound Stop Playing", Toast.LENGTH_SHORT).show();
-                        tone[0].cancel();
+                        //tone[0].cancel();
                     }
                 }
             });
 
 
+        //Emergency call button function
+        emergencyCallButton = rootView.findViewById(R.id.emergency_button);
 
-            // Inflate the layout for this fragment
+        emergencyCallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL); //Call number
+                callIntent.setData(Uri.parse("tel:5149295019")); //call this number
+                startActivity(callIntent);
+            }
+        });
+
+
+        // Inflate the layout for this fragment
             return rootView;
-
-            // Inflate the layout for this fragment
-            //  return inflater.inflate(R.layout.fragment_health_monitoring, container, false);
         }
 
 
@@ -181,5 +188,3 @@ Mediaplayer sound;
  */
 
     }
-
-}
