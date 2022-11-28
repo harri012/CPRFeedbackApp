@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,7 @@ public class HomeFragment extends Fragment {
 
     protected RecyclerView recyclerView;
     protected List<DeviceInfoModel> deviceList;
+    protected SharedPreferencesHelper sharedPreferencesHelper;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -77,6 +78,18 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        sharedPreferencesHelper = new SharedPreferencesHelper(this.getContext());
+
+        // Gets the current theme of the app
+        boolean isNightModeOn = sharedPreferencesHelper.getDarkModeState();
+
+        // Sets the theme of the app depending on the value of isNightModeOn
+        if (isNightModeOn)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 
     @Override

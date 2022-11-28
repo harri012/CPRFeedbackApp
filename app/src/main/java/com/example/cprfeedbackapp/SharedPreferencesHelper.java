@@ -48,4 +48,30 @@ public class SharedPreferencesHelper {
         editor.apply();
 
     }
+
+    public void saveDarkModeState(boolean darkMode) {
+
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+
+        editor.putBoolean(this.context.getString(R.string.darkModeStateSharedPreferences), darkMode);
+
+        editor.apply();
+    }
+
+    public boolean getDarkModeState() {
+        return this.sharedPreferences.getBoolean(this.context.getString(R.string.darkModeStateSharedPreferences), false);
+    }
+
+    public void saveSwitchState(boolean switchState) {
+
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+
+        editor.putBoolean(this.context.getString(R.string.switchStateSharedPreferences), switchState);
+
+        editor.apply();
+    }
+
+    public boolean getSwitchState() {
+        return this.sharedPreferences.getBoolean(this.context.getString(R.string.switchStateSharedPreferences), false);
+    }
 }

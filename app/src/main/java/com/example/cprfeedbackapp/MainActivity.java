@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setupUI();
+        setupUI(savedInstanceState);
 
         //Checks for bluetooth status
         BluetoothServiceManager bt = new BluetoothServiceManager(this, this);
@@ -42,12 +42,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setupUI()
+    private void setupUI(Bundle savedInstanceState)
     {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        switchFragmentView(new HomeFragment());
 
         binding.bottomNavigation.setOnItemSelectedListener(item ->
         {
@@ -76,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+
+      if(savedInstanceState==null)
+          //change to default as home
+          binding.bottomNavigation.setSelectedItemId(R.id.Home);
     }
 }
 
