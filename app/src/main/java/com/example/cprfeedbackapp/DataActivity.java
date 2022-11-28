@@ -30,7 +30,6 @@ public class DataActivity extends AppCompatActivity {
     //Declaring Data Variables
     protected Boolean boolRecordData = false;
     protected Boolean boolCancel = false;
-    protected Boolean boolStopRecording = false;
     protected int nbRecordedData = 0;
     protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
@@ -91,10 +90,11 @@ public class DataActivity extends AppCompatActivity {
                         arduinoMsg = msg.obj.toString();
                         forceTextView.setText(arduinoMsg);
 
+                        //frequencyCalculator(arduinoMsg);
+
                         //If true record data until it reached dataSampleSize
                         if(boolRecordData == true && nbRecordedData <= dataSampleSize )
                         {
-
                             //Add value to list
                             listRecordedData.add(arduinoMsg);
                             if(nbRecordedData == dataSampleSize)
@@ -231,14 +231,15 @@ public class DataActivity extends AppCompatActivity {
 
 
     private double timePerDataPoint = 0.1;
-    private int lowerFrequency = 2;
-    private int higherFrequency = 2;
+    private double lowerFrequency = 0.67;     //90 compression per minute
+    private double higherFrequency = 0.43;       //140 compression per minute
 
     private void frequencyFeedback(int aData){
         double frequency = frequencyCalculator(aData);
         if(frequency != -1)
         {
             frequency = frequency * timePerDataPoint;
+            frequencyTextView.setText(Double.toString(frequency) + " hz");
 
             if(frequency < lowerFrequency)
             {
@@ -256,8 +257,8 @@ public class DataActivity extends AppCompatActivity {
     }
 
     private int maxForce = 0;
-    private int lowerForce= 2;
-    private int higherForce = 2;
+    private int lowerForce= 9;
+    private int higherForce = 2000;
     private void forceFeedback(int aData)
     {
         int frequency = frequencyCalculator(aData);
@@ -282,8 +283,8 @@ public class DataActivity extends AppCompatActivity {
 
     }
     protected int maxDepth = 0;
-    private int lowerDepth= 2;
-    private int higherDepth = 2;
+    private int lowerDepth= 3; //in cm
+    private int higherDepth = 7;
     private void depthFeedback(int aData)
     {
         int frequency = frequencyCalculator(aData);
@@ -291,6 +292,7 @@ public class DataActivity extends AppCompatActivity {
             maxDepth = aData;
         if(frequency != -1)
         {
+            depthTexView.setText(maxDepth + " cm");
             if(maxDepth < lowerDepth)
             {
                 depthComment.setText("Too Shallow");

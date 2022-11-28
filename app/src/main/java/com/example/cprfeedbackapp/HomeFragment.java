@@ -112,6 +112,9 @@ public class HomeFragment extends Fragment {
                         DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
                         deviceList.add(deviceInfoModel);
 
+
+                        Log.e("Bt Service Data",deviceName);
+
                     }
                 }
 
