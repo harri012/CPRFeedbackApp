@@ -3,6 +3,7 @@ package com.example.cprfeedbackapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,6 +31,7 @@ public class DataActivity extends AppCompatActivity {
     //Declaring Data Variables
     protected Boolean boolRecordData = false;
     protected Boolean boolCancel = false;
+    protected Boolean boolOpenGraph = false;
     protected int nbRecordedData = 0;
     protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
@@ -88,9 +90,8 @@ public class DataActivity extends AppCompatActivity {
                     case MESSAGE_READ:
                         // Read message from Arduino
                         arduinoMsg = msg.obj.toString();
-                        forceTextView.setText(arduinoMsg);
-
-                        //frequencyCalculator(arduinoMsg);
+                        //forceFeedback(Integer.parseInt(arduinoMsg));
+                        frequencyFeedback(Integer.parseInt(arduinoMsg));
 
                         //If true record data until it reached dataSampleSize
                         if(boolRecordData == true && nbRecordedData <= dataSampleSize )
@@ -99,6 +100,13 @@ public class DataActivity extends AppCompatActivity {
                             listRecordedData.add(arduinoMsg);
                             if(nbRecordedData == dataSampleSize)
                             {
+                                //Set button back to record behaviour
+                                boolCancel = false;
+                                buttonRecordData.setText("Record Session");
+
+                                buttonRecordData.setEnabled(false);
+                                buttonSaveData.setEnabled(true);
+
                                 //Set back to false
                                 boolRecordData = false;
                                 buttonSaveData.setEnabled(true);
@@ -179,6 +187,11 @@ public class DataActivity extends AppCompatActivity {
                     recordingStatusTextView.setText("Recording...");
                     msg("Recording Data");
                     boolCancel = true;
+
+                    //set to next state
+                    boolOpenGraph = false;
+                    buttonSaveData.setText("Save Session");
+                    buttonSaveData.setEnabled(false);
                 }
                 else
                 {
@@ -200,14 +213,33 @@ public class DataActivity extends AppCompatActivity {
         buttonSaveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
-                buttonSaveData.setEnabled(false);
-                buttonRecordData.setEnabled(true);
-                nbRecordedData = 0;
-                listRecordedData.clear();
-                recordingStatusTextView.setText("Recording Saved");
+                if(!boolOpenGraph) {
+                    sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
 
-                msg("Saved Data");
+                    buttonRecordData.setEnabled(true);
+                    nbRecordedData = 0;
+                    listRecordedData.clear();
+                    recordingStatusTextView.setText("Recording Saved");
+                    msg("Saved Data");
+
+                    //Set button back to record behaviour
+                    boolCancel = false;
+                    buttonRecordData.setText("Record Session");
+
+                    //set to next state
+                    boolOpenGraph = true;
+                    buttonSaveData.setText("View Session");
+                }
+                else
+                {
+                    //set to next state
+                    boolOpenGraph = false;
+                    buttonSaveData.setText("Save Session");
+                    buttonSaveData.setEnabled(false);
+
+                    //go to graph activity
+                    msg("enter graph");
+                }
 
             }
         });
@@ -231,34 +263,67 @@ public class DataActivity extends AppCompatActivity {
 
 
     private double timePerDataPoint = 0.1;
-    private double lowerFrequency = 0.67;     //90 compression per minute
-    private double higherFrequency = 0.43;       //140 compression per minute
+    private double lowerFrequency = 1.5;     //90 compression per minute
+    private double higherFrequency = 2.33333;       //140 compression per minute
+
+    private double maxForce = 0;
+    private double tempForce = 0;
+    private double lowerForce= 9;
+    private double higherForce = 2000;
 
     private void frequencyFeedback(int aData){
         double frequency = frequencyCalculator(aData);
+
+        tempForce = (aData*10)/1024;
+        if (tempForce > maxForce)
+            maxForce = tempForce;
+
         if(frequency != -1)
         {
-            frequency = frequency * timePerDataPoint;
-            frequencyTextView.setText(Double.toString(frequency) + " hz");
+            //for frequency
+            frequency = 1/(frequency * timePerDataPoint);
 
             if(frequency < lowerFrequency)
             {
                 frequencyComment.setText("Too Slow");
+                frequencyComment.setTextColor(Color.parseColor("#FFFF0000"));
             }
-            if(frequency > higherFrequency)
+            else if(frequency > higherFrequency)
             {
                 frequencyComment.setText("Too Fast");
+                frequencyComment.setTextColor(Color.parseColor("#FFFF0000"));
             }
             else
             {
                 frequencyComment.setText("Good!");
+                frequencyComment.setTextColor(Color.parseColor("#00FF00"));
             }
+            frequencyTextView.setText(String.format("%.2f",frequency) + " hz");
+
+            //for force
+            if(maxForce < lowerForce)
+            {
+                forceComment.setText("Too Weak");
+                forceComment.setTextColor(Color.parseColor("#FFFF0000"));
+            }
+            else if(maxForce > higherForce)
+            {
+                forceComment.setText("Too Strong");
+                forceComment.setTextColor(Color.parseColor("#FFFF0000"));
+            }
+            else
+            {
+                forceComment.setText("Good!");
+                forceComment.setTextColor(Color.parseColor("#00FF00"));
+            }
+            forceTextView.setText(String.format("%.2f", maxForce) + " N");
+
+            maxForce = 0;
+
         }
     }
 
-    private int maxForce = 0;
-    private int lowerForce= 9;
-    private int higherForce = 2000;
+
     private void forceFeedback(int aData)
     {
         int frequency = frequencyCalculator(aData);
@@ -266,6 +331,8 @@ public class DataActivity extends AppCompatActivity {
             maxForce = aData;
         if(frequency != -1)
         {
+            maxForce = (maxForce*10)/1024;
+            forceTextView.setText(String.format("%.2f", maxForce) + " N");
             if(maxForce < lowerForce)
             {
                 forceComment.setText("Too Weak");
