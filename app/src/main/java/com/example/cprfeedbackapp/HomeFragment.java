@@ -122,8 +122,11 @@ public class HomeFragment extends Fragment {
 
                         String deviceName = device.getName();
                         String deviceHardwareAddress = device.getAddress();
-                        DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
-                        deviceList.add(deviceInfoModel);
+
+                        if (deviceName.equals("HC-05")) {
+                            DeviceInfoModel deviceInfoModel = new DeviceInfoModel("CPR Feedback Device", deviceHardwareAddress);
+                            deviceList.add(deviceInfoModel);
+                        }
 
 
                         Log.e("Bt Service Data",deviceName);
