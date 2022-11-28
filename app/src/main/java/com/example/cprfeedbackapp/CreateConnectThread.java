@@ -73,9 +73,7 @@ public class CreateConnectThread extends Thread {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
             /*bluetoothAdapter.cancelDiscovery();
             Log.i("Bt Service Manager", "Cancelled Discovery");*/
-
         }
-
 
         try {
             // Connect to the remote device through the socket. This call blocks
