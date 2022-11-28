@@ -40,13 +40,3 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:text="Tutorial"
-        android:textAlignment="viewStart"
-        android:textColor="@color/headingColor"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
