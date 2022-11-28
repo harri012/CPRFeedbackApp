@@ -18,4 +18,5 @@ public class DeviceInfoModel {
     public String getDeviceHardwareAddress() {
         return deviceHardwareAddress;
     }
+
 }
