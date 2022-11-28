@@ -29,9 +29,6 @@ public class healthMonitoringFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    //Python Integration Test Variable (to be deleted when test is done)
-    protected TextView pythonTextView;
-
     public healthMonitoringFragment() {
         // Required empty public constructor
     }
@@ -69,22 +66,6 @@ public class healthMonitoringFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_health_monitoring, container, false);
-
-        //Python Test (can be deleted later)
-        pythonTextView = fragmentView.findViewById(R.id.pythonTextViewTest);
-
-        //Python Integration Test
-        if (! Python.isStarted()) {
-            Python.start(new AndroidPlatform(this.getContext()));
-        }
-
-        Python py = Python.getInstance();
-        PyObject pyobj = py.getModule("script");
-
-
-        PyObject obj = pyobj.callAttr("main");
-
-        pythonTextView.setText(obj.toString());
 
         return fragmentView;
 
