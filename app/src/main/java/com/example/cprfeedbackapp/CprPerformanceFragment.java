@@ -3,11 +3,14 @@ package com.example.cprfeedbackapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cprfeedbackapp.database.AppDatabase;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -24,9 +27,13 @@ public class CprPerformanceFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     protected SharedPreferencesHelper sharedPreferencesHelper;
-
+    protected AppDatabase db;
 
     protected GraphView graph;
+    protected CprSessionRecyclerViewAdapter CprSessionRecyclerViewAdapter;
+    protected RecyclerView CprSessionRecyclerView;
+
+    protected List<String> sessionDateList;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,6 +79,9 @@ public class CprPerformanceFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_cpr_performance, container, false);
 
+        // Instantiating a database objext
+        db = AppDatabase.getInstance(this.getContext());
+
         //Setting Up Graph
         graph = fragmentView.findViewById(R.id.graph);
         // activate horizontal zooming and scrolling
@@ -111,6 +121,20 @@ public class CprPerformanceFragment extends Fragment {
 
         graphSetup();
 
+        CprSessionRecyclerView = fragmentView.findViewById(R.id.CprSessionRecyclerView);
+        setupRecyclerView();
+
         return fragmentView;
+    }
+
+    protected void setupRecyclerView() {
+
+        sessionDateList = db.cprSessionDao().getAllUniqueDates();
+
+        CprSessionRecyclerViewAdapter = new CprSessionRecyclerViewAdapter(sessionDateList);
+        CprSessionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        CprSessionRecyclerView.setAdapter(CprSessionRecyclerViewAdapter);
+
+
     }
 }

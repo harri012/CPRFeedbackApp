@@ -14,7 +14,7 @@
         android:layout_marginTop="5dp"
         android:text="Tutorial"
         android:textAlignment="viewStart"
-        android:textColor="@color/black"
+        android:textColor="@color/headingColor"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
