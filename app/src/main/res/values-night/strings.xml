@@ -23,7 +23,4 @@
     <string name="EventListStatus_">EventListStatus_</string>
 
     <string name="SharedPreferences_DisplayNameState">DisplayNameState</string>
-
-    <string name="darkModeStateSharedPreferences">DarkMode</string>
-    <string name="switchStateSharedPreferences">SwitchState</string>
 </resources>

@@ -3,15 +3,19 @@ package com.example.cprfeedbackapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 
@@ -36,6 +40,9 @@ public class DataActivity extends AppCompatActivity {
     protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
 
+    // Time for progress bar
+    protected CountDownTimer countDownTimer;
+
     //Declaring Threads
     public ConnectedThread connectedThread;
     public CreateConnectThread createConnectThread;
@@ -54,6 +61,8 @@ public class DataActivity extends AppCompatActivity {
 
         sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setupHandler();
         setup();
     }
@@ -61,7 +70,10 @@ public class DataActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         // Missing ConnectedThread Code here.
+
+
     }
 
 
@@ -138,6 +150,7 @@ public class DataActivity extends AppCompatActivity {
         buttonSaveData = findViewById(R.id.buttonSendData);
         connectionStatusTextView = findViewById(R.id.textViewConnectionStatus);
 
+        ProgressBar progressBar = findViewById(R.id.progressBar);
 
         buttonRecordData.setEnabled(false);
         buttonSaveData.setEnabled(false);
@@ -186,6 +199,23 @@ public class DataActivity extends AppCompatActivity {
                     buttonRecordData.setText("Cancel");
                     recordingStatusTextView.setText("Recording...");
                     msg("Recording Data");
+
+                    int count = 0;
+                    progressBar.setProgress(count);
+                    countDownTimer = new CountDownTimer(3000, 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            progressBar.setProgress(count);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            progressBar.setProgress(100);
+                        }
+                    };
+                    countDownTimer.start();
+
+
                     boolCancel = true;
 
                     //set to next state
@@ -238,7 +268,8 @@ public class DataActivity extends AppCompatActivity {
                     buttonSaveData.setEnabled(false);
 
                     //go to graph activity
-                    msg("enter graph");
+                    Intent intent = new Intent(getApplication(), LiveDataGraph.class);
+                    startActivity(intent);
                 }
 
             }

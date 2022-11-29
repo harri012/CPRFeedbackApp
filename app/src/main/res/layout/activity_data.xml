@@ -158,13 +158,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="200dp"
+        android:layout_marginBottom="5dp"
         android:text="Connect"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewConnectionStatus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRecordingStatus" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <TextView
         android:id="@+id/textViewConnectionStatus"
@@ -195,17 +197,37 @@
         app:layout_constraintStart_toEndOf="@+id/textViewFrequencyData"
         app:layout_constraintTop_toBottomOf="@+id/titleFrequency" />
 
-    <TextView
-        android:id="@+id/textViewRecordingStatus"
-        android:layout_width="150dp"
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="200dp"
-        android:text="Recording Status"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:layout_marginStart="183dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="180dp"
+        android:layout_marginBottom="39dp"
+        android:max="100"
+        android:progress="25"
+        android:progressTint="@color/green"
+        app:layout_constraintBottom_toTopOf="@+id/buttonConnect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRecordingStatus" />
+
+    <TextView
+        android:id="@+id/textViewRecordingStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="181dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="173dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonRecordData" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
