@@ -62,16 +62,18 @@ public class SharedPreferencesHelper {
         return this.sharedPreferences.getBoolean(this.context.getString(R.string.darkModeStateSharedPreferences), false);
     }
 
-    public void saveSwitchState(boolean switchState) {
+
+    public int getCurrentRecordTime() {
+        return this.sharedPreferences.getInt(this.context.getString(R.string.recordTimeSharedPreferences), 15);
+    }
+
+    //save the state when closing the app
+    public void saveCurrentRecordTimeState(int time) {
 
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
 
-        editor.putBoolean(this.context.getString(R.string.switchStateSharedPreferences), switchState);
+        editor.putInt(this.context.getString(R.string.recordTimeSharedPreferences), time);
 
         editor.apply();
-    }
-
-    public boolean getSwitchState() {
-        return this.sharedPreferences.getBoolean(this.context.getString(R.string.switchStateSharedPreferences), false);
     }
 }

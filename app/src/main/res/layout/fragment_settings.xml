@@ -45,4 +45,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="44dp"
+        android:text="Set Record Time (s)"
+        android:textColor="@color/textColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/recordTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="9dp"
+        android:digits="0123456789."
+        android:inputType="number"
+        android:text="TextView"
+        android:textColor="@color/textColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/increaseRecordTimeButton"
+        app:layout_constraintStart_toEndOf="@+id/decreaserecordTimeButton"
+        app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch" />
+
+    <ImageButton
+        android:id="@+id/decreaserecordTimeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/button_record_time"
+        android:src="@drawable/ic_settings_down_arrow"
+        app:layout_constraintEnd_toStartOf="@+id/recordTimeTextView"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageButton
+        android:id="@+id/increaseRecordTimeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="22dp"
+        android:background="@drawable/button_record_time"
+        android:src="@drawable/ic_settings_up_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recordTimeTextView"
+        app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

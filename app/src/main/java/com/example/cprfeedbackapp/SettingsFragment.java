@@ -1,14 +1,21 @@
 package com.example.cprfeedbackapp;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +28,10 @@ import android.widget.Switch;
 public class SettingsFragment extends Fragment {
 
     protected Switch darkModeSwitch;
+    protected TextView recordTimeTextView;
+    protected ImageButton increaseRecordTimeButton;
+    protected ImageButton decreaseRecordTimeButton;
+
     protected SharedPreferencesHelper sharedPreferencesHelper;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -72,6 +83,9 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        recordTimeTextView = fragmentView.findViewById(R.id.recordTimeTextView);
+        recordTimeTextView.setText(Integer.toString(sharedPreferencesHelper.getCurrentRecordTime()));
+
         // Link the switch to the variable
         darkModeSwitch = fragmentView.findViewById(R.id.darkModeSwitch);
         darkModeSwitch.setChecked(sharedPreferencesHelper.getDarkModeState());
@@ -100,8 +114,52 @@ public class SettingsFragment extends Fragment {
                     // Saving the current theme to the shared preferences
                     sharedPreferencesHelper.saveDarkModeState(true);
                 }
+            }
+        });
 
-                sharedPreferencesHelper.saveSwitchState(darkModeSwitch.isChecked());
+        //Record Time Set for increase button
+        increaseRecordTimeButton = fragmentView.findViewById(R.id.increaseRecordTimeButton);
+        increaseRecordTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentTimeValue = Integer.parseInt(recordTimeTextView.getText().toString());
+
+                //check if it will the maximum allowed time of recording
+                int newRecordTime = currentTimeValue +15;
+
+                if(newRecordTime < 150)
+                    //Increase the value of record time
+                    recordTimeTextView.setText(String.valueOf(currentTimeValue + 15));
+
+                else {
+                    //Set to a max value
+                    recordTimeTextView.setText(Integer.toString(150));
+                    Toast.makeText(SettingsFragment.this.getContext(), "Maximum Record Time Reached", Toast.LENGTH_SHORT).show();
+                }
+                //save current time at last click
+                sharedPreferencesHelper.saveCurrentRecordTimeState(Integer.parseInt(recordTimeTextView.getText().toString()));
+            }
+        });
+
+        //Record Time Set for decrease button
+        decreaseRecordTimeButton = fragmentView.findViewById(R.id.decreaserecordTimeButton);
+        decreaseRecordTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentTimeValue = Integer.parseInt(recordTimeTextView.getText().toString());
+
+                // Checks if the decrease will result the minimum value
+                int newRecordTime = currentTimeValue - 15;
+                if(newRecordTime > 15)
+                    recordTimeTextView.setText(String.valueOf(currentTimeValue - 15));
+
+                //set the min value
+                else{
+                    recordTimeTextView.setText(Integer.toString(15));
+                    Toast.makeText(SettingsFragment.this.getContext(), "Minimum Record Time Value Reached!", Toast.LENGTH_SHORT).show();
+                }
+                //save current time at last click
+                sharedPreferencesHelper.saveCurrentRecordTimeState(Integer.parseInt(recordTimeTextView.getText().toString()));
             }
         });
 

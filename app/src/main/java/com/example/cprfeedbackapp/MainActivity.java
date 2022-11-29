@@ -26,12 +26,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-
     private void switchFragmentView (Fragment fragment)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
