@@ -45,4 +45,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="4dp"
+        android:text="Set Record Time"
+        app:layout_constraintEnd_toStartOf="@+id/decreaserecordTimeButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/recordTimeTextView"
+        android:digits="0123456789."
+        android:inputType="number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="9dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/increaseRecordTimeButton"
+        app:layout_constraintStart_toEndOf="@+id/decreaserecordTimeButton"
+        app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch" />
+
+    <Button
+        android:id="@+id/decreaserecordTimeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="6dp"
+        android:text="Button"
+        app:layout_constraintEnd_toStartOf="@+id/recordTimeTextView"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/increaseRecordTimeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="19dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recordTimeTextView"
+        app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -74,4 +74,19 @@ public class SharedPreferencesHelper {
     public boolean getSwitchState() {
         return this.sharedPreferences.getBoolean(this.context.getString(R.string.switchStateSharedPreferences), false);
     }
+
+
+
+    public int getCurrentRecordTime() {
+        return this.sharedPreferences.getInt(this.context.getString(R.string.recordTimeSharedPreferences), 0);
+    }
+
+    public void saveCurrentRecordTime(int time) {
+
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+
+        editor.putInt(this.context.getString(R.string.recordTimeSharedPreferences), time);
+
+        editor.apply();
+    }
 }

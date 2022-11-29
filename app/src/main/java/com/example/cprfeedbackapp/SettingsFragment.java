@@ -5,10 +5,14 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Switch;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +25,10 @@ import android.widget.Switch;
 public class SettingsFragment extends Fragment {
 
     protected Switch darkModeSwitch;
+    protected TextView recordTimeTextView;
+    protected Button increaseRecordTimeButton;
+    protected Button decreaseRecordTimeButton;
+
     protected SharedPreferencesHelper sharedPreferencesHelper;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -72,6 +80,9 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        recordTimeTextView = fragmentView.findViewById(R.id.recordTimeTextView);
+        recordTimeTextView.setText(Integer.toString(sharedPreferencesHelper.getCurrentRecordTime()));
+
         // Link the switch to the variable
         darkModeSwitch = fragmentView.findViewById(R.id.darkModeSwitch);
         darkModeSwitch.setChecked(sharedPreferencesHelper.getDarkModeState());
@@ -104,6 +115,34 @@ public class SettingsFragment extends Fragment {
                 sharedPreferencesHelper.saveSwitchState(darkModeSwitch.isChecked());
             }
         });
+
+
+        increaseRecordTimeButton = fragmentView.findViewById(R.id.increaseRecordTimeButton);
+        increaseRecordTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentTimeValue = Integer.parseInt(recordTimeTextView.getText().toString());
+                recordTimeTextView.setText(String.valueOf(currentTimeValue + 15));
+            }
+        });
+
+        decreaseRecordTimeButton = fragmentView.findViewById(R.id.decreaserecordTimeButton);
+        decreaseRecordTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentTimeValue = Integer.parseInt(recordTimeTextView.getText().toString());
+
+                // Checks if the decrease will result in a negative number
+                int newRecordTime = currentTimeValue - 15;
+                if(newRecordTime > 0)
+                    recordTimeTextView.setText(String.valueOf(currentTimeValue - 15));
+
+                else
+                    recordTimeTextView.setText(Integer.toString(0));
+            }
+        });
+
+
 
         return fragmentView;
     }

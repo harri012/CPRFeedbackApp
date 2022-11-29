@@ -26,4 +26,6 @@
 
     <string name="darkModeStateSharedPreferences">DarkMode</string>
     <string name="switchStateSharedPreferences">SwitchState</string>
+
+    <string name="recordTimeSharedPreferences">CurrentReccordTime</string>
 </resources>
