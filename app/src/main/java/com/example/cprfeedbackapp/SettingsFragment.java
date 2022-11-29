@@ -116,7 +116,8 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-
+        // Buttons need to be styled
+        // Font size and color as well
         increaseRecordTimeButton = fragmentView.findViewById(R.id.increaseRecordTimeButton);
         increaseRecordTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
