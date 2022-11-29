@@ -148,43 +148,4 @@ public class healthMonitoringFragment extends Fragment {
         // Inflate the layout for this fragment
             return rootView;
         }
-
-
-
-/*
-Mediaplayer sound;
-    public void playSound (View v){
-        if (sound == null){
-            sound = MediaPlayer.create(getActivity(), R.raw.beep);
-            sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    stop();
-                }
-            });
-        }
-        sound.setLooping(true);
-        sound.start();
-    }
-
-    public  void stopSound (View v){
-        stop();
-    }
-
-    private void stop() {
-        if(sound != null) {
-            sound.release();
-            sound = null;
-            Toast.makeText(getActivity(), "Sound Stop Playing", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        stop();
-    }
-
- */
-
     }
