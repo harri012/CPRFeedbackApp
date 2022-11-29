@@ -71,24 +71,26 @@
         app:layout_constraintStart_toEndOf="@+id/decreaserecordTimeButton"
         app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch" />
 
-    <Button
+    <ImageButton
         android:id="@+id/decreaserecordTimeButton"
+        android:background="@drawable/button_record_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="6dp"
-        android:text="Button"
+        android:src="@drawable/ic_settings_down_arrow"
         app:layout_constraintEnd_toStartOf="@+id/recordTimeTextView"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
+    <ImageButton
         android:id="@+id/increaseRecordTimeButton"
+        android:background="@drawable/button_record_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
         android:layout_marginTop="19dp"
-        android:text="Button"
+        android:src="@drawable/ic_settings_up_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/recordTimeTextView"
         app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch" />

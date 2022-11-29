@@ -1,5 +1,6 @@
 package com.example.cprfeedbackapp;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -26,8 +28,8 @@ public class SettingsFragment extends Fragment {
 
     protected Switch darkModeSwitch;
     protected TextView recordTimeTextView;
-    protected Button increaseRecordTimeButton;
-    protected Button decreaseRecordTimeButton;
+    protected ImageButton increaseRecordTimeButton;
+    protected ImageButton decreaseRecordTimeButton;
 
     protected SharedPreferencesHelper sharedPreferencesHelper;
 

@@ -67,7 +67,8 @@ public class SharedPreferencesHelper {
         return this.sharedPreferences.getInt(this.context.getString(R.string.recordTimeSharedPreferences), 0);
     }
 
-    public void saveCurrentRecordTime(int time) {
+    //save the state when closing the app
+    public void saveCurrentRecordTimeState(int time) {
 
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
 
