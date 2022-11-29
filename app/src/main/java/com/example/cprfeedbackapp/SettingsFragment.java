@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -124,7 +125,19 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int currentTimeValue = Integer.parseInt(recordTimeTextView.getText().toString());
-                recordTimeTextView.setText(String.valueOf(currentTimeValue + 15));
+
+                //check if it will the maximum allowed time of recording
+                int newRecordTime = currentTimeValue +15;
+
+                if(newRecordTime < 150)
+                    //Increase the value of record time
+                    recordTimeTextView.setText(String.valueOf(currentTimeValue + 15));
+
+                else {
+                    //Set to a max value
+                    recordTimeTextView.setText(Integer.toString(150));
+                    Toast.makeText(SettingsFragment.this.getContext(), "Maximum Record Time Reached", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -139,8 +152,11 @@ public class SettingsFragment extends Fragment {
                 if(newRecordTime > 0)
                     recordTimeTextView.setText(String.valueOf(currentTimeValue - 15));
 
-                else
+                else{
                     recordTimeTextView.setText(Integer.toString(0));
+                    Toast.makeText(SettingsFragment.this.getContext(), "Time must be a positive value!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

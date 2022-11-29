@@ -52,7 +52,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="4dp"
-        android:text="Set Record Time"
+        android:text="Set Record Time (s)"
         app:layout_constraintEnd_toStartOf="@+id/decreaserecordTimeButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
