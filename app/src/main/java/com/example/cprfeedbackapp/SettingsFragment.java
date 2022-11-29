@@ -117,9 +117,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Buttons need to be styled
-        // Font size and color as well
-        // ...
+        //Record Time Set for increase button
         increaseRecordTimeButton = fragmentView.findViewById(R.id.increaseRecordTimeButton);
         increaseRecordTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,29 +136,32 @@ public class SettingsFragment extends Fragment {
                     recordTimeTextView.setText(Integer.toString(150));
                     Toast.makeText(SettingsFragment.this.getContext(), "Maximum Record Time Reached", Toast.LENGTH_SHORT).show();
                 }
+                //save current time at last click
+                sharedPreferencesHelper.saveCurrentRecordTimeState(Integer.parseInt(recordTimeTextView.getText().toString()));
             }
         });
 
+        //Record Time Set for decrease button
         decreaseRecordTimeButton = fragmentView.findViewById(R.id.decreaserecordTimeButton);
         decreaseRecordTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int currentTimeValue = Integer.parseInt(recordTimeTextView.getText().toString());
 
-                // Checks if the decrease will result in a negative number
+                // Checks if the decrease will result the minimum value
                 int newRecordTime = currentTimeValue - 15;
-                if(newRecordTime > 0)
+                if(newRecordTime > 15)
                     recordTimeTextView.setText(String.valueOf(currentTimeValue - 15));
 
+                //set the min value
                 else{
-                    recordTimeTextView.setText(Integer.toString(0));
-                    Toast.makeText(SettingsFragment.this.getContext(), "Time must be a positive value!", Toast.LENGTH_SHORT).show();
+                    recordTimeTextView.setText(Integer.toString(15));
+                    Toast.makeText(SettingsFragment.this.getContext(), "Minimum Record Time Value Reached!", Toast.LENGTH_SHORT).show();
                 }
-
+                //save current time at last click
+                sharedPreferencesHelper.saveCurrentRecordTimeState(Integer.parseInt(recordTimeTextView.getText().toString()));
             }
         });
-
-
 
         return fragmentView;
     }

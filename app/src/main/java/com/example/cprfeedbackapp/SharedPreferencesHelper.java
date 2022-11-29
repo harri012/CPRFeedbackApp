@@ -64,7 +64,7 @@ public class SharedPreferencesHelper {
 
 
     public int getCurrentRecordTime() {
-        return this.sharedPreferences.getInt(this.context.getString(R.string.recordTimeSharedPreferences), 0);
+        return this.sharedPreferences.getInt(this.context.getString(R.string.recordTimeSharedPreferences), 15);
     }
 
     //save the state when closing the app
