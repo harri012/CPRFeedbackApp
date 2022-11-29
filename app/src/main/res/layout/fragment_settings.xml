@@ -93,4 +93,5 @@
         app:layout_constraintStart_toEndOf="@+id/recordTimeTextView"
         app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -73,18 +73,18 @@ public class healthMonitoringFragment extends Fragment {
         //Python Test (can be deleted later)
         pythonTextView = fragmentView.findViewById(R.id.pythonTextViewTest);
 
-        //Python Integration Test
-        if (! Python.isStarted()) {
-            Python.start(new AndroidPlatform(this.getContext()));
-        }
-
-        Python py = Python.getInstance();
-        PyObject pyobj = py.getModule("script");
-
-
-        PyObject obj = pyobj.callAttr("main");
-
-        pythonTextView.setText(obj.toString());
+//        //Python Integration Test
+//        if (! Python.isStarted()) {
+//            Python.start(new AndroidPlatform(this.getContext()));
+//        }
+//
+//        Python py = Python.getInstance();
+//        PyObject pyobj = py.getModule("script");
+//
+//
+//        PyObject obj = pyobj.callAttr("main");
+//
+//        pythonTextView.setText(obj.toString());
 
         return fragmentView;
 

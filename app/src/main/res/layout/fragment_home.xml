@@ -27,6 +27,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="15dp"
         android:text="Pick One of The Paired Devices"
+        android:textColor="@color/textColor"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/deviceRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"

@@ -111,8 +111,6 @@ public class SettingsFragment extends Fragment {
                     // Saving the current theme to the shared preferences
                     sharedPreferencesHelper.saveDarkModeState(true);
                 }
-
-                sharedPreferencesHelper.saveSwitchState(darkModeSwitch.isChecked());
             }
         });
 
