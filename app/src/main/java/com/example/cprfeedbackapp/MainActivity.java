@@ -18,10 +18,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setupUI(savedInstanceState);
+
+        //Checks for bluetooth status
+        BluetoothServiceManager bt = new BluetoothServiceManager(this, this);
+        bt.checkBluetoothEnabled();
+    }
+
+
+    private void switchFragmentView (Fragment fragment)
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+
+    }
+
+
+    private void setupUI(Bundle savedInstanceState)
+    {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        switchFragmentView(new HomeFragment());
 
         binding.bottomNavigation.setOnItemSelectedListener(item ->
         {
@@ -40,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.Tutorial:
-                    switchFragmentView(new tutorialFragment());
+                    switchFragmentView(new TutorialFragment());
                     break;
 
                 case R.id.Settings:
@@ -50,24 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
-    }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
-    }
-
-
-    private void switchFragmentView (Fragment fragment)
-    {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
-
+      if(savedInstanceState==null)
+          //change to default as home
+          binding.bottomNavigation.setSelectedItemId(R.id.Home);
     }
 }
 

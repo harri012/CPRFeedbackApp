@@ -3,14 +3,20 @@ package com.example.cprfeedbackapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cprfeedbackapp.database.AppDatabase;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CprPerformanceFragment extends Fragment {
@@ -20,7 +26,14 @@ public class CprPerformanceFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    protected SharedPreferencesHelper sharedPreferencesHelper;
+    protected AppDatabase db;
+
     protected GraphView graph;
+    protected CprSessionRecyclerViewAdapter CprSessionRecyclerViewAdapter;
+    protected RecyclerView CprSessionRecyclerView;
+
+    protected List<String> sessionDateList;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -47,15 +60,17 @@ public class CprPerformanceFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        sharedPreferencesHelper = new SharedPreferencesHelper(this.getContext());
     }
 
     // Define the axis and title of the graph
     protected void graphSetup()
     {
-        graph.setTitle("Depth Recorded per Compression");
+        graph.setTitle("Data Received From Hardware");
         graph.setTitleTextSize((float)60);
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Time");
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Depth");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Analog Value");
     }
 
     @Override
@@ -64,29 +79,62 @@ public class CprPerformanceFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_cpr_performance, container, false);
 
+        // Instantiating a database objext
+        db = AppDatabase.getInstance(this.getContext());
+
+        //Setting Up Graph
         graph = fragmentView.findViewById(R.id.graph);
+        // activate horizontal zooming and scrolling
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(1000);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(40);
+        // activate horizontal scrolling
+        graph.getViewport().setScrollable(true);
 
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
+       /* //Line at 500
+        DataPoint[] dataPointArray1 = new DataPoint[20];
+        for(int dataPoint = 0; dataPoint < 20; dataPoint++)
+        {
+            DataPoint point = new DataPoint(dataPoint, 500);
+            dataPointArray1[dataPoint] = point;
+        }
+        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<DataPoint>(dataPointArray1);
+        graph.addSeries(series1);*/
 
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 2),
-                new DataPoint(1, 10),
-                new DataPoint(2, 6),
-                new DataPoint(3, 4),
-                new DataPoint(4, 12)
-        });
 
-        graph.addSeries(series1);
-        graph.addSeries(series2);
+        //Line for saved data
+        ArrayList<String> savedData = sharedPreferencesHelper.getEventSettingNames();
+        if(!savedData.isEmpty()) {
+            //Saved Data
+            DataPoint[] dataPointArray = new DataPoint[savedData.size()];
+            for (int dataPoint = 0; dataPoint < savedData.size(); dataPoint++) {
+                DataPoint point = new DataPoint(dataPoint, Integer.parseInt(savedData.get(dataPoint)));
+                dataPointArray[dataPoint] = point;
+            }
+
+            LineGraphSeries<DataPoint> series2 = new LineGraphSeries<DataPoint>(dataPointArray);
+            graph.addSeries(series2);
+
+        }
 
         graphSetup();
 
+        CprSessionRecyclerView = fragmentView.findViewById(R.id.CprSessionRecyclerView);
+        setupRecyclerView();
+
         return fragmentView;
+    }
+
+    protected void setupRecyclerView() {
+
+        sessionDateList = db.cprSessionDao().getAllUniqueDates();
+
+        CprSessionRecyclerViewAdapter = new CprSessionRecyclerViewAdapter(sessionDateList);
+        CprSessionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        CprSessionRecyclerView.setAdapter(CprSessionRecyclerViewAdapter);
+
+
     }
 }

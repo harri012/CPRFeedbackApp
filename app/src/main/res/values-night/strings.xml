@@ -23,13 +23,4 @@
     <string name="EventListStatus_">EventListStatus_</string>
 
     <string name="SharedPreferences_DisplayNameState">DisplayNameState</string>
-
-    <string name="darkModeStateSharedPreferences">DarkMode</string>
-    <string name="switchStateSharedPreferences">SwitchState</string>
-
-    <string name="tutorialFragmentName">Tutorial Section</string>
-    <string name="CprVideoName">CPR Tutorial Video</string>
-    <string name="InstructionManualMenuItem">Instruction Manual</string>
-
-    <string name="recordTimeSharedPreferences">CurrentReccordTime</string>
 </resources>
