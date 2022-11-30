@@ -13,12 +13,6 @@
         />
 
     <item
-        android:id="@+id/Monitoring"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_health_and_safety_24"
-        android:title="Monitoring"/>
-
-    <item
         android:id="@+id/Tutorial"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_help_24"
