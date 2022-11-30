@@ -1,13 +1,12 @@
 package com.example.cprfeedbackapp;
 
-import android.media.Image;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,7 @@ public class SettingsFragment extends Fragment {
     protected TextView recordTimeTextView;
     protected ImageButton increaseRecordTimeButton;
     protected ImageButton decreaseRecordTimeButton;
+    private Button aboutUsButton;
 
     protected SharedPreferencesHelper sharedPreferencesHelper;
 
@@ -163,6 +163,17 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //ABOUT US
+        aboutUsButton = fragmentView.findViewById(R.id.aboutButton);
+        aboutUsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AboutUs.class);
+                startActivity(intent);
+            }
+        });
+
         return fragmentView;
     }
+
 }
