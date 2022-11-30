@@ -76,22 +76,7 @@ public class healthMonitoringFragment extends Fragment {
                              Bundle savedInstanceState) {
 
             //setting up play and stop sound button
-            View fragmentView = inflater.inflate(R.layout.fragment_health_monitoring,container,false);
+            return inflater.inflate(R.layout.fragment_health_monitoring,container,false);
 
-
-        //Emergency call button function
-        emergencyCallButton = fragmentView.findViewById(R.id.emergency_button);
-
-        emergencyCallButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL); //Call number
-                callIntent.setData(Uri.parse("tel:5149295019")); //call this number
-                startActivity(callIntent);
-            }
-        });
-
-        // Inflate the layout for this fragment
-            return fragmentView;
         }
     }

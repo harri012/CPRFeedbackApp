@@ -8,12 +8,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deviceRecyclerView"
-        android:layout_width="409dp"
-        android:layout_height="604dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/emergencyButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,5 +51,19 @@
         app:layout_constraintHorizontal_bias="0.291"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/emergencyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="325dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="75dp"
+        android:background="@drawable/button_rounded_call"
+        android:src="@drawable/ic_home_sos"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deviceRecyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,8 +2,10 @@ package com.example.cprfeedbackapp;
 
 import android.Manifest;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
@@ -37,6 +40,7 @@ public class HomeFragment extends Fragment {
     private Button connectButton;
     private Button scanButton;
     private Button buttonGetData;
+    private ImageButton emergencyCallButton;
 
     protected RecyclerView recyclerView;
     protected List<DeviceInfoModel> deviceList;
@@ -148,6 +152,19 @@ public class HomeFragment extends Fragment {
 
         else
             Toast.makeText(HomeFragment.this.getContext(), "Can't Display a device", Toast.LENGTH_LONG).show();
+
+
+        //Emergency call button function
+        emergencyCallButton = fragmentView.findViewById(R.id.emergencyButton);
+
+        emergencyCallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL); //Call number
+                callIntent.setData(Uri.parse("tel:5149268298")); //call this number
+                startActivity(callIntent);
+            }
+        });
 
         return fragmentView;
     }
