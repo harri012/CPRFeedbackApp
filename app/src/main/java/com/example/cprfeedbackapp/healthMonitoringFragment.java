@@ -95,16 +95,19 @@ public class healthMonitoringFragment extends Fragment {
                                 mp[0].start();
                             }
                         };
-                       /* mp[0].setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        /*
+                        mp[0].setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(MediaPlayer mediaPlayer) {
                                 if(mp[0] != null) {
                                     mp[0].release();
                                     mp[0] = null;
-                                    Toast.makeText(getActivity(), "Sound Stop Playing", Toast.LENGTH_SHORT).show();
+                                    tone[0].cancel();
+                                    timer[0].cancel();
                                 }
                             }
-                        }); */
+                        });
+                        */
                    }
 
                     //mp[0].setLooping(true);
@@ -122,6 +125,8 @@ public class healthMonitoringFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     if(mp[0] != null) {
+                        mp[0].stop();
+                        mp[0].reset();
                         mp[0].release();
                         mp[0] = null;
                         Toast.makeText(getActivity(), "Sound Stop Playing", Toast.LENGTH_SHORT).show();
