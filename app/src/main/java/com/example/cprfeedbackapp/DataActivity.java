@@ -272,7 +272,7 @@ public class DataActivity extends AppCompatActivity {
                 //Set button back to record behaviour
                 boolCancel = false;
                 buttonRecordData.setText("Record Session");
-                buttonSaveData.setText("Save Session");
+                buttonSaveData.setEnabled(false);
 
             }
         });
