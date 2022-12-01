@@ -324,6 +324,12 @@ public class DataActivity extends AppCompatActivity {
                 buttonRecordData.setText("Record Session");
                 buttonSaveData.setEnabled(false);
 
+                recordingStatusTextView.setText(" ");
+
+                progressBar.setVisibility(View.INVISIBLE);
+
+                connectionStatusTextView.setText("Connection Status: Not Connected");
+
 
                 Intent send = new Intent(DataActivity.this, LiveDataGraph.class);
                 startActivity(send);
