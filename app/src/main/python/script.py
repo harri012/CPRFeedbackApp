@@ -24,4 +24,4 @@ def displacementLive(accelerationList, compressionTime):
     velocity = integrate.simps(accelerationList, x)
     displacement = velocity * compressionTime
 
-    return displacement
+    return abs(displacement)

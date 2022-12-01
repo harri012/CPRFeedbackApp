@@ -385,7 +385,7 @@ public class DataActivity extends AppCompatActivity {
             PyObject obj = pyobj.callAttr("displacementLive", accRecordedData.toArray(), timeCPR);
             depth = obj.toFloat();
             //filter out noise from no movement
-            if(depth < -100)
+            if(depth > 100)
                 depth = 0;
 
             //for depth
@@ -394,7 +394,7 @@ public class DataActivity extends AppCompatActivity {
             {
                 depthComment.setText("Too Shallow");
             }
-            if(depth > higherDepth)
+            else if(depth > higherDepth)
             {
                 depthComment.setText("Too Deep");
             }
