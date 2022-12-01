@@ -275,7 +275,6 @@ public class DataActivity extends AppCompatActivity {
 
                     //set to next state
                     boolOpenGraph = false;
-                    buttonSaveData.setText("Save Session");
                     buttonSaveData.setEnabled(false);
                 }
                 else
@@ -327,7 +326,10 @@ public class DataActivity extends AppCompatActivity {
 
                 recordingStatusTextView.setText(" ");
 
-                progressBar.setVisibility(View.INVISIBLE);
+
+                progressBar.setProgress(0);
+                countDownTimer.cancel();
+                progressBar.setVisibility(View.GONE);
 
                 connectionStatusTextView.setText("Connection Status: Not Connected");
 
