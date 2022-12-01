@@ -285,8 +285,8 @@ public class DataActivity extends AppCompatActivity {
     private double higherForce = 2000;
 
     protected double depth = 0;
-    private int lowerDepth= 3; //in cm
-    private int higherDepth = 7;
+    private int lowerDepth= 4; //in cm
+    private int higherDepth = 5;
     private double timeCPR = 0;
     private double frequency = 0;
 
