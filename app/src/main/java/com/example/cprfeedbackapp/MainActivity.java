@@ -54,10 +54,6 @@ public class MainActivity extends AppCompatActivity {
                     switchFragmentView(new CprPerformanceFragment());
                     break;
 
-                case R.id.Monitoring:
-                    switchFragmentView(new healthMonitoringFragment());
-                    break;
-
                 case R.id.Tutorial:
                     switchFragmentView(new TutorialFragment());
                     break;

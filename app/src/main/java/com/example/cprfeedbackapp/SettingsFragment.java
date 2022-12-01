@@ -1,18 +1,21 @@
 package com.example.cprfeedbackapp;
 
-import android.media.Image;
+import static android.content.Context.AUDIO_SERVICE;
+
+import android.content.Context;
+import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +34,14 @@ public class SettingsFragment extends Fragment {
     protected TextView recordTimeTextView;
     protected ImageButton increaseRecordTimeButton;
     protected ImageButton decreaseRecordTimeButton;
+
+    //contacts
+    private Button aboutUsButton;
+    private Button contactUsButton;
+
+    //audio manager
+    private AudioManager audioManager;
+    private SeekBar soundBar;
 
     protected SharedPreferencesHelper sharedPreferencesHelper;
 
@@ -163,6 +174,58 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //ABOUT US
+        aboutUsButton = fragmentView.findViewById(R.id.aboutButton);
+        aboutUsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AboutUs.class);
+                startActivity(intent);
+            }
+        });
+
+        //ABOUT US
+        contactUsButton = fragmentView.findViewById(R.id.contactButton);
+        contactUsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ContactUs.class);
+                startActivity(intent);
+            }
+        });
+
+
+//        //sound seek bar logic
+//
+//        //setup audio manager
+//       // audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+//
+//        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+//
+//
+//        soundBar = fragmentView.findViewById(R.id.soundSeekBar);
+//        soundBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            //volume on progress
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//
+//            }
+//
+//            //particular action
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            //lift
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
+
         return fragmentView;
     }
+
 }
+
