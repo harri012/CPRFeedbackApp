@@ -284,12 +284,14 @@ public class DataActivity extends AppCompatActivity {
     private double lowerForce= 9;
     private double higherForce = 2000;
 
-    protected float depth = 0;
+    protected double depth = 0;
     private int lowerDepth= 3; //in cm
     private int higherDepth = 7;
+    private double timeCPR = 0;
+    private double frequency = 0;
 
     private void frequencyFeedback(int forceData, float accData){
-        double frequency = frequencyCalculator(forceData);
+        double nbDataPoint = frequencyCalculator(forceData);
 
         tempForce = (forceData*10)/1024;
         if (tempForce > maxForce)
@@ -299,8 +301,9 @@ public class DataActivity extends AppCompatActivity {
 
         if(frequency != -1)
         {
+            timeCPR = nbDataPoint *timePerDataPoint;
             //for frequency
-            frequency = 1/(frequency * timePerDataPoint);
+            frequency = 1/(nbDataPoint * timePerDataPoint);
 
             if(frequency < lowerFrequency)
             {
@@ -347,7 +350,7 @@ public class DataActivity extends AppCompatActivity {
             Python py = Python.getInstance();
 
             PyObject pyobj = py.getModule("script");
-            PyObject obj = pyobj.callAttr("displacementLive", accRecordedData.toArray());
+            PyObject obj = pyobj.callAttr("displacementLive", accRecordedData.toArray(), timeCPR);
             depth = obj.toFloat();
 
             //for depth
