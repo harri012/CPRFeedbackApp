@@ -1,6 +1,10 @@
 package com.example.cprfeedbackapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.DatabaseConfiguration;
+import androidx.room.InvalidationTracker;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -17,6 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
+
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
+import com.example.cprfeedbackapp.database.AppDatabase;
+import com.example.cprfeedbackapp.database.dao.CprSessionDao;
+import com.example.cprfeedbackapp.database.entity.CprSessionDatapoint;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DataActivity extends AppCompatActivity {
@@ -36,12 +53,22 @@ public class DataActivity extends AppCompatActivity {
     protected Boolean boolRecordData = false;
     protected Boolean boolCancel = false;
     protected Boolean boolOpenGraph = false;
+    protected Boolean boolConnected = false;
     protected int nbRecordedData = 0;
     protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
+    protected ArrayList<Double> accRecordedData = new ArrayList<>();
+
+    protected String forceData = "0";
+    protected String accData = "0";
+    protected String prevForceData = "0";
+    protected String prevAccData = "0";
 
     // Time for progress bar
     protected CountDownTimer countDownTimer;
+
+    //Database
+    private AppDatabase appDatabase;
 
     //Declaring Threads
     public ConnectedThread connectedThread;
@@ -63,6 +90,8 @@ public class DataActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        appDatabase = AppDatabase.getInstance(this);
+
         setupHandler();
         setup();
     }
@@ -70,13 +99,16 @@ public class DataActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        // Missing ConnectedThread Code here.
-
-
     }
 
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
 
+        if(boolConnected)
+            createConnectThread.cancel();
+    }
 
     public void setupHandler()
     {
@@ -91,6 +123,7 @@ public class DataActivity extends AppCompatActivity {
                                 connectionStatusTextView.setText("Connection Status: Connected to " + deviceName);
                                 buttonRecordData.setEnabled(true);
                                 buttonConnect.setEnabled(false);
+                                boolConnected = true;
                                 break;
                             case -1:
                                 //Cant connect
@@ -102,32 +135,47 @@ public class DataActivity extends AppCompatActivity {
                     case MESSAGE_READ:
                         // Read message from Arduino
                         arduinoMsg = msg.obj.toString();
-                        //forceFeedback(Integer.parseInt(arduinoMsg));
-                        frequencyFeedback(Integer.parseInt(arduinoMsg));
+                        dataSampleSize = sharedPreferencesHelper.getCurrentRecordTime() * 10;
 
-                        //If true record data until it reached dataSampleSize
-                        if(boolRecordData == true && nbRecordedData <= dataSampleSize )
-                        {
-                            //Add value to list
-                            listRecordedData.add(arduinoMsg);
-                            if(nbRecordedData == dataSampleSize)
+                        forceData = prevForceData;
+                        accData = prevAccData;
+                        if(arduinoMsg.charAt(0) == 'f') {
+                            forceData = arduinoMsg.substring(1);
+                            prevForceData = forceData;
+
+                            //If true record data until it reached dataSampleSize
+                            if(boolRecordData == true && nbRecordedData <= dataSampleSize )
                             {
-                                //Set button back to record behaviour
-                                boolCancel = false;
-                                buttonRecordData.setText("Record Session");
+                                //Add value to list
+                                listRecordedData.add(Integer.toString(Integer.parseInt(forceData) *10/1024));
+                                if(nbRecordedData == dataSampleSize)
+                                {
+                                    //Set button back to record behaviour
+                                    boolCancel = false;
+                                    buttonRecordData.setText("Record Session");
 
-                                buttonRecordData.setEnabled(false);
-                                buttonSaveData.setEnabled(true);
+                                    buttonRecordData.setEnabled(false);
+                                    buttonSaveData.setEnabled(true);
 
-                                //Set back to false
-                                boolRecordData = false;
-                                buttonSaveData.setEnabled(true);
-                                recordingStatusTextView.setText("Recording Complete!");
-                                msg("Finished Recording Data");
+                                    //Set back to false
+                                    boolRecordData = false;
+                                    buttonSaveData.setEnabled(true);
+                                    recordingStatusTextView.setText("Recording Complete!");
+                                    msg("Finished Recording Data");
+                                }
+                                else
+                                    nbRecordedData++;
                             }
-                            else
-                                nbRecordedData++;
                         }
+                        if(arduinoMsg.charAt(0) == 'a') {
+                            accData = arduinoMsg.substring(1);
+                            prevAccData = accData;
+                        }
+
+                        frequencyFeedback(Integer.parseInt(forceData), Double.parseDouble(accData));
+
+
+
                         break;
                 }
             }
@@ -151,11 +199,13 @@ public class DataActivity extends AppCompatActivity {
         connectionStatusTextView = findViewById(R.id.textViewConnectionStatus);
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         buttonRecordData.setEnabled(false);
         buttonSaveData.setEnabled(false);
         deviceName = getIntent().getStringExtra("deviceName");
         buttonRecordData.setText("Record Session");
+        buttonSaveData.setText("View Session");
         nameTextView.setText(deviceName);
 
         //Data TextView
@@ -184,7 +234,7 @@ public class DataActivity extends AppCompatActivity {
 
                     // Calls a new thread and creates a bluetooth connection to the selected device
                     BluetoothAdapter btAdapter = new BluetoothServiceManager(getApplicationContext(), DataActivity.this).getBtAdapter();
-                    CreateConnectThread createConnectThread = new CreateConnectThread(btAdapter, deviceAddress, getApplicationContext());
+                    createConnectThread = new CreateConnectThread(btAdapter, deviceAddress, getApplicationContext());
                     createConnectThread.start();
                 }
             }
@@ -201,11 +251,16 @@ public class DataActivity extends AppCompatActivity {
                     msg("Recording Data");
 
                     int count = 0;
+                    int timer = sharedPreferencesHelper.getCurrentRecordTime() * 1000;
+                    progressBar.setVisibility(View.VISIBLE);
                     progressBar.setProgress(count);
-                    countDownTimer = new CountDownTimer(3000, 1000) {
+                    countDownTimer = new CountDownTimer(timer, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            progressBar.setProgress(count);
+
+                            long finishedSeconds = timer - millisUntilFinished;
+                            int total = (int) (((float)finishedSeconds / (float)timer) * 100.0);
+                            progressBar.setProgress(total);
                         }
 
                         @Override
@@ -220,7 +275,6 @@ public class DataActivity extends AppCompatActivity {
 
                     //set to next state
                     boolOpenGraph = false;
-                    buttonSaveData.setText("Save Session");
                     buttonSaveData.setEnabled(false);
                 }
                 else
@@ -230,6 +284,10 @@ public class DataActivity extends AppCompatActivity {
                     //Set button back to record behaviour
                     boolCancel = false;
                     buttonRecordData.setText("Record Session");
+
+                    progressBar.setProgress(0);
+                    countDownTimer.cancel();
+                    progressBar.setVisibility(View.GONE);
 
                     buttonRecordData.setEnabled(false);
                     buttonSaveData.setEnabled(true);
@@ -243,34 +301,43 @@ public class DataActivity extends AppCompatActivity {
         buttonSaveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!boolOpenGraph) {
-                    sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
+                sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
 
-                    buttonRecordData.setEnabled(true);
-                    nbRecordedData = 0;
-                    listRecordedData.clear();
-                    recordingStatusTextView.setText("Recording Saved");
-                    msg("Saved Data");
+                LocalDateTime dateTimeNow = LocalDateTime.now();
+                DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-MM-dd @ HH:mm:ss");
+                String formattedDate = dateTimeNow.format(formatTime);
 
-                    //Set button back to record behaviour
-                    boolCancel = false;
-                    buttonRecordData.setText("Record Session");
-
-                    //set to next state
-                    boolOpenGraph = true;
-                    buttonSaveData.setText("View Session");
-                }
-                else
+                for(int i=0; i< listRecordedData.size(); i++)
                 {
-                    //set to next state
-                    boolOpenGraph = false;
-                    buttonSaveData.setText("Save Session");
-                    buttonSaveData.setEnabled(false);
-
-                    //go to graph activity
-                    Intent intent = new Intent(getApplication(), LiveDataGraph.class);
-                    startActivity(intent);
+                    appDatabase.cprSessionDao().insertSession(new CprSessionDatapoint(0, Double.parseDouble(listRecordedData.get(i)), 2.00, formattedDate));
                 }
+
+                //appDatabase
+
+                //buttonRecordData.setEnabled(true);
+                buttonConnect.setEnabled(true);
+                nbRecordedData = 0;
+                listRecordedData.clear();
+                recordingStatusTextView.setText("Recording Saved");
+                msg("Saved Data");
+
+                //Set button back to record behaviour
+                boolCancel = false;
+                buttonRecordData.setText("Record Session");
+                buttonSaveData.setEnabled(false);
+
+                recordingStatusTextView.setText(" ");
+
+
+                progressBar.setProgress(0);
+                countDownTimer.cancel();
+                progressBar.setVisibility(View.GONE);
+
+                connectionStatusTextView.setText("Connection Status: Not Connected");
+
+
+                Intent send = new Intent(DataActivity.this, LiveDataGraph.class);
+                startActivity(send);
 
             }
         });
@@ -302,17 +369,28 @@ public class DataActivity extends AppCompatActivity {
     private double lowerForce= 9;
     private double higherForce = 2000;
 
-    private void frequencyFeedback(int aData){
-        double frequency = frequencyCalculator(aData);
+    protected double depth = 0;
+    private int lowerDepth= 3; //in cm
+    private int higherDepth = 7;
+    private double timeCPR = 0;
+    private double frequency = 0;
 
-        tempForce = (aData*10)/1024;
+
+    private void frequencyFeedback(int forceData, double accData){
+        double nbDataPoint = frequencyCalculator(forceData);
+
+        tempForce = (forceData*10)/1024;
         if (tempForce > maxForce)
             maxForce = tempForce;
 
-        if(frequency != -1)
+        accData = (accData - 9.8)*100;
+        accRecordedData.add(accData);
+
+        if(nbDataPoint != -1)
         {
+            timeCPR = nbDataPoint *timePerDataPoint;
             //for frequency
-            frequency = 1/(frequency * timePerDataPoint);
+            frequency = 2/(nbDataPoint * timePerDataPoint);
 
             if(frequency < lowerFrequency)
             {
@@ -351,64 +429,48 @@ public class DataActivity extends AppCompatActivity {
 
             maxForce = 0;
 
-        }
-    }
-
-
-    private void forceFeedback(int aData)
-    {
-        int frequency = frequencyCalculator(aData);
-        if (aData > maxForce)
-            maxForce = aData;
-        if(frequency != -1)
-        {
-            maxForce = (maxForce*10)/1024;
-            forceTextView.setText(String.format("%.2f", maxForce) + " N");
-            if(maxForce < lowerForce)
-            {
-                forceComment.setText("Too Weak");
+            //Python Integration Test
+            if (! Python.isStarted()) {
+                Python.start(new AndroidPlatform(this));
             }
-            if(maxForce > higherForce)
-            {
-                forceComment.setText("Too Strong");
-            }
-            else
-            {
-                forceComment.setText("Good!");
-            }
-            maxForce = 0;
-        }
 
-    }
-    protected int maxDepth = 0;
-    private int lowerDepth= 3; //in cm
-    private int higherDepth = 7;
-    private void depthFeedback(int aData)
-    {
-        int frequency = frequencyCalculator(aData);
-        if (aData > maxDepth)
-            maxDepth = aData;
-        if(frequency != -1)
-        {
-            depthTexView.setText(maxDepth + " cm");
-            if(maxDepth < lowerDepth)
+            Python py = Python.getInstance();
+
+            PyObject pyobj = py.getModule("script");
+            PyObject obj = pyobj.callAttr("displacementLive", accRecordedData.toArray(), timeCPR);
+            depth = obj.toFloat() / 10;
+            if(depth > 100)
+                depth = 0;
+
+            //for depth
+            depthTexView.setText(String.format("%.2f",depth) + " cm");
+            if(depth < lowerDepth)
             {
                 depthComment.setText("Too Shallow");
+                depthComment.setTextColor(Color.parseColor("#FFFF0000"));
             }
-            if(maxDepth > higherDepth)
+            else if(depth > higherDepth)
             {
                 depthComment.setText("Too Deep");
+                depthComment.setTextColor(Color.parseColor("#FFFF0000"));
+
             }
             else
             {
                 depthComment.setText("Good");
+                depthComment.setTextColor(Color.parseColor("#00FF00"));
             }
-            maxDepth = 0;
+
+            depth = 0;
+            accRecordedData.clear();
         }
     }
 
+
+
+
     //For toasts
-    private void msg(String str) {
+    private void msg(String str){
         Toast.makeText(DataActivity.this, str, Toast.LENGTH_LONG).show();
     }
 
