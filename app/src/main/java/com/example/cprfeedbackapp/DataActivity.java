@@ -287,6 +287,8 @@ public class DataActivity extends AppCompatActivity {
                     boolCancel = false;
                     buttonRecordData.setText("Record Session");
 
+                    progressBar.setVisibility(View.GONE);
+
                     buttonRecordData.setEnabled(false);
                     buttonSaveData.setEnabled(true);
                     recordingStatusTextView.setText("Recording Cancelled");
