@@ -313,7 +313,7 @@ public class DataActivity extends AppCompatActivity {
 //                }
 
                 //appDatabase
-
+//
                 //buttonRecordData.setEnabled(true);
                 buttonConnect.setEnabled(true);
                 nbRecordedData = 0;
