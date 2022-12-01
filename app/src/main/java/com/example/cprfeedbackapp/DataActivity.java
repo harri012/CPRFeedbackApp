@@ -21,6 +21,10 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
+
 import java.util.ArrayList;
 
 public class DataActivity extends AppCompatActivity {
@@ -47,6 +51,7 @@ public class DataActivity extends AppCompatActivity {
 
     // Time for progress bar
     protected CountDownTimer countDownTimer;
+
 
     //Declaring Threads
     public ConnectedThread connectedThread;
@@ -321,6 +326,7 @@ public class DataActivity extends AppCompatActivity {
     private double timeCPR = 0;
     private double frequency = 0;
 
+
     private void frequencyFeedback(int forceData, double accData){
         double nbDataPoint = frequencyCalculator(forceData);
 
@@ -416,7 +422,7 @@ public class DataActivity extends AppCompatActivity {
 
 
     //For toasts
-    private void msg(String str) {
+    private void msg(String str){
         Toast.makeText(DataActivity.this, str, Toast.LENGTH_LONG).show();
     }
 
