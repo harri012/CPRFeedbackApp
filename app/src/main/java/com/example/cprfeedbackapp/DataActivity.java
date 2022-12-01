@@ -57,6 +57,7 @@ public class DataActivity extends AppCompatActivity {
     protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
     protected ArrayList<Double> accRecordedData = new ArrayList<>();
+    protected int[] dirtyBit = {0,0};
 
     // Time for progress bar
     protected CountDownTimer countDownTimer;
@@ -132,6 +133,8 @@ public class DataActivity extends AppCompatActivity {
                         if(arduinoMsg.charAt(0) == 'f') {
                             forceData = arduinoMsg.substring(1);
 
+                            dirtyBit[0] = 1;
+
                             //If true record data until it reached dataSampleSize
                             if(boolRecordData == true && nbRecordedData <= dataSampleSize )
                             {
@@ -156,12 +159,16 @@ public class DataActivity extends AppCompatActivity {
                                     nbRecordedData++;
                             }
                         }
-                        if(arduinoMsg.charAt(0) == 'a')
+                        if(arduinoMsg.charAt(0) == 'a') {
                             accData = arduinoMsg.substring(1);
+                            dirtyBit[1] = 1;
+                        }
 
-
-                        frequencyFeedback(Integer.parseInt(forceData), Double.parseDouble(accData));
-
+                        if(dirtyBit[0] == 1 && dirtyBit[1] == 1) {
+                            frequencyFeedback(Integer.parseInt(forceData), Double.parseDouble(accData));
+                            dirtyBit[0] = 0;
+                            dirtyBit[1] = 0;
+                        }
 
                         break;
                 }
