@@ -139,6 +139,19 @@ public class CprPerformanceFragment extends Fragment {
             waveformForcesList.add(waveformForce.getForceDatapoint());
         }
 
+//        averageDepthList.add(5.20);
+//        averageDepthList.add(2.51);
+//        averageDepthList.add(3.66);
+//
+//        averageForceList.add(5.22);
+//        averageForceList.add(2.98);
+//        averageForceList.add(1.32);
+//
+//        waveformForcesList.add(8.52);
+//        waveformForcesList.add(8.52);
+//        waveformForcesList.add(8.52);
+
+
 
         // Get the data in an Array
         avgDepth = getAverageDepthArray();
@@ -214,10 +227,10 @@ public class CprPerformanceFragment extends Fragment {
     protected void setupRecyclerView() {
 
 //        sessionDateList = db.averageDepthForceDao().getAllUniqueDates();
-        sessionDateList.add("aaa");
-        sessionDateList.add("bbb");
-        sessionDateList.add("ccc");
-        sessionDateList.add("ddd");
+//        sessionDateList.add("aaa");
+//        sessionDateList.add("bbb");
+//        sessionDateList.add("ccc");
+//        sessionDateList.add("ddd");
         CprSessionRecyclerViewAdapter = new CprSessionRecyclerViewAdapter(sessionDateList);
         CprSessionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         CprSessionRecyclerView.setAdapter(CprSessionRecyclerViewAdapter);
