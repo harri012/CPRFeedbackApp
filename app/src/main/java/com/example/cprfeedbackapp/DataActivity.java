@@ -200,6 +200,7 @@ public class DataActivity extends AppCompatActivity {
         connectionStatusTextView = findViewById(R.id.textViewConnectionStatus);
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         buttonRecordData.setEnabled(false);
         buttonSaveData.setEnabled(false);
@@ -251,11 +252,16 @@ public class DataActivity extends AppCompatActivity {
                     msg("Recording Data");
 
                     int count = 0;
+                    int timer = sharedPreferencesHelper.getCurrentRecordTime() * 1000;
+                    progressBar.setVisibility(View.VISIBLE);
                     progressBar.setProgress(count);
-                    countDownTimer = new CountDownTimer(3000, 1000) {
+                    countDownTimer = new CountDownTimer(timer, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            progressBar.setProgress(count);
+
+                            long finishedSeconds = timer - millisUntilFinished;
+                            int total = (int) (((float)finishedSeconds / (float)timer) * 100.0);
+                            progressBar.setProgress(total);
                         }
 
                         @Override
