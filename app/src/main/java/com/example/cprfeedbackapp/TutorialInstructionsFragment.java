@@ -35,7 +35,7 @@ public class TutorialInstructionsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    VideoView CprVideoView;
+//    VideoView CprVideoView;
 
     public TutorialInstructionsFragment() {
         // Required empty public constructor
@@ -110,16 +110,16 @@ public class TutorialInstructionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_instructions_tutorial, container, false);
-        CprVideoView = fragmentView.findViewById(R.id.videoView);
-//        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/-NodDRTsV88"));
-//        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/A5PnI4I-vd8"));
-        CprVideoView.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.howtocpr));
-//        CprVideoView.setOnPreparedListener(mediaPlayer -> CprVideoView.start());
-//        CprVideoView.start();
-
-        MediaController videoMediaController = new MediaController(this.CprVideoView.getContext());
-        videoMediaController.setMediaPlayer(CprVideoView);
-        CprVideoView.setMediaController(videoMediaController);
+//        CprVideoView = fragmentView.findViewById(R.id.videoView);
+////        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/-NodDRTsV88"));
+////        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/A5PnI4I-vd8"));
+//        CprVideoView.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.howtocpr));
+////        CprVideoView.setOnPreparedListener(mediaPlayer -> CprVideoView.start());
+////        CprVideoView.start();
+//
+//        MediaController videoMediaController = new MediaController(this.CprVideoView.getContext());
+//        videoMediaController.setMediaPlayer(CprVideoView);
+//        CprVideoView.setMediaController(videoMediaController);
 
         return fragmentView;
     }
