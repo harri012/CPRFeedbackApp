@@ -42,8 +42,7 @@
         </activity>
         <activity
             android:name=".LiveDataGraph"
-            android:exported="false"
-            android:parentActivityName=".DataActivity">
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
