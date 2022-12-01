@@ -99,25 +99,6 @@ public class DataActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        buttonRecordData.setEnabled(false);
-        buttonSaveData.setEnabled(false);
-        deviceName = getIntent().getStringExtra("deviceName");
-        buttonRecordData.setText("Record Session");
-        buttonSaveData.setText("View Session");
-        nameTextView.setText(deviceName);
-
-        //Data TextView
-        depthTexView.setText("0");
-        forceTextView.setText("0");
-        frequencyTextView.setText("0");
-
-        //Comment TextView
-        depthComment.setText("Feedback");
-        forceComment.setText("Feedback");
-        frequencyComment.setText("Feedback");
-        recordingStatusTextView.setText(" ");
-
-        setupHandler();
     }
 
     @Override
@@ -322,7 +303,8 @@ public class DataActivity extends AppCompatActivity {
 
                 //appDatabase
 
-                buttonRecordData.setEnabled(true);
+                //buttonRecordData.setEnabled(true);
+                buttonConnect.setEnabled(true);
                 nbRecordedData = 0;
                 listRecordedData.clear();
                 recordingStatusTextView.setText("Recording Saved");
