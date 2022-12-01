@@ -299,7 +299,7 @@ public class DataActivity extends AppCompatActivity {
 
         accRecordedData.add(accData);
 
-        if(frequency != -1)
+        if(nbDataPoint != -1)
         {
             timeCPR = nbDataPoint *timePerDataPoint;
             //for frequency
@@ -368,6 +368,7 @@ public class DataActivity extends AppCompatActivity {
                 depthComment.setText("Good");
             }
 
+            depth = 0;
             accRecordedData.clear();
         }
     }
