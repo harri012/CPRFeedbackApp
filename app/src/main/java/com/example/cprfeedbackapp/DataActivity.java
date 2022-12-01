@@ -361,7 +361,7 @@ public class DataActivity extends AppCompatActivity {
         {
             timeCPR = nbDataPoint *timePerDataPoint;
             //for frequency
-            frequency = 1/(nbDataPoint * timePerDataPoint * 2);
+            frequency = 2/(nbDataPoint * timePerDataPoint);
 
             if(frequency < lowerFrequency)
             {
