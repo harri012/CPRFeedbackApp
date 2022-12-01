@@ -98,16 +98,26 @@ public class DataActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        buttonRecordData.setEnabled(false);
+        buttonSaveData.setEnabled(false);
+        deviceName = getIntent().getStringExtra("deviceName");
+        buttonRecordData.setText("Record Session");
+        buttonSaveData.setText("View Session");
+        nameTextView.setText(deviceName);
 
-        appDatabase = AppDatabase.getInstance(this);
+        //Data TextView
+        depthTexView.setText("0");
+        forceTextView.setText("0");
+        frequencyTextView.setText("0");
+
+        //Comment TextView
+        depthComment.setText("Feedback");
+        forceComment.setText("Feedback");
+        frequencyComment.setText("Feedback");
+        recordingStatusTextView.setText(" ");
 
         setupHandler();
-        setup();
-
-
     }
 
     @Override
