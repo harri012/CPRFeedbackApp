@@ -103,13 +103,19 @@ public class DataActivity extends AppCompatActivity {
                         // Read message from Arduino
                         arduinoMsg = msg.obj.toString();
                         //forceFeedback(Integer.parseInt(arduinoMsg));
-                        frequencyFeedback(Integer.parseInt(arduinoMsg));
+                        String forceData = "0";
+                        if(arduinoMsg.charAt(0) == 'f')
+                            forceData = arduinoMsg.substring(1);
+
+                        //forceTextView.setText(forceData);
+
+                        frequencyFeedback(Integer.parseInt(forceData));
 
                         //If true record data until it reached dataSampleSize
                         if(boolRecordData == true && nbRecordedData <= dataSampleSize )
                         {
                             //Add value to list
-                            listRecordedData.add(arduinoMsg);
+                            listRecordedData.add(forceData);
                             if(nbRecordedData == dataSampleSize)
                             {
                                 //Set button back to record behaviour

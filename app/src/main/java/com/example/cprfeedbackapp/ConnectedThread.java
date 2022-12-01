@@ -1,5 +1,7 @@
 package com.example.cprfeedbackapp;
 
+import static com.example.cprfeedbackapp.DataActivity.handler;
+
 import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,8 +19,7 @@ interface MessageConstants {
 }
 
 
-
-public class ConnectedThread implements MessageConstants{
+public class ConnectedThread implements MessageConstants {
 
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
@@ -66,19 +67,16 @@ public class ConnectedThread implements MessageConstants{
 
                 mmBuffer[numBytes] = (byte) mmInStream.read();
                 String readMessage;
-                if (mmBuffer[numBytes] == '\n'){
-                    readMessage = new String(mmBuffer,0,numBytes);
-                    Log.e("Bt Service Data",readMessage);
-                    if(handler == null)
-                        Log.e("Bt Service Manager","no handler");
-                    handler.obtainMessage(MESSAGE_READ,readMessage).sendToTarget();
+                if (mmBuffer[numBytes] == '\n') {
+                    readMessage = new String(mmBuffer, 0, numBytes);
+                    if (handler == null)
+                        Log.e("Bt Service Manager", "no handler");
+                    handler.obtainMessage(MESSAGE_READ, readMessage).sendToTarget();
                     numBytes = 0;
-                }
-                else {
+                } else {
                     numBytes++;
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 Log.d(TAG, "Input stream was disconnected", e);
                 break;
             }

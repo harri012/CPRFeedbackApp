@@ -135,9 +135,6 @@ public class HomeFragment extends Fragment {
                             deviceList.add(deviceInfoModel);
                         }
 
-
-                        Log.e("Bt Service Data",deviceName);
-
                     }
                 }
 
