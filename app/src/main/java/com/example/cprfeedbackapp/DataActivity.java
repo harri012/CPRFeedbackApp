@@ -409,10 +409,7 @@ public class DataActivity extends AppCompatActivity {
 
             PyObject pyobj = py.getModule("script");
             PyObject obj = pyobj.callAttr("displacementLive", accRecordedData.toArray(), timeCPR);
-            depth = obj.toFloat();
-            //filter out noise from no movement
-            if(depth > 100)
-                depth = 0;
+            depth = obj.toFloat() / 10;
 
             //for depth
             depthTexView.setText(String.format("%.2f",depth) + " cm");
