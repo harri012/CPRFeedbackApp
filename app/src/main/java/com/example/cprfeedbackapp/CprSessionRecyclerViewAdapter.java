@@ -10,12 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cprfeedbackapp.database.AppDatabase;
 import com.example.cprfeedbackapp.database.entity.AverageDepthForce;
+import com.example.cprfeedbackapp.database.entity.WaveformForce;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessionRecyclerViewAdapter.ViewHolder> {
 
     private List<String> localDataSet;
+    private List<AverageDepthForce> sessionAverageDatapoints = new ArrayList<>();
+    private List<WaveformForce> sessionWaveformForce = new ArrayList<>();
 
     protected AppDatabase db;
 
@@ -61,7 +65,9 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
                 db = AppDatabase.getInstance(view.getContext());
 
                 // Returns a list of CprSessionDatapoint of the session specified by the datetime
-                List<AverageDepthForce> sessionDatapoints = db.averageDepthForceDao().getAverageDepthForceDatapoints(localDataSet.get(pos));
+                sessionAverageDatapoints = db.averageDepthForceDao().getAverageDepthForceDatapoints(localDataSet.get(pos));
+                sessionWaveformForce = db.waveformForceDao().getWaveformForceDatapoints(localDataSet.get(pos));
+
             }
         });
     }
@@ -69,5 +75,13 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
     @Override
     public int getItemCount() {
         return localDataSet.size();
+    }
+
+    public List<AverageDepthForce> getSessionAverageDatapoints() {
+        return sessionAverageDatapoints;
+    }
+
+    public List<WaveformForce> getSessionWaveformForce() {
+        return sessionWaveformForce;
     }
 }

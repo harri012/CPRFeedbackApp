@@ -31,7 +31,9 @@ import com.chaquo.python.android.AndroidPlatform;
 import com.example.cprfeedbackapp.database.AppDatabase;
 import com.example.cprfeedbackapp.database.dao.AverageDepthForceDao;
 import com.example.cprfeedbackapp.database.entity.AverageDepthForce;
+import com.example.cprfeedbackapp.database.entity.WaveformForce;
 
+import java.sql.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -67,6 +69,12 @@ public class DataActivity extends AppCompatActivity {
     // Time for progress bar
     protected CountDownTimer countDownTimer;
 
+    // Datetime for Database
+    protected String formattedDate;
+
+    // Time List for Plots
+    ArrayList<Double> timeSpent = new ArrayList<>();
+
     //Database
     private AppDatabase appDatabase;
 
@@ -91,6 +99,10 @@ public class DataActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         appDatabase = AppDatabase.getInstance(this);
+
+        LocalDateTime dateTimeNow = LocalDateTime.now();
+        DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-MM-dd @ HH:mm:ss");
+        formattedDate = dateTimeNow.format(formatTime);
 
         setupHandler();
         setup();
@@ -303,14 +315,10 @@ public class DataActivity extends AppCompatActivity {
             public void onClick(View v) {
                 sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
 
-                LocalDateTime dateTimeNow = LocalDateTime.now();
-                DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-MM-dd @ HH:mm:ss");
-                String formattedDate = dateTimeNow.format(formatTime);
-
-//                for(int i=0; i< listRecordedData.size(); i++)
-//                {
-////                    appDatabase.cprSessionDao().insertSession(new CprSessionDatapoint(0, Double.parseDouble(listRecordedData.get(i)), 2.00, formattedDate));
-//                }
+                // Saves all values of the force in the database
+                for (String value : listRecordedData) {
+                    appDatabase.waveformForceDao().insertWaveformForce(new WaveformForce(0, Double.parseDouble(value), formattedDate));
+                }
 
                 //appDatabase
 //
@@ -461,6 +469,12 @@ public class DataActivity extends AppCompatActivity {
                 depthComment.setTextColor(Color.parseColor("#00FF00"));
             }
 
+            // Saves average depth and force
+            appDatabase.averageDepthForceDao().insertAverageDepthForce(new AverageDepthForce(0, maxForce, depth, formattedDate));
+
+            // TimeCPR missing
+
+            maxForce = 0;
             depth = 0;
             accRecordedData.clear();
         }

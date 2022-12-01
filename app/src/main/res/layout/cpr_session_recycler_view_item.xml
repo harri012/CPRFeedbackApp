@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="40dp"
     android:layout_gravity="center_vertical">
 
     <TextView
@@ -9,14 +9,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"
-        android:text="CPR Session on: " />
+        android:layout_marginTop="10dp"
+        android:text="CPR Session on: "
+        android:textColor="@color/textColor" />
 
     <TextView
         android:id="@+id/datetimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="120dp"
-        android:layout_marginTop="25dp"
-        android:text="TextView" />
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        android:textColor="@color/textColor" />
 </FrameLayout>
