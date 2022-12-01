@@ -1,6 +1,10 @@
 package com.example.cprfeedbackapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.DatabaseConfiguration;
+import androidx.room.InvalidationTracker;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -24,7 +28,12 @@ import com.chaquo.python.android.AndroidPlatform;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
+import com.example.cprfeedbackapp.database.AppDatabase;
+import com.example.cprfeedbackapp.database.dao.CprSessionDao;
+import com.example.cprfeedbackapp.database.entity.CprSessionDatapoint;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DataActivity extends AppCompatActivity {
@@ -52,6 +61,8 @@ public class DataActivity extends AppCompatActivity {
     // Time for progress bar
     protected CountDownTimer countDownTimer;
 
+    //Database
+    private AppDatabase appDatabase;
 
     //Declaring Threads
     public ConnectedThread connectedThread;
@@ -72,6 +83,8 @@ public class DataActivity extends AppCompatActivity {
         sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        appDatabase = AppDatabase.getInstance(this);
 
         setupHandler();
         setup();
@@ -262,6 +275,17 @@ public class DataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
+
+                LocalDateTime dateTimeNow = LocalDateTime.now();
+                DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-MM-dd @ HH:mm:ss");
+                String formattedDate = dateTimeNow.format(formatTime);
+
+                for(int i=0; i< listRecordedData.size(); i++)
+                {
+                    appDatabase.cprSessionDao().insertSession(new CprSessionDatapoint(0, Double.parseDouble(listRecordedData.get(i)), 2.00, formattedDate));
+                }
+
+                //appDatabase
 
                 buttonRecordData.setEnabled(true);
                 nbRecordedData = 0;
