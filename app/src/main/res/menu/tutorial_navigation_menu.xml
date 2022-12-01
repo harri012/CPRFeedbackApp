@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/CprVideo"
+        android:enabled="true"
+        android:title="@string/CprVideoName"
+        android:visible="true"
+        app:showAsAction="never" />
+    <item
         android:enabled="true"
         android:title="@string/InstructionManualMenuItem"
         android:visible="true"
         app:showAsAction="never"
         android:id="@+id/InstructionManual"/>
-    <item
-        android:enabled="true"
-        android:title="@string/CprVideoName"
-        android:visible="true"
-        app:showAsAction="never"
-        android:id="@+id/CprVideo"/>
 </menu>
