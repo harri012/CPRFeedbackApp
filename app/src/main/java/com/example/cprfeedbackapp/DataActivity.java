@@ -328,7 +328,7 @@ public class DataActivity extends AppCompatActivity {
         if (tempForce > maxForce)
             maxForce = tempForce;
 
-        accData = accData - 9.8;
+        accData = (accData - 9.8)*100;
         accRecordedData.add(accData);
 
         if(nbDataPoint != -1)
