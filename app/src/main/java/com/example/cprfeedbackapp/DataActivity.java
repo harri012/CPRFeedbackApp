@@ -99,7 +99,6 @@ public class DataActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setup();
     }
 
     @Override

@@ -21,7 +21,6 @@ public class LiveDataGraph extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_data_graph);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
