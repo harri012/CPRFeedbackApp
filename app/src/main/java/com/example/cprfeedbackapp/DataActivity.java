@@ -286,7 +286,7 @@ public class DataActivity extends AppCompatActivity {
 
     protected double depth = 0;
     private int lowerDepth= 4; //in cm
-    private int higherDepth = 5;
+    private int higherDepth = 6;
     private double timeCPR = 0;
     private double frequency = 0;
 
@@ -362,14 +362,18 @@ public class DataActivity extends AppCompatActivity {
             if(depth < lowerDepth)
             {
                 depthComment.setText("Too Shallow");
+                depthComment.setTextColor(Color.parseColor("#FFFF0000"));
             }
             else if(depth > higherDepth)
             {
                 depthComment.setText("Too Deep");
+                depthComment.setTextColor(Color.parseColor("#FFFF0000"));
+
             }
             else
             {
                 depthComment.setText("Good");
+                depthComment.setTextColor(Color.parseColor("#00FF00"));
             }
 
             depth = 0;
