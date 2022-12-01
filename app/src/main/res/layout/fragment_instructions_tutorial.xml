@@ -168,7 +168,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Data Acquirement"
+                android:text="Post Recording"
                 android:textAllCaps="false"
                 android:textColor="@color/headingColor"
                 android:textSize="20sp"
@@ -181,7 +181,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="5dp"
-                android:text="1. Click on the connect button to establish the connection" />
+                android:text="1. After clicking the View Session button, the session is saved in the database and the graph is shown" />
 
             <TextView
                 android:id="@+id/textView35"
@@ -190,7 +190,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="5dp"
-                android:text="2. To start the recording click on the button: Record Session" />
+                android:text="2. The sessions are ordered by day and time " />
 
             <TextView
                 android:id="@+id/textView36"
@@ -199,7 +199,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
-                android:text="3. If needed, during the data acquirement, the cancel button can be pressed" />
+                android:text="3. Click on one session from the list to see the results" />
 
         </LinearLayout>
     </ScrollView>
