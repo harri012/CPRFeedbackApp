@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
+
 import java.util.ArrayList;
 
 public class DataActivity extends AppCompatActivity {
@@ -35,6 +39,7 @@ public class DataActivity extends AppCompatActivity {
     protected int nbRecordedData = 0;
     protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
+    protected ArrayList<Float> accRecordedData = new ArrayList<>();
 
     //Declaring Threads
     public ConnectedThread connectedThread;
@@ -98,9 +103,8 @@ public class DataActivity extends AppCompatActivity {
                         if(arduinoMsg.charAt(0) == 'a')
                             accData = arduinoMsg.substring(1);
 
-                        depthTexView.setText(accData);
 
-                        frequencyFeedback(Integer.parseInt(forceData));
+                        frequencyFeedback(Integer.parseInt(forceData), Float.parseFloat(accData));
 
                         //If true record data until it reached dataSampleSize
                         if(boolRecordData == true && nbRecordedData <= dataSampleSize )
@@ -280,12 +284,18 @@ public class DataActivity extends AppCompatActivity {
     private double lowerForce= 9;
     private double higherForce = 2000;
 
-    private void frequencyFeedback(int aData){
-        double frequency = frequencyCalculator(aData);
+    protected float depth = 0;
+    private int lowerDepth= 3; //in cm
+    private int higherDepth = 7;
 
-        tempForce = (aData*10)/1024;
+    private void frequencyFeedback(int forceData, float accData){
+        double frequency = frequencyCalculator(forceData);
+
+        tempForce = (forceData*10)/1024;
         if (tempForce > maxForce)
             maxForce = tempForce;
+
+        accRecordedData.add(accData);
 
         if(frequency != -1)
         {
@@ -329,51 +339,24 @@ public class DataActivity extends AppCompatActivity {
 
             maxForce = 0;
 
-        }
-    }
-
-
-    private void forceFeedback(int aData)
-    {
-        int frequency = frequencyCalculator(aData);
-        if (aData > maxForce)
-            maxForce = aData;
-        if(frequency != -1)
-        {
-            maxForce = (maxForce*10)/1024;
-            forceTextView.setText(String.format("%.2f", maxForce) + " N");
-            if(maxForce < lowerForce)
-            {
-                forceComment.setText("Too Weak");
+            //Python Integration Test
+            if (! Python.isStarted()) {
+                Python.start(new AndroidPlatform(this));
             }
-            if(maxForce > higherForce)
-            {
-                forceComment.setText("Too Strong");
-            }
-            else
-            {
-                forceComment.setText("Good!");
-            }
-            maxForce = 0;
-        }
 
-    }
-    protected int maxDepth = 0;
-    private int lowerDepth= 3; //in cm
-    private int higherDepth = 7;
-    private void depthFeedback(int aData)
-    {
-        int frequency = frequencyCalculator(aData);
-        if (aData > maxDepth)
-            maxDepth = aData;
-        if(frequency != -1)
-        {
-            depthTexView.setText(maxDepth + " cm");
-            if(maxDepth < lowerDepth)
+            Python py = Python.getInstance();
+
+            PyObject pyobj = py.getModule("script");
+            PyObject obj = pyobj.callAttr("displacementLive", accRecordedData.toArray());
+            depth = obj.toFloat();
+
+            //for depth
+            depthTexView.setText(depth + " cm");
+            if(depth < lowerDepth)
             {
                 depthComment.setText("Too Shallow");
             }
-            if(maxDepth > higherDepth)
+            if(depth > higherDepth)
             {
                 depthComment.setText("Too Deep");
             }
@@ -381,9 +364,13 @@ public class DataActivity extends AppCompatActivity {
             {
                 depthComment.setText("Good");
             }
-            maxDepth = 0;
+
+            accRecordedData.clear();
         }
     }
+
+
+
 
     //For toasts
     private void msg(String str) {
