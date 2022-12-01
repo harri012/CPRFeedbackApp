@@ -5,12 +5,6 @@ package com.example.cprfeedbackapp;
 
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,14 +14,17 @@ import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import java.util.Objects;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TutorialFragment#newInstance} factory method to
+ * Use the {@link TutorialInstructionsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TutorialFragment extends Fragment {
+public class TutorialInstructionsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,9 +35,9 @@ public class TutorialFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    VideoView CprVideoView;
+//    VideoView CprVideoView;
 
-    public TutorialFragment() {
+    public TutorialInstructionsFragment() {
         // Required empty public constructor
     }
 
@@ -53,8 +50,8 @@ public class TutorialFragment extends Fragment {
      * @return A new instance of fragment tutorialFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TutorialFragment newInstance(String param1, String param2) {
-        TutorialFragment fragment = new TutorialFragment();
+    public static TutorialInstructionsFragment newInstance(String param1, String param2) {
+        TutorialInstructionsFragment fragment = new TutorialInstructionsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,21 +77,13 @@ public class TutorialFragment extends Fragment {
 
     private void switchFragmentView (Fragment fragment)
     {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
 
     }
-//    private void switchFragmentView (Fragment fragment)
-//    {
-//        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-////        fragmentTransaction.setReorderingAllowed(true);
-//        fragmentTransaction.replace(R.id.frame_layout, fragment);
-//        fragmentTransaction.commit();
-//
-//    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -120,17 +109,17 @@ public class TutorialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View fragmentView = inflater.inflate(R.layout.fragment_tutorial, container, false);
-        CprVideoView = fragmentView.findViewById(R.id.videoView);
-//        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/-NodDRTsV88"));
-//        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/A5PnI4I-vd8"));
-        CprVideoView.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.howtocpr));
-//        CprVideoView.setOnPreparedListener(mediaPlayer -> CprVideoView.start());
-//        CprVideoView.start();
-
-        MediaController videoMediaController = new MediaController(this.CprVideoView.getContext());
-        videoMediaController.setMediaPlayer(CprVideoView);
-        CprVideoView.setMediaController(videoMediaController);
+        View fragmentView = inflater.inflate(R.layout.fragment_instructions_tutorial, container, false);
+//        CprVideoView = fragmentView.findViewById(R.id.videoView);
+////        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/-NodDRTsV88"));
+////        CprVideoView.setVideoURI(Uri.parse("https://youtu.be/A5PnI4I-vd8"));
+//        CprVideoView.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.howtocpr));
+////        CprVideoView.setOnPreparedListener(mediaPlayer -> CprVideoView.start());
+////        CprVideoView.start();
+//
+//        MediaController videoMediaController = new MediaController(this.CprVideoView.getContext());
+//        videoMediaController.setMediaPlayer(CprVideoView);
+//        CprVideoView.setMediaController(videoMediaController);
 
         return fragmentView;
     }
