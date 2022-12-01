@@ -43,7 +43,7 @@ public class DataActivity extends AppCompatActivity {
     protected int nbRecordedData = 0;
     protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
-    protected ArrayList<Float> accRecordedData = new ArrayList<>();
+    protected ArrayList<Double> accRecordedData = new ArrayList<>();
 
     // Time for progress bar
     protected CountDownTimer countDownTimer;
@@ -116,7 +116,7 @@ public class DataActivity extends AppCompatActivity {
                             accData = arduinoMsg.substring(1);
 
 
-                        frequencyFeedback(Integer.parseInt(forceData), Float.parseFloat(accData));
+                        frequencyFeedback(Integer.parseInt(forceData), Double.parseDouble(accData));
 
                         //If true record data until it reached dataSampleSize
                         if(boolRecordData == true && nbRecordedData <= dataSampleSize )
@@ -321,13 +321,14 @@ public class DataActivity extends AppCompatActivity {
     private double timeCPR = 0;
     private double frequency = 0;
 
-    private void frequencyFeedback(int forceData, float accData){
+    private void frequencyFeedback(int forceData, double accData){
         double nbDataPoint = frequencyCalculator(forceData);
 
         tempForce = (forceData*10)/1024;
         if (tempForce > maxForce)
             maxForce = tempForce;
 
+        accData = accData - 9.8;
         accRecordedData.add(accData);
 
         if(nbDataPoint != -1)
@@ -385,7 +386,7 @@ public class DataActivity extends AppCompatActivity {
             depth = obj.toFloat();
 
             //for depth
-            depthTexView.setText(depth + " cm");
+            depthTexView.setText(String.format("%.2f",depth) + " cm");
             if(depth < lowerDepth)
             {
                 depthComment.setText("Too Shallow");
