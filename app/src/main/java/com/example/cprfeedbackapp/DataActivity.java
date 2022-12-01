@@ -98,8 +98,14 @@ public class DataActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
-        // Missing ConnectedThread Code here.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        appDatabase = AppDatabase.getInstance(this);
+
+        setupHandler();
+        setup();
 
 
     }
