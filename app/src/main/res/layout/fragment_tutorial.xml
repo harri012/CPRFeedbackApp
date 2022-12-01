@@ -17,6 +17,7 @@
         android:layout_marginBottom="26dp"
         android:drawableStart="@drawable/ic_baseline_help_24"
         android:text="Tutorial"
+        android:drawableTint="@color/headingColor"
         android:textColor="@color/headingColor"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/videoView"

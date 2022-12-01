@@ -17,6 +17,7 @@
         android:layout_marginEnd="186dp"
         android:layout_marginBottom="15dp"
         android:drawableStart="@drawable/ic_baseline_monitor_heart_24"
+        android:drawableTint="@color/headingColor"
         android:text=" Graph View"
         android:textColor="@color/headingColor"
         android:textSize="34sp"
