@@ -25,7 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
         // All database operations will run on a separate, parallel thread
         // Might need to modify the thread
-        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME).allowMainThreadQueries().build();
+        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME).allowMainThreadQueries().fallbackToDestructiveMigration().build();
     }
 
     // Singleton design for generating an AppDatabase object

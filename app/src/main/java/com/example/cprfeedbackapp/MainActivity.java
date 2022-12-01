@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
+        if(savedInstanceState==null)
+            //change to default as home
+            binding.bottomNavigation.setSelectedItemId(R.id.Home);
     }
 }
 
