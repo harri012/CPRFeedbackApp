@@ -194,7 +194,6 @@ public class SettingsFragment extends Fragment {
 
 
         //sound seek bar logic
-
         //setup audio manager
         audioManager = (AudioManager) this.getContext().getSystemService(Context.AUDIO_SERVICE);
 
@@ -208,6 +207,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //button behaviour when clicking on down
         downVolume = fragmentView.findViewById(R.id.volumeDownButton);
         downVolume.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,29 +218,32 @@ public class SettingsFragment extends Fragment {
         });
 
         soundBar = fragmentView.findViewById(R.id.soundSeekBar);
+        //set the progress to match the device sound
         soundBar.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
         soundBar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
 
+        //seekbar adjustments
+        soundBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            //volume on progress
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                //seekbar drag will be saved as new volume
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,progress,0);
+            }
 
-//        soundBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            //volume on progress
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//
-//            }
-//
-//            //particular action
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            //lift
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
+            //particular action
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            //lift
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         return fragmentView;
     }
 }
