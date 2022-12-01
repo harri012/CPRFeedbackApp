@@ -384,7 +384,6 @@ public class DataActivity extends AppCompatActivity {
             PyObject pyobj = py.getModule("script");
             PyObject obj = pyobj.callAttr("displacementLive", accRecordedData.toArray(), timeCPR);
             depth = obj.toFloat();
-            depth *= 100;
             //for depth
             depthTexView.setText(String.format("%.2f",depth) + " cm");
             if(depth < lowerDepth)
