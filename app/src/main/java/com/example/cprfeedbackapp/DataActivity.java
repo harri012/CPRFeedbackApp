@@ -125,41 +125,44 @@ public class DataActivity extends AppCompatActivity {
                     case MESSAGE_READ:
                         // Read message from Arduino
                         arduinoMsg = msg.obj.toString();
-                        //forceFeedback(Integer.parseInt(arduinoMsg));
+                        dataSampleSize = sharedPreferencesHelper.getCurrentRecordTime();
+
                         String forceData = "0";
                         String accData = "0";
-                        if(arduinoMsg.charAt(0) == 'f')
+                        if(arduinoMsg.charAt(0) == 'f') {
                             forceData = arduinoMsg.substring(1);
+
+                            //If true record data until it reached dataSampleSize
+                            if(boolRecordData == true && nbRecordedData <= dataSampleSize )
+                            {
+                                //Add value to list
+                                listRecordedData.add(forceData);
+                                if(nbRecordedData == dataSampleSize)
+                                {
+                                    //Set button back to record behaviour
+                                    boolCancel = false;
+                                    buttonRecordData.setText("Record Session");
+
+                                    buttonRecordData.setEnabled(false);
+                                    buttonSaveData.setEnabled(true);
+
+                                    //Set back to false
+                                    boolRecordData = false;
+                                    buttonSaveData.setEnabled(true);
+                                    recordingStatusTextView.setText("Recording Complete!");
+                                    msg("Finished Recording Data");
+                                }
+                                else
+                                    nbRecordedData++;
+                            }
+                        }
                         if(arduinoMsg.charAt(0) == 'a')
                             accData = arduinoMsg.substring(1);
 
 
                         frequencyFeedback(Integer.parseInt(forceData), Double.parseDouble(accData));
 
-                        dataSampleSize = sharedPreferencesHelper.getCurrentRecordTime();
-                        //If true record data until it reached dataSampleSize
-                        if(boolRecordData == true && nbRecordedData <= dataSampleSize )
-                        {
-                            //Add value to list
-                            listRecordedData.add(forceData);
-                            if(nbRecordedData == dataSampleSize)
-                            {
-                                //Set button back to record behaviour
-                                boolCancel = false;
-                                buttonRecordData.setText("Record Session");
 
-                                buttonRecordData.setEnabled(false);
-                                buttonSaveData.setEnabled(true);
-
-                                //Set back to false
-                                boolRecordData = false;
-                                buttonSaveData.setEnabled(true);
-                                recordingStatusTextView.setText("Recording Complete!");
-                                msg("Finished Recording Data");
-                            }
-                            else
-                                nbRecordedData++;
-                        }
                         break;
                 }
             }
