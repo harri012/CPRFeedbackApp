@@ -148,7 +148,7 @@ public class DataActivity extends AppCompatActivity {
                             if(boolRecordData == true && nbRecordedData <= dataSampleSize )
                             {
                                 //Add value to list
-                                listRecordedData.add(forceData);
+                                listRecordedData.add(Integer.toString(Integer.parseInt(forceData) *10/1024));
                                 if(nbRecordedData == dataSampleSize)
                                 {
                                     //Set button back to record behaviour
