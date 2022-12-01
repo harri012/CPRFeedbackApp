@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="25dp"
-        android:text="THIS IS INSTRUCTIONS"
+        android:text="@string/InstructionsTitle"
         app:layout_constraintBottom_toTopOf="@+id/videoView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -30,6 +30,8 @@
     <string name="tutorialFragmentName">Tutorial Section</string>
     <string name="CprVideoName">CPR Tutorial Video</string>
     <string name="InstructionManualMenuItem">Instruction Manual</string>
+    <string name="InstructionsTitle">Here are instructions on using this app</string>
+
 
     <string name="recordTimeSharedPreferences">CurrentReccordTime</string>
 </resources>

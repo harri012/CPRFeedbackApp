@@ -106,7 +106,7 @@ public class TutorialFragment extends Fragment {
 
             case R.id.CprVideo:
                 // navigate to cpr videos
-                switchFragmentView(new tutorialFragment());
+                switchFragmentView(new TutorialFragment());
                 break;
 
             default:
