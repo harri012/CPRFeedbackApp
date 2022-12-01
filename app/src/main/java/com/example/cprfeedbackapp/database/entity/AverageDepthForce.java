@@ -4,23 +4,23 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "CprSession_table")
-public class CprSessionDatapoint {
+@Entity(tableName = "average_table")
+public class AverageDepthForce {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "force_applied")
+    @ColumnInfo(name = "average_force")
     private double forceDatapoint;
 
-    @ColumnInfo(name = "depth_measured")
+    @ColumnInfo(name = "average_depth")
     private double depthDatapoint;
 
     @ColumnInfo(name = "datetime")
     private String datetime;
 
     // Constructor
-    public CprSessionDatapoint(int id, double forceDatapoint, double depthDatapoint, String datetime) {
+    public AverageDepthForce(int id, double forceDatapoint, double depthDatapoint, String datetime) {
         this.id = id;
         this.forceDatapoint = forceDatapoint;
         this.depthDatapoint = depthDatapoint;

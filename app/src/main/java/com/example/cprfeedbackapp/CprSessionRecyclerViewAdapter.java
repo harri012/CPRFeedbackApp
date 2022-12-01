@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cprfeedbackapp.database.AppDatabase;
-import com.example.cprfeedbackapp.database.entity.CprSessionDatapoint;
+import com.example.cprfeedbackapp.database.entity.AverageDepthForce;
 
 import java.util.List;
 
@@ -61,7 +61,7 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
                 db = AppDatabase.getInstance(view.getContext());
 
                 // Returns a list of CprSessionDatapoint of the session specified by the datetime
-                List<CprSessionDatapoint> sessionDatapoints = db.cprSessionDao().getSessionDatapoints(localDataSet.get(pos));
+                List<AverageDepthForce> sessionDatapoints = db.averageDepthForceDao().getAverageDepthForceDatapoints(localDataSet.get(pos));
             }
         });
     }

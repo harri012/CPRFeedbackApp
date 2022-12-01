@@ -243,4 +243,28 @@
         app:layout_constraintTop_toBottomOf="@+id/soundSeekBar" />
 
 
+    <Button
+        android:id="@+id/displacementButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="138dp"
+        android:layout_marginEnd="177dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/displacementTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="158dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="195dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displacementButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

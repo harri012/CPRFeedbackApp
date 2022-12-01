@@ -29,8 +29,8 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.example.cprfeedbackapp.database.AppDatabase;
-import com.example.cprfeedbackapp.database.dao.CprSessionDao;
-import com.example.cprfeedbackapp.database.entity.CprSessionDatapoint;
+import com.example.cprfeedbackapp.database.dao.AverageDepthForceDao;
+import com.example.cprfeedbackapp.database.entity.AverageDepthForce;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -307,10 +307,10 @@ public class DataActivity extends AppCompatActivity {
                 DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-MM-dd @ HH:mm:ss");
                 String formattedDate = dateTimeNow.format(formatTime);
 
-                for(int i=0; i< listRecordedData.size(); i++)
-                {
-                    appDatabase.cprSessionDao().insertSession(new CprSessionDatapoint(0, Double.parseDouble(listRecordedData.get(i)), 2.00, formattedDate));
-                }
+//                for(int i=0; i< listRecordedData.size(); i++)
+//                {
+////                    appDatabase.cprSessionDao().insertSession(new CprSessionDatapoint(0, Double.parseDouble(listRecordedData.get(i)), 2.00, formattedDate));
+//                }
 
                 //appDatabase
 

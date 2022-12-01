@@ -129,7 +129,7 @@ public class CprPerformanceFragment extends Fragment {
 
     protected void setupRecyclerView() {
 
-        sessionDateList = db.cprSessionDao().getAllUniqueDates();
+        sessionDateList = db.averageDepthForceDao().getAllUniqueDates();
 
         CprSessionRecyclerViewAdapter = new CprSessionRecyclerViewAdapter(sessionDateList);
         CprSessionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
