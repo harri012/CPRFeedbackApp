@@ -6,10 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.cprfeedbackapp.database.dao.CprSessionDao;
-import com.example.cprfeedbackapp.database.entity.CprSessionDatapoint;
+import com.example.cprfeedbackapp.database.dao.AverageDepthForceDao;
+import com.example.cprfeedbackapp.database.dao.AverageForceDao;
+import com.example.cprfeedbackapp.database.dao.WaveformForceDao;
+import com.example.cprfeedbackapp.database.entity.AverageDepthForce;
+import com.example.cprfeedbackapp.database.entity.AverageForce;
+import com.example.cprfeedbackapp.database.entity.WaveformForce;
 
-@Database(entities = {CprSessionDatapoint.class}, version = 1)
+@Database(entities = {AverageDepthForce.class, AverageForce.class, WaveformForce.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase instance;
@@ -21,7 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
         // All database operations will run on a separate, parallel thread
         // Might need to modify the thread
-        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME).allowMainThreadQueries().build();
+        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME).allowMainThreadQueries().fallbackToDestructiveMigration().build();
     }
 
     // Singleton design for generating an AppDatabase object
@@ -33,5 +37,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    public abstract CprSessionDao cprSessionDao();
+    public abstract AverageDepthForceDao averageDepthForceDao();
+    public abstract AverageForceDao averageForceDao();
+    public abstract WaveformForceDao waveformForceDao();
 }

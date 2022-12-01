@@ -34,4 +34,9 @@
 
 
     <string name="recordTimeSharedPreferences">CurrentReccordTime</string>
+
+    <string name="stateSharedPreferences">AboutState</string>
+
+    <string name="hyperlink">For any inquiries, please reach out to our Github repository at the following
+        link:\n<a href="https://github.com/harri012/CPRFeedbackApp">CPR Feedback Application</a></string>
 </resources>

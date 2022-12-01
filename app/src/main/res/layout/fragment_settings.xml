@@ -34,7 +34,6 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/aboutButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/volumeDownButton"
         app:layout_constraintVertical_bias="0.703" />
@@ -43,8 +42,8 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="185dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="165dp"
         android:layout_marginBottom="48dp"
         android:text="Enable Dark Theme"
         android:textColor="@color/textColor"
@@ -58,8 +57,8 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:text="Set Record Time (s)"
         android:textColor="@color/textColor"
         android:textSize="16sp"
@@ -72,9 +71,8 @@
         android:id="@+id/recordTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="9dp"
         android:digits="0123456789."
         android:inputType="number"
         android:text="TextView"
@@ -90,7 +88,7 @@
         android:id="@+id/decreaserecordTimeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/button_circle"
         android:src="@drawable/ic_settings_down_arrow"
@@ -104,15 +102,16 @@
         android:id="@+id/increaseRecordTimeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/button_circle"
         android:src="@drawable/ic_settings_up_arrow"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/recordTimeTextView"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
-        app:layout_constraintVertical_bias="0.03" />
+        app:layout_constraintVertical_bias="0.024" />
 
     <Button
         android:id="@+id/aboutButton"
@@ -120,11 +119,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginBottom="172dp"
         android:text="About Us"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/contactButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <SeekBar
         android:id="@+id/soundSeekBar"
@@ -191,14 +191,14 @@
         android:layout_width="150dp"
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="41dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="168dp"
         android:text="Contact Us"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/aboutButton"
-        app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch"
+        app:layout_constraintVertical_bias="0.775" />
 
     <TextView
         android:id="@+id/textView11"
@@ -221,7 +221,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="23dp"
+        android:layout_marginBottom="25dp"
         android:text="up"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
         app:layout_constraintEnd_toStartOf="@+id/volumeDownButton"

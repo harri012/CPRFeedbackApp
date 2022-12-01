@@ -1,6 +1,7 @@
 package com.example.cprfeedbackapp;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -35,12 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void setupUI(Bundle savedInstanceState)
     {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 
         binding.bottomNavigation.setOnItemSelectedListener(item ->
         {
@@ -62,13 +61,12 @@ public class MainActivity extends AppCompatActivity {
                     switchFragmentView(new SettingsFragment());
                     break;
             }
-
             return true;
         });
 
-      if(savedInstanceState==null)
-          //change to default as home
-          binding.bottomNavigation.setSelectedItemId(R.id.Home);
+        if(savedInstanceState==null)
+            //change to default as home
+            binding.bottomNavigation.setSelectedItemId(R.id.Home);
     }
 }
 
