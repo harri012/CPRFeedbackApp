@@ -53,6 +53,7 @@ public class DataActivity extends AppCompatActivity {
     protected Boolean boolRecordData = false;
     protected Boolean boolCancel = false;
     protected Boolean boolOpenGraph = false;
+    protected Boolean boolConnected = false;
     protected int nbRecordedData = 0;
     protected int dataSampleSize = 500; //1465 for 150 sec session since 0.1 per point
     protected ArrayList<String> listRecordedData = new ArrayList<>();
@@ -106,7 +107,8 @@ public class DataActivity extends AppCompatActivity {
     {
         super.onPause();
 
-        createConnectThread.cancel();
+        if(boolConnected)
+            createConnectThread.cancel();
     }
 
     public void setupHandler()
@@ -122,6 +124,7 @@ public class DataActivity extends AppCompatActivity {
                                 connectionStatusTextView.setText("Connection Status: Connected to " + deviceName);
                                 buttonRecordData.setEnabled(true);
                                 buttonConnect.setEnabled(false);
+                                boolConnected = true;
                                 break;
                             case -1:
                                 //Cant connect
