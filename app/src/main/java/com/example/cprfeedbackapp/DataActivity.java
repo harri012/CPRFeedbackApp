@@ -341,8 +341,8 @@ public class DataActivity extends AppCompatActivity {
     private double higherForce = 2000;
 
     protected double depth = 0;
-    private int lowerDepth= 4; //in cm
-    private int higherDepth = 6;
+    private int lowerDepth= 3; //in cm
+    private int higherDepth = 7;
     private double timeCPR = 0;
     private double frequency = 0;
 
@@ -410,6 +410,8 @@ public class DataActivity extends AppCompatActivity {
             PyObject pyobj = py.getModule("script");
             PyObject obj = pyobj.callAttr("displacementLive", accRecordedData.toArray(), timeCPR);
             depth = obj.toFloat() / 10;
+            if(depth > 100)
+                depth = 0;
 
             //for depth
             depthTexView.setText(String.format("%.2f",depth) + " cm");
