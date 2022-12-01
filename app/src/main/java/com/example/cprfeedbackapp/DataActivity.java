@@ -104,10 +104,13 @@ public class DataActivity extends AppCompatActivity {
                         arduinoMsg = msg.obj.toString();
                         //forceFeedback(Integer.parseInt(arduinoMsg));
                         String forceData = "0";
+                        String accData = "0";
                         if(arduinoMsg.charAt(0) == 'f')
                             forceData = arduinoMsg.substring(1);
+                        if(arduinoMsg.charAt(0) == 'a')
+                            accData = arduinoMsg.substring(1);
 
-                        //forceTextView.setText(forceData);
+                        depthTexView.setText(accData);
 
                         frequencyFeedback(Integer.parseInt(forceData));
 
