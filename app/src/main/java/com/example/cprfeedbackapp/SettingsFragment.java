@@ -148,7 +148,7 @@ public class SettingsFragment extends Fragment {
                     Toast.makeText(SettingsFragment.this.getContext(), "Maximum Record Time Reached", Toast.LENGTH_SHORT).show();
                 }
                 //save current time at last click
-                sharedPreferencesHelper.saveCurrentRecordTimeState(Integer.parseInt(recordTimeTextView.getText().toString()) * 10);
+                sharedPreferencesHelper.saveCurrentRecordTimeState(Integer.parseInt(recordTimeTextView.getText().toString()));
             }
         });
 
@@ -170,7 +170,7 @@ public class SettingsFragment extends Fragment {
                     Toast.makeText(SettingsFragment.this.getContext(), "Minimum Record Time Value Reached!", Toast.LENGTH_SHORT).show();
                 }
                 //save current time at last click
-                sharedPreferencesHelper.saveCurrentRecordTimeState(Integer.parseInt(recordTimeTextView.getText().toString()) * 10);
+                sharedPreferencesHelper.saveCurrentRecordTimeState(Integer.parseInt(recordTimeTextView.getText().toString()));
             }
         });
 

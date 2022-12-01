@@ -125,7 +125,7 @@ public class DataActivity extends AppCompatActivity {
                     case MESSAGE_READ:
                         // Read message from Arduino
                         arduinoMsg = msg.obj.toString();
-                        dataSampleSize = sharedPreferencesHelper.getCurrentRecordTime();
+                        dataSampleSize = sharedPreferencesHelper.getCurrentRecordTime() * 10;
 
                         String forceData = "0";
                         String accData = "0";
