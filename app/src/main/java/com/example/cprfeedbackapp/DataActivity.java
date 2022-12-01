@@ -104,7 +104,13 @@ public class DataActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
 
+        createConnectThread.cancel();
+    }
 
     public void setupHandler()
     {
@@ -227,7 +233,7 @@ public class DataActivity extends AppCompatActivity {
 
                     // Calls a new thread and creates a bluetooth connection to the selected device
                     BluetoothAdapter btAdapter = new BluetoothServiceManager(getApplicationContext(), DataActivity.this).getBtAdapter();
-                    CreateConnectThread createConnectThread = new CreateConnectThread(btAdapter, deviceAddress, getApplicationContext());
+                    createConnectThread = new CreateConnectThread(btAdapter, deviceAddress, getApplicationContext());
                     createConnectThread.start();
                 }
             }
