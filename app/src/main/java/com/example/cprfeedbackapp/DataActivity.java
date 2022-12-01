@@ -136,6 +136,7 @@ public class DataActivity extends AppCompatActivity {
 
                         frequencyFeedback(Integer.parseInt(forceData), Double.parseDouble(accData));
 
+                        dataSampleSize = sharedPreferencesHelper.getCurrentRecordTime();
                         //If true record data until it reached dataSampleSize
                         if(boolRecordData == true && nbRecordedData <= dataSampleSize )
                         {
