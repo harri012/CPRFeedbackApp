@@ -261,34 +261,18 @@ public class DataActivity extends AppCompatActivity {
         buttonSaveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!boolOpenGraph) {
-                    sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
+                sharedPreferencesHelper.saveEventSettings(listRecordedData, listRecordedData.size());
 
-                    buttonRecordData.setEnabled(true);
-                    nbRecordedData = 0;
-                    listRecordedData.clear();
-                    recordingStatusTextView.setText("Recording Saved");
-                    msg("Saved Data");
+                buttonRecordData.setEnabled(true);
+                nbRecordedData = 0;
+                listRecordedData.clear();
+                recordingStatusTextView.setText("Recording Saved");
+                msg("Saved Data");
 
-                    //Set button back to record behaviour
-                    boolCancel = false;
-                    buttonRecordData.setText("Record Session");
-
-                    //set to next state
-                    boolOpenGraph = true;
-                    buttonSaveData.setText("View Session");
-                }
-                else
-                {
-                    //set to next state
-                    boolOpenGraph = false;
-                    buttonSaveData.setText("Save Session");
-                    buttonSaveData.setEnabled(false);
-
-                    //go to graph activity
-                    Intent intent = new Intent(getApplication(), LiveDataGraph.class);
-                    startActivity(intent);
-                }
+                //Set button back to record behaviour
+                boolCancel = false;
+                buttonRecordData.setText("Record Session");
+                buttonSaveData.setText("Save Session");
 
             }
         });
