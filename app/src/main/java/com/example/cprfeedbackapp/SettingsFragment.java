@@ -1,7 +1,5 @@
 package com.example.cprfeedbackapp;
 
-import static android.content.Context.AUDIO_SERVICE;
-
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -42,6 +40,8 @@ public class SettingsFragment extends Fragment {
     //audio manager
     private AudioManager audioManager;
     private SeekBar soundBar;
+    private Button upVolume;
+    private Button downVolume;
 
     protected SharedPreferencesHelper sharedPreferencesHelper;
 
@@ -115,9 +115,7 @@ public class SettingsFragment extends Fragment {
 
                     // Saving the current theme to the shared preferences
                     sharedPreferencesHelper.saveDarkModeState(false);
-                }
-
-                else {
+                } else {
 
                     // Setting the app's theme to dark mode
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -136,9 +134,9 @@ public class SettingsFragment extends Fragment {
                 int currentTimeValue = Integer.parseInt(recordTimeTextView.getText().toString());
 
                 //check if it will the maximum allowed time of recording
-                int newRecordTime = currentTimeValue +15;
+                int newRecordTime = currentTimeValue + 15;
 
-                if(newRecordTime < 150)
+                if (newRecordTime < 150)
                     //Increase the value of record time
                     recordTimeTextView.setText(String.valueOf(currentTimeValue + 15));
 
@@ -161,11 +159,11 @@ public class SettingsFragment extends Fragment {
 
                 // Checks if the decrease will result the minimum value
                 int newRecordTime = currentTimeValue - 15;
-                if(newRecordTime > 15)
+                if (newRecordTime > 15)
                     recordTimeTextView.setText(String.valueOf(currentTimeValue - 15));
 
-                //set the min value
-                else{
+                    //set the min value
+                else {
                     recordTimeTextView.setText(Integer.toString(15));
                     Toast.makeText(SettingsFragment.this.getContext(), "Minimum Record Time Value Reached!", Toast.LENGTH_SHORT).show();
                 }
@@ -195,37 +193,58 @@ public class SettingsFragment extends Fragment {
         });
 
 
-//        //sound seek bar logic
-//
-//        //setup audio manager
-//       // audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-//
-//        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-//
-//
-//        soundBar = fragmentView.findViewById(R.id.soundSeekBar);
-//        soundBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            //volume on progress
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//
-//            }
-//
-//            //particular action
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            //lift
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
+        //sound seek bar logic
+        //setup audio manager
+        audioManager = (AudioManager) this.getContext().getSystemService(Context.AUDIO_SERVICE);
+
+        //setup the buttons
+        upVolume = fragmentView.findViewById(R.id.volumeUpButton);
+        upVolume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
+                soundBar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+            }
+        });
+
+        //button behaviour when clicking on down
+        downVolume = fragmentView.findViewById(R.id.volumeDownButton);
+        downVolume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
+                soundBar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+            }
+        });
+
+        soundBar = fragmentView.findViewById(R.id.soundSeekBar);
+        //set the progress to match the device sound
+        soundBar.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        soundBar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+
+        //seekbar adjustments
+        soundBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            //volume on progress
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                //seekbar drag will be saved as new volume
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,progress,0);
+            }
+
+            //particular action
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            //lift
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         return fragmentView;
     }
-
 }
 

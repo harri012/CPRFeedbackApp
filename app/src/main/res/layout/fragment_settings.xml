@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toTopOf="@+id/aboutButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/volumeDownButton"
+        app:layout_constraintTop_toBottomOf="@+id/volumeUpButton"
         app:layout_constraintVertical_bias="0.703" />
 
     <TextView
@@ -185,7 +185,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/volumeUpButton" />
+        app:layout_constraintTop_toBottomOf="@+id/volumeDownButton" />
 
     <Button
         android:id="@+id/contactButton"
@@ -217,30 +217,30 @@
         app:layout_constraintTop_toBottomOf="@+id/contactButton" />
 
     <Button
-        android:id="@+id/volumeUpButton"
+        android:id="@+id/volumeDownButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="25dp"
-        android:text="up"
+        android:text="down"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
-        app:layout_constraintEnd_toStartOf="@+id/volumeDownButton"
+        app:layout_constraintEnd_toStartOf="@+id/volumeUpButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/soundSeekBar" />
 
     <Button
-        android:id="@+id/volumeDownButton"
+        android:id="@+id/volumeUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="114dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="53dp"
         android:layout_marginBottom="80dp"
-        android:text="down"
+        android:text="up"
         app:layout_constraintBottom_toTopOf="@+id/darkModeSwitch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/volumeUpButton"
+        app:layout_constraintStart_toEndOf="@+id/volumeDownButton"
         app:layout_constraintTop_toBottomOf="@+id/soundSeekBar" />
 
 
