@@ -205,6 +205,7 @@ public class DataActivity extends AppCompatActivity {
         buttonSaveData.setEnabled(false);
         deviceName = getIntent().getStringExtra("deviceName");
         buttonRecordData.setText("Record Session");
+        buttonSaveData.setText("View Session");
         nameTextView.setText(deviceName);
 
         //Data TextView
@@ -315,6 +316,10 @@ public class DataActivity extends AppCompatActivity {
                 boolCancel = false;
                 buttonRecordData.setText("Record Session");
                 buttonSaveData.setEnabled(false);
+
+
+                Intent send = new Intent(DataActivity.this, LiveDataGraph.class);
+                startActivity(send);
 
             }
         });

@@ -67,10 +67,10 @@ public class CprPerformanceFragment extends Fragment {
     // Define the axis and title of the graph
     protected void graphSetup()
     {
-        graph.setTitle("Data Received From Hardware");
+        graph.setTitle("Previous Session CPR");
         graph.setTitleTextSize((float)60);
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("Time");
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Analog Value");
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Time ms");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Compression");
     }
 
     @Override
@@ -89,7 +89,7 @@ public class CprPerformanceFragment extends Fragment {
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(1000);
         graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(40);
+        graph.getViewport().setMaxX(100);
         // activate horizontal scrolling
         graph.getViewport().setScrollable(true);
 
