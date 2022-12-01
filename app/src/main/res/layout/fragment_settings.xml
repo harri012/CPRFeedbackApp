@@ -15,6 +15,7 @@
         android:layout_marginEnd="231dp"
         android:drawableStart="@drawable/ic_baseline_settings_24"
         android:text=" Settings"
+        android:drawableTint="@color/headingColor"
         android:textAlignment="viewStart"
         android:textColor="@color/headingColor"
         android:textSize="34sp"
