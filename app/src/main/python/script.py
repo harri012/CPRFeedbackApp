@@ -1,8 +1,5 @@
 import numpy as np
-from scipy.integrate import simpson
-
-import numpy as np
-from scipy.integrate import simpson, trapezoid
+import scipy.integrate as integrate
 
 def displacementPost(accelerationList, compressionTime):
 
@@ -13,21 +10,18 @@ def displacementPost(accelerationList, compressionTime):
 
         x = np.linspace(0, compressionTime[count], len(acceleration))
 
-        velocityList.append(simpson(acceleration, x))
+        velocityList.append(scp.integrate.simpson(acceleration, x))
 
     for count, velocity in enumerate(velocityList):
         displacementList.append(velocity * time[count])
 
     return displacementList
 
-accelerationList = [[0,0,0],[1,2,3],[9,8,7]]
-time = [2.5, 6.9, 5.2]
-
 
 def displacementLive(accelerationList, compressionTime):
 
     x = np.linspace(0, compressionTime, len(accelerationList))
-    velocity = simpson(accelerationList, x)
+    velocity = integrate.simps(accelerationList, x)
     displacement = velocity * compressionTime
 
     return displacement
