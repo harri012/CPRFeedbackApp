@@ -56,6 +56,7 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
     @Override
     public void onBindViewHolder(@NonNull DeviceRecyclerViewAdapter.ViewHolder holder, int position) {
 
+        // Get the deviceInfoModel object that corresponds to the item that was clicked
         DeviceInfoModel deviceInfoModel = (DeviceInfoModel) localDataSet.get(position);
 
         holder.deviceNameTextView.setText(deviceInfoModel.getDeviceName());
@@ -69,12 +70,6 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
 
                 // Gets position of the selected device
                 int position = holder.getLayoutPosition();
-
-                /*// Calls a new thread and creates a bluetooth connection to the selected device
-                BluetoothAdapter btAdapter = new BluetoothServiceManager(context, (Activity)context).getBtAdapter();
-                CreateConnectThread createConnectThread = new CreateConnectThread(btAdapter, localDataSet.get(position).getDeviceHardwareAddress(), context);
-                createConnectThread.start();*/
-
 
                 // Call dataActivity
                 Intent intent = new Intent(context, DataActivity.class);

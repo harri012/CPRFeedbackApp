@@ -114,8 +114,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Get the previously paired Bluetooth devices with the phone
         BluetoothServiceManager btServiceManager = new BluetoothServiceManager(HomeFragment.this.getContext(), HomeFragment.this.getActivity());
-
         Set<BluetoothDevice> pairedDevices = btServiceManager.queryPairedDevice();
 
         deviceList = new ArrayList<>();
@@ -130,7 +130,10 @@ public class HomeFragment extends Fragment {
                         String deviceName = device.getName();
                         String deviceHardwareAddress = device.getAddress();
 
+                        // Filter the Bluetooth devices so that only the CPR Feedback hardware is shown
                         if (deviceName.equals("HC-05")) {
+
+                            // Change the name of the hardware from HC-05 to CPR Feedback Device
                             DeviceInfoModel deviceInfoModel = new DeviceInfoModel("CPR Feedback Device", deviceHardwareAddress);
                             deviceList.add(deviceInfoModel);
                         }

@@ -32,6 +32,7 @@ public class LiveDataGraph extends AppCompatActivity {
 
 
         textView.setText("Number of Compression: " + sharedPreferencesHelper.getCprNb() + "\n" + "Good Compressions: " + sharedPreferencesHelper.getGoodCprNb());
+
         // activate horizontal zooming and scrolling
         graph.getViewport().setScalable(true);
         graph.getViewport().setMinY(0);
