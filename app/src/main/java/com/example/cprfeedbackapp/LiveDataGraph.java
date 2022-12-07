@@ -3,6 +3,7 @@ package com.example.cprfeedbackapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class LiveDataGraph extends AppCompatActivity {
 
     protected GraphView graph;
+    protected TextView textView;
     protected SharedPreferencesHelper sharedPreferencesHelper;
 
     @Override
@@ -26,10 +28,14 @@ public class LiveDataGraph extends AppCompatActivity {
 
         //Setting Up Graph
         graph = findViewById(R.id.liveGraph);
+        textView = findViewById(R.id.nbCpr);
+
+
+        textView.setText("Number of Compression: " + sharedPreferencesHelper.getCprNb() + "\n" + "Good Compressions: " + sharedPreferencesHelper.getGoodCprNb());
         // activate horizontal zooming and scrolling
         graph.getViewport().setScalable(true);
         graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(1000);
+        graph.getViewport().setMaxY(15);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(100);
         // activate horizontal scrolling

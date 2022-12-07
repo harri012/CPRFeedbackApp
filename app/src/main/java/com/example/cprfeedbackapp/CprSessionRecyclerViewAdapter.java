@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +57,9 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
 
         holder.getDatetimeTextView().setText(localDataSet.get(position));
 
+        sessionAverageDatapoints.clear();
+        sessionWaveformForce.clear();
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +71,8 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
                 // Returns a list of CprSessionDatapoint of the session specified by the datetime
                 sessionAverageDatapoints = db.averageDepthForceDao().getAverageDepthForceDatapoints(localDataSet.get(pos));
                 sessionWaveformForce = db.waveformForceDao().getWaveformForceDatapoints(localDataSet.get(pos));
+
+                Toast.makeText(view.getContext(), "Changed Graph", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -84,4 +90,9 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
     public List<WaveformForce> getSessionWaveformForce() {
         return sessionWaveformForce;
     }
+
+
+
+
+
 }

@@ -130,38 +130,27 @@ public class CprPerformanceFragment extends Fragment {
         setupRecyclerView();
 
         // Get the data from database and store them in lists
-        for(AverageDepthForce averageDepthForce : CprSessionRecyclerViewAdapter.getSessionAverageDatapoints()) {
-            averageDepthList.add(averageDepthForce.getDepthDatapoint());
-            averageForceList.add(averageDepthForce.getForceDatapoint());
-        }
 
-        for(WaveformForce waveformForce : CprSessionRecyclerViewAdapter.getSessionWaveformForce()) {
-            waveformForcesList.add(waveformForce.getForceDatapoint());
-        }
-
-//        averageDepthList.add(5.20);
-//        averageDepthList.add(2.51);
-//        averageDepthList.add(3.66);
-//
-//        averageForceList.add(5.22);
-//        averageForceList.add(2.98);
-//        averageForceList.add(1.32);
-//
-//        waveformForcesList.add(8.52);
-//        waveformForcesList.add(8.52);
-//        waveformForcesList.add(8.52);
-
-
-
-        // Get the data in an Array
-        avgDepth = getAverageDepthArray();
-        avgForce = getAverageForceArray();
-        waveForce = getWaveformForceArray();
 
         plotNextButton = fragmentView.findViewById(R.id.plotNextButton);
         plotNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                for(AverageDepthForce averageDepthForce : CprSessionRecyclerViewAdapter.getSessionAverageDatapoints()) {
+                    averageDepthList.add(averageDepthForce.getDepthDatapoint());
+                    averageForceList.add(averageDepthForce.getForceDatapoint());
+                }
+
+                for(WaveformForce waveformForce : CprSessionRecyclerViewAdapter.getSessionWaveformForce()) {
+                    waveformForcesList.add(waveformForce.getForceDatapoint());
+                }
+
+                // Get the data in an Array
+                avgDepth = getAverageDepthArray();
+                avgForce = getAverageForceArray();
+                waveForce = getWaveformForceArray();
+
                 switch (plotIndex) {
 
                     // Plotting Average Force as a Bar Graph
@@ -226,7 +215,8 @@ public class CprPerformanceFragment extends Fragment {
 
     protected void setupRecyclerView() {
 
-//        sessionDateList = db.averageDepthForceDao().getAllUniqueDates();
+
+        sessionDateList = db.averageDepthForceDao().getAllUniqueDates();
 //        sessionDateList.add("aaa");
 //        sessionDateList.add("bbb");
 //        sessionDateList.add("ccc");

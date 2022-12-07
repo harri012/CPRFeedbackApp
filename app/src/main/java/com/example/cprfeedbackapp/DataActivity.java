@@ -174,6 +174,12 @@ public class DataActivity extends AppCompatActivity {
                                     buttonSaveData.setEnabled(true);
                                     recordingStatusTextView.setText("Recording Complete!");
                                     msg("Finished Recording Data");
+
+                                    sharedPreferencesHelper.saveCprNb(nbCPR);
+                                    sharedPreferencesHelper.saveGoodCprNb(nbGoodCPR);
+
+                                    nbCPR = 0;
+                                    nbGoodCPR = 0;
                                 }
                                 else
                                     nbRecordedData++;
@@ -288,6 +294,8 @@ public class DataActivity extends AppCompatActivity {
                     //set to next state
                     boolOpenGraph = false;
                     buttonSaveData.setEnabled(false);
+
+
                 }
                 else
                 {
@@ -300,6 +308,12 @@ public class DataActivity extends AppCompatActivity {
                     progressBar.setProgress(0);
                     countDownTimer.cancel();
                     progressBar.setVisibility(View.GONE);
+
+                    sharedPreferencesHelper.saveCprNb(nbCPR);
+                    sharedPreferencesHelper.saveGoodCprNb(nbGoodCPR);
+
+                    nbCPR = 0;
+                    nbGoodCPR = 0;
 
                     buttonRecordData.setEnabled(false);
                     buttonSaveData.setEnabled(true);
@@ -319,6 +333,7 @@ public class DataActivity extends AppCompatActivity {
                 for (String value : listRecordedData) {
                     appDatabase.waveformForceDao().insertWaveformForce(new WaveformForce(0, Double.parseDouble(value), formattedDate));
                 }
+
 
                 //appDatabase
 //
@@ -383,6 +398,12 @@ public class DataActivity extends AppCompatActivity {
     private double timeCPR = 0;
     private double frequency = 0;
 
+    protected Boolean goodDepth =false;
+    protected Boolean goodForce = false;
+    protected Boolean goodFrequency = false;
+
+    protected int nbCPR = 0;
+    protected int nbGoodCPR = 0;
 
     private void frequencyFeedback(int forceData, double accData){
         double nbDataPoint = frequencyCalculator(forceData);
@@ -414,6 +435,7 @@ public class DataActivity extends AppCompatActivity {
             {
                 frequencyComment.setText("Good!");
                 frequencyComment.setTextColor(Color.parseColor("#00FF00"));
+                goodFrequency = true;
             }
             frequencyTextView.setText(String.format("%.2f",frequency) + " hz");
 
@@ -432,6 +454,7 @@ public class DataActivity extends AppCompatActivity {
             {
                 forceComment.setText("Good!");
                 forceComment.setTextColor(Color.parseColor("#00FF00"));
+                goodForce = true;
             }
             forceTextView.setText(String.format("%.2f", maxForce) + " N");
 
@@ -467,11 +490,21 @@ public class DataActivity extends AppCompatActivity {
             {
                 depthComment.setText("Good");
                 depthComment.setTextColor(Color.parseColor("#00FF00"));
+                goodDepth = true;
             }
 
             // Saves average depth and force
             appDatabase.averageDepthForceDao().insertAverageDepthForce(new AverageDepthForce(0, maxForce, depth, formattedDate));
 
+            if(boolRecordData) {
+                nbCPR++;
+                if(goodDepth && goodForce && goodFrequency) {
+                    nbGoodCPR++;
+                    goodDepth = false;
+                    goodForce = false;
+                    goodFrequency = false;
+                }
+            }
             // TimeCPR missing
 
             maxForce = 0;
