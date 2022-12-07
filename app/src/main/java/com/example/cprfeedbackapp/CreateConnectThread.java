@@ -29,45 +29,34 @@ public class CreateConnectThread extends Thread {
 
         this.context = context;
 
+        //get address
         BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
         Log.i("Bt Service Manager", "passing: "+ address);
 
         BluetoothSocket tmp = null;
 
+        //check if permissions
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
             //Not used but doesn't work if removed!!!!!!!
             uuid = bluetoothDevice.getUuids()[0].getUuid();
             Log.i("Bt Service Manager", "Gets UUID: " + uuid);
 
-
             try {
-                /*
-                Get a BluetoothSocket to connect with the given BluetoothDevice.
-                Due to Android device varieties,the method below may not work fo different devices.
-                You should try using other methods i.e. :
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-                 */
+                //Get a BluetoothSocket to connect with the given BluetoothDevice.
                 tmp = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
                 //tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, uuid);
-                Log.i("Bt Service Manager", "inside tmp");
-
 
             } catch (IOException e) {
                 Log.e(TAG, "Socket's create() method failed", e);
                 Log.i("Bt Service Manager", "Socket Failed");
-
             }
         }
+        //Set socket to bluetooth device
         mmSocket = tmp;
-
-        if(mmSocket == null)
-            Log.i("Bt Service Manager", "null socket");
-
-
     }
 
+    //Run function
     public void run() {
-        // Cancel discovery because it otherwise slows down the connection.
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
@@ -76,10 +65,9 @@ public class CreateConnectThread extends Thread {
         }
 
         try {
-            // Connect to the remote device through the socket. This call blocks
-            // until it succeeds or throws an exception.
-
+            // Connect to the remote device through the socket. This call blocks until it succeeds or throws an exception.
             mmSocket.connect();
+            //Send connection confirmation
             handler.obtainMessage(CONNECTING_STATUS, 1, -1).sendToTarget();
         }
         catch (IOException connectException) {

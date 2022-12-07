@@ -87,9 +87,5 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
     public List<WaveformForce> getSessionWaveformForce() {
         return sessionWaveformForce;
     }
-
-
-
-
-
+    
 }
