@@ -76,4 +76,32 @@ public class SharedPreferencesHelper {
 
         editor.apply();
     }
+
+    public int getCprNb() {
+        return this.sharedPreferences.getInt("cprnb", 0);
+    }
+
+    //save the state when closing the app
+    public void saveCprNb(int cpr) {
+
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+
+        editor.putInt("cprnb", cpr);
+
+        editor.apply();
+    }
+
+    public int getGoodCprNb() {
+        return this.sharedPreferences.getInt("goodcprnb", 0);
+    }
+
+    //save the state when closing the app
+    public void saveGoodCprNb(int cpr) {
+
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+
+        editor.putInt("goodcprnb", cpr);
+
+        editor.apply();
+    }
 }
