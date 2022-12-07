@@ -42,6 +42,23 @@ public class BluetoothServiceManager {
     private Activity activity;
 
 
+    // Create a Broadcast receiver for ACTION.FOUND
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Discovery has found a device. Get the BluetoothDevice
+                // object and its info from the Intent.
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                pairedDevices.add(device);
+
+                Log.d("Devices found", pairedDevices.toString());
+            }
+        }
+    };
+
+    //Constructor
     public BluetoothServiceManager(Context aContext, Activity anActivity) {
         this.context = aContext;
         this.btManager = context.getSystemService(BluetoothManager.class);
@@ -57,7 +74,7 @@ public class BluetoothServiceManager {
             msg("Device Does Not Support Bluetooth!");
             return false;
         } else {
-            //Prompts with dialog to activate bluetooth
+            //Prompts with dialog to activate bluetooth and for permissions if bluetooth not available
             if (!btAdapter.isEnabled()) {
                 if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, RequestCode.BLUETOOTH_PERMISSION);
@@ -71,14 +88,16 @@ public class BluetoothServiceManager {
             }
         }
 
-        Log.i("Bt Service Manager", "Bluetooth On");
         return true;
     }
 
-    // Returns the Adapter of the connection
+
+    //Return Bluetooth adapter
     public BluetoothAdapter getBtAdapter() {
         return btAdapter;
     }
+
+
 
 
     //Checks devices that are already paired
@@ -86,7 +105,7 @@ public class BluetoothServiceManager {
 
         // Gets all the previously connected Bluetooth devices
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
-            pairedDevices = btAdapter.getBondedDevices();
+        pairedDevices = btAdapter.getBondedDevices();
         }
         else {
             msg("no permission");
@@ -107,6 +126,10 @@ public class BluetoothServiceManager {
     private void msg(String str) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show();
     }
+
+
+
+
 }
 
 

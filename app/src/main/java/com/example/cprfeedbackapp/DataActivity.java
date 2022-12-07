@@ -61,11 +61,6 @@ public class DataActivity extends AppCompatActivity {
     protected ArrayList<String> listRecordedData = new ArrayList<>();
     protected ArrayList<Double> accRecordedData = new ArrayList<>();
 
-    protected String forceData = "0";
-    protected String accData = "0";
-    protected String prevForceData = "0";
-    protected String prevAccData = "0";
-
     // Time for progress bar
     protected CountDownTimer countDownTimer;
 
@@ -88,22 +83,57 @@ public class DataActivity extends AppCompatActivity {
     private final static int MESSAGE_READ = 0; // used in bluetooth handler to identify message update
     private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
 
+    //Declaring cpr values
+    protected String forceData = "0";
+    protected String accData = "0";
+    protected String prevForceData = "0";
+    protected String prevAccData = "0";
+
+    private double timePerDataPoint = 0.1;
+
+    //Frequency
+    private double lowerFrequency = 1.5;     //90 compression per minute
+    private double higherFrequency = 2.33333;       //140 compression per minute
+    //Force
+    private double maxForce = 0;
+    private double tempForce = 0;
+    private double lowerForce= 9;
+    private double higherForce = 2000;
+    //Depth
+    protected double depth = 0;
+    private int lowerDepth= 3; //in cm
+    private int higherDepth = 7;
+    private double timeCPR = 0;
+    private double frequency = 0;
+
+    //Boolean for feedback
+    protected Boolean goodDepth =false;
+    protected Boolean goodForce = false;
+    protected Boolean goodFrequency = false;
+
+    protected int nbCPR = 0;
+    protected int nbGoodCPR = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
 
+        //Sharedpreferences declaration
         sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
+        //Up navigation
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         appDatabase = AppDatabase.getInstance(this);
 
+        //Setting app database
         LocalDateTime dateTimeNow = LocalDateTime.now();
         DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-MM-dd @ HH:mm:ss");
         formattedDate = dateTimeNow.format(formatTime);
 
+        //Setup handler and ui
         setupHandler();
         setup();
     }
@@ -118,9 +148,12 @@ public class DataActivity extends AppCompatActivity {
     {
         super.onPause();
 
+        //Cancels connection on pause if connected
         if(boolConnected)
             createConnectThread.cancel();
     }
+
+
 
     public void setupHandler()
     {
@@ -151,6 +184,8 @@ public class DataActivity extends AppCompatActivity {
 
                         forceData = prevForceData;
                         accData = prevAccData;
+
+                        //If first char is f its force data
                         if(arduinoMsg.charAt(0) == 'f') {
                             forceData = arduinoMsg.substring(1);
                             prevForceData = forceData;
@@ -165,7 +200,6 @@ public class DataActivity extends AppCompatActivity {
                                     //Set button back to record behaviour
                                     boolCancel = false;
                                     buttonRecordData.setText("Record Session");
-
                                     buttonRecordData.setEnabled(false);
                                     buttonSaveData.setEnabled(true);
 
@@ -175,9 +209,11 @@ public class DataActivity extends AppCompatActivity {
                                     recordingStatusTextView.setText("Recording Complete!");
                                     msg("Finished Recording Data");
 
+                                    //save nb of cpr and good ones
                                     sharedPreferencesHelper.saveCprNb(nbCPR);
                                     sharedPreferencesHelper.saveGoodCprNb(nbGoodCPR);
 
+                                    //reset value
                                     nbCPR = 0;
                                     nbGoodCPR = 0;
                                 }
@@ -185,15 +221,15 @@ public class DataActivity extends AppCompatActivity {
                                     nbRecordedData++;
                             }
                         }
+
+                        //if first char is a its acceleration data
                         if(arduinoMsg.charAt(0) == 'a') {
                             accData = arduinoMsg.substring(1);
                             prevAccData = accData;
                         }
 
+                        //Function used to manage feedback
                         frequencyFeedback(Integer.parseInt(forceData), Double.parseDouble(accData));
-
-
-
                         break;
                 }
             }
@@ -210,15 +246,18 @@ public class DataActivity extends AppCompatActivity {
         depthComment = findViewById(R.id.textViewDepthComment);
         frequencyComment = findViewById(R.id.textViewFrequencyComment);
         recordingStatusTextView = findViewById(R.id.textViewRecordingStatus);
+        connectionStatusTextView = findViewById(R.id.textViewConnectionStatus);
 
+        //set buttons
         buttonConnect = findViewById(R.id.buttonConnect);
         buttonRecordData = findViewById(R.id.buttonRecordData);
         buttonSaveData = findViewById(R.id.buttonSendData);
-        connectionStatusTextView = findViewById(R.id.textViewConnectionStatus);
 
+        //Setup progress bar
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
+        //Setup bool
         buttonRecordData.setEnabled(false);
         buttonSaveData.setEnabled(false);
         deviceName = getIntent().getStringExtra("deviceName");
@@ -268,6 +307,8 @@ public class DataActivity extends AppCompatActivity {
                     recordingStatusTextView.setText("Recording...");
                     msg("Recording Data");
 
+
+                    //Progress bar
                     int count = 0;
                     int timer = sharedPreferencesHelper.getCurrentRecordTime() * 1000;
                     progressBar.setVisibility(View.VISIBLE);
@@ -275,7 +316,7 @@ public class DataActivity extends AppCompatActivity {
                     countDownTimer = new CountDownTimer(timer, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-
+                            //Counts till set amount time
                             long finishedSeconds = timer - millisUntilFinished;
                             int total = (int) (((float)finishedSeconds / (float)timer) * 100.0);
                             progressBar.setProgress(total);
@@ -289,6 +330,7 @@ public class DataActivity extends AppCompatActivity {
                     countDownTimer.start();
 
 
+                    //Enables cancel
                     boolCancel = true;
 
                     //set to next state
@@ -305,16 +347,21 @@ public class DataActivity extends AppCompatActivity {
                     boolCancel = false;
                     buttonRecordData.setText("Record Session");
 
+                    //Disable progress bar
                     progressBar.setProgress(0);
                     countDownTimer.cancel();
                     progressBar.setVisibility(View.GONE);
 
+
+                    //Save cpr number if canceled
                     sharedPreferencesHelper.saveCprNb(nbCPR);
                     sharedPreferencesHelper.saveGoodCprNb(nbGoodCPR);
 
+                    //Reset
                     nbCPR = 0;
                     nbGoodCPR = 0;
 
+                    //Reset regular behaviour
                     buttonRecordData.setEnabled(false);
                     buttonSaveData.setEnabled(true);
                     recordingStatusTextView.setText("Recording Cancelled");
@@ -348,17 +395,16 @@ public class DataActivity extends AppCompatActivity {
                 boolCancel = false;
                 buttonRecordData.setText("Record Session");
                 buttonSaveData.setEnabled(false);
-
                 recordingStatusTextView.setText(" ");
 
-
+                //Cancels progress bar
                 progressBar.setProgress(0);
                 countDownTimer.cancel();
                 progressBar.setVisibility(View.GONE);
-
                 connectionStatusTextView.setText("Connection Status: Not Connected");
 
 
+                //Bring to live data graph activity
                 Intent send = new Intent(DataActivity.this, LiveDataGraph.class);
                 startActivity(send);
 
@@ -368,6 +414,7 @@ public class DataActivity extends AppCompatActivity {
 
     protected int amountDataPoint = 0;
     private int previousData;
+    //Counts amount of data points until data point is 0 and previous isn't
     private Integer frequencyCalculator(int aData)
     {
         int returnedVal = -1;
@@ -383,28 +430,7 @@ public class DataActivity extends AppCompatActivity {
     }
 
 
-    private double timePerDataPoint = 0.1;
-    private double lowerFrequency = 1.5;     //90 compression per minute
-    private double higherFrequency = 2.33333;       //140 compression per minute
-
-    private double maxForce = 0;
-    private double tempForce = 0;
-    private double lowerForce= 9;
-    private double higherForce = 2000;
-
-    protected double depth = 0;
-    private int lowerDepth= 3; //in cm
-    private int higherDepth = 7;
-    private double timeCPR = 0;
-    private double frequency = 0;
-
-    protected Boolean goodDepth =false;
-    protected Boolean goodForce = false;
-    protected Boolean goodFrequency = false;
-
-    protected int nbCPR = 0;
-    protected int nbGoodCPR = 0;
-
+    //Wait for frequency calculator to indicate end of compression and give feedback
     private void frequencyFeedback(int forceData, double accData){
         double nbDataPoint = frequencyCalculator(forceData);
 
@@ -418,6 +444,7 @@ public class DataActivity extends AppCompatActivity {
         if(nbDataPoint != -1)
         {
             timeCPR = nbDataPoint *timePerDataPoint;
+
             //for frequency
             frequency = 2/(nbDataPoint * timePerDataPoint);
 
@@ -511,8 +538,6 @@ public class DataActivity extends AppCompatActivity {
             accRecordedData.clear();
         }
     }
-
-
 
 
     //For toasts

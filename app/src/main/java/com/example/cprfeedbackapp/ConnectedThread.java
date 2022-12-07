@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+
+//Constants for handler
 interface MessageConstants {
     public static final int MESSAGE_READ = 0;
     public static final int MESSAGE_WRITE = 1;
@@ -21,6 +23,7 @@ interface MessageConstants {
 
 public class ConnectedThread implements MessageConstants {
 
+    //Class ata members
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
@@ -28,7 +31,9 @@ public class ConnectedThread implements MessageConstants {
 
     private static final String TAG = "MY_APP_DEBUG_TAG";
 
+    //Constructor
     public ConnectedThread(BluetoothSocket socket, Handler handler) {
+        //Declaring socket and input output stream
         mmSocket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
@@ -49,14 +54,13 @@ public class ConnectedThread implements MessageConstants {
             Log.e("Bt Service Manager", "Error occurred when creating output stream");
         }
 
+
+        //Assigning input and output stream to data member
         mmInStream = tmpIn;
-
-        if (mmInStream == null)
-            Log.e("Bt Service Manager", "Null input Stream");
-
         mmOutStream = tmpOut;
     }
 
+    //Run function
     public void run() {
         byte[] mmBuffer = new byte[1024];
         int numBytes = 0; // bytes returned from read()
@@ -64,47 +68,32 @@ public class ConnectedThread implements MessageConstants {
         // Keep listening to the InputStream until an exception occurs.
         while (true) {
             try {
-
+                //Reads byte and checks if its \n
                 mmBuffer[numBytes] = (byte) mmInStream.read();
                 String readMessage;
                 if (mmBuffer[numBytes] == '\n') {
                     readMessage = new String(mmBuffer, 0, numBytes);
                     if (handler == null)
                         Log.e("Bt Service Manager", "no handler");
+                    //Send to target with handler
                     handler.obtainMessage(MESSAGE_READ, readMessage).sendToTarget();
                     numBytes = 0;
-                } else {
+                }
+                else {
                     numBytes++;
                 }
-            } catch (IOException e) {
+            }
+            //Disconnect catch exception
+            catch (IOException e) {
                 Log.d(TAG, "Input stream was disconnected", e);
                 break;
             }
         }
     }
 
-    /*// Call this from the main activity to send data to the remote device.
-    public void write(byte[] bytes) {
-        try {
-            mmOutStream.write(bytes);
 
-            // Share the sent message with the UI activity.
-            Message writtenMsg = handler.obtainMessage(MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
-            writtenMsg.sendToTarget();
-        }
-        catch (IOException e) {
-            Log.e(TAG, "Error occurred when sending data", e);
 
-            // Send a failure message back to the activity.
-            Message writeErrorMsg = handler.obtainMessage(MessageConstants.MESSAGE_TOAST);
-            Bundle bundle = new Bundle();
-            bundle.putString("toast", "Couldn't send data to the other device");
-            writeErrorMsg.setData(bundle);
-            handler.sendMessage(writeErrorMsg);
-        }
-    }*/
-
-    // Call this method from the main activity to shut down the connection.
+    //shut down the connection.
     public void cancel() {
         try {
             mmSocket.close();
