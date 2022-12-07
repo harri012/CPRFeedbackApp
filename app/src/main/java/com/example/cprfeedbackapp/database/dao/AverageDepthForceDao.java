@@ -20,5 +20,3 @@ public interface AverageDepthForceDao {
         @Query("SELECT DISTINCT datetime FROM average_table")
         List<String> getAllUniqueDates();
 }
-
-

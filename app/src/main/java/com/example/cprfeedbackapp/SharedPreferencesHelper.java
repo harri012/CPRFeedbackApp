@@ -16,7 +16,7 @@ public class SharedPreferencesHelper {
         this.sharedPreferences = context.getSharedPreferences(this.context.getString(R.string.sharedPreferences), Context.MODE_PRIVATE);
     }
 
-    // Gets the event names that the user set in the Settings activity
+    // Gets the arraylist of force measured
     public ArrayList<String> getEventSettingNames()
     {
         ArrayList<String> eventNames = new ArrayList<>();
@@ -31,7 +31,7 @@ public class SharedPreferencesHelper {
         return eventNames;
     }
 
-    //Saves the event names and max count
+    // Saves the arraylist of force measured
     public void saveEventSettings(ArrayList<String> names, int max)
     {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();

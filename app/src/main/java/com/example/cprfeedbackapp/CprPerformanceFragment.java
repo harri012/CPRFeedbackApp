@@ -90,7 +90,7 @@ public class CprPerformanceFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_cpr_performance, container, false);
 
-        // Instantiating a database objext
+        // Instantiating a database object
         db = AppDatabase.getInstance(this.getContext());
 
         //Setting Up Graph
@@ -101,35 +101,8 @@ public class CprPerformanceFragment extends Fragment {
         graph.getViewport().setMinY(0);
         graph.getViewport().setScrollable(true);
 
-       /* //Line at 500
-        DataPoint[] dataPointArray1 = new DataPoint[20];
-        for(int dataPoint = 0; dataPoint < 20; dataPoint++)
-        {
-            DataPoint point = new DataPoint(dataPoint, 500);
-            dataPointArray1[dataPoint] = point;
-        }
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<DataPoint>(dataPointArray1);
-        graph.addSeries(series1);*/
-
-
-//        //Line for saved data
-//        ArrayList<String> savedData = sharedPreferencesHelper.getEventSettingNames();
-//        if(!savedData.isEmpty()) {
-//            //Saved Data
-//            DataPoint[] dataPointArray = new DataPoint[savedData.size()];
-//            for (int dataPoint = 0; dataPoint < savedData.size(); dataPoint++) {
-//                DataPoint point = new DataPoint(dataPoint, Integer.parseInt(savedData.get(dataPoint)));
-//                dataPointArray[dataPoint] = point;
-//            }
-//
-//            LineGraphSeries<DataPoint> series2 = new LineGraphSeries<DataPoint>(dataPointArray);
-//            graph.addSeries(series2);
-//        }
-
         CprSessionRecyclerView = fragmentView.findViewById(R.id.CprSessionRecyclerView);
         setupRecyclerView();
-
-        // Get the data from database and store them in lists
 
 
         plotNextButton = fragmentView.findViewById(R.id.plotNextButton);
@@ -137,16 +110,18 @@ public class CprPerformanceFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                // Separate the average depth and force of an AverageDepthForce object into two lists
                 for(AverageDepthForce averageDepthForce : CprSessionRecyclerViewAdapter.getSessionAverageDatapoints()) {
                     averageDepthList.add(averageDepthForce.getDepthDatapoint());
                     averageForceList.add(averageDepthForce.getForceDatapoint());
                 }
 
+                // Store the force value into a list
                 for(WaveformForce waveformForce : CprSessionRecyclerViewAdapter.getSessionWaveformForce()) {
                     waveformForcesList.add(waveformForce.getForceDatapoint());
                 }
 
-                // Get the data in an Array
+                // Convert the Arraylists of Double into Array of DataPoint objects
                 avgDepth = getAverageDepthArray();
                 avgForce = getAverageForceArray();
                 waveForce = getWaveformForceArray();
@@ -215,12 +190,9 @@ public class CprPerformanceFragment extends Fragment {
 
     protected void setupRecyclerView() {
 
-
+        // Get the list of all session
         sessionDateList = db.averageDepthForceDao().getAllUniqueDates();
-//        sessionDateList.add("aaa");
-//        sessionDateList.add("bbb");
-//        sessionDateList.add("ccc");
-//        sessionDateList.add("ddd");
+
         CprSessionRecyclerViewAdapter = new CprSessionRecyclerViewAdapter(sessionDateList);
         CprSessionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         CprSessionRecyclerView.setAdapter(CprSessionRecyclerViewAdapter);
@@ -232,8 +204,7 @@ public class CprPerformanceFragment extends Fragment {
         DataPoint[] averageForceDatapointArray = new DataPoint[averageDepthList.size()];
         for(int i = 0; i < averageDepthList.size(); i++) {
             DataPoint point = new DataPoint((int)(i + 1), averageDepthList.get(i));
-            Log.i("x-coord", String.valueOf(point.getX()));
-            Log.i("x-coord", String.valueOf(point.getY()));
+
             averageForceDatapointArray[i] = point;
         }
 

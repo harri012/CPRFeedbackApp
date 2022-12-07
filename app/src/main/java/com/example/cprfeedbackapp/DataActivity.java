@@ -505,7 +505,6 @@ public class DataActivity extends AppCompatActivity {
                     goodFrequency = false;
                 }
             }
-            // TimeCPR missing
 
             maxForce = 0;
             depth = 0;

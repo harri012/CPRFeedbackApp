@@ -36,11 +36,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Bottom navigation
     private void setupUI(Bundle savedInstanceState)
     {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Triggers when the user clicks an item of the bottom navigation
         binding.bottomNavigation.setOnItemSelectedListener(item ->
         {
             switch (item.getItemId())
@@ -64,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        // Default page
         if(savedInstanceState==null)
-            //change to default as home
             binding.bottomNavigation.setSelectedItemId(R.id.Home);
     }
 }

@@ -57,13 +57,11 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
 
         holder.getDatetimeTextView().setText(localDataSet.get(position));
 
-        sessionAverageDatapoints.clear();
-        sessionWaveformForce.clear();
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // Get the position of the recycler view item that was clicked
                 int pos = holder.getLayoutPosition();
 
                 db = AppDatabase.getInstance(view.getContext());
@@ -71,9 +69,6 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
                 // Returns a list of CprSessionDatapoint of the session specified by the datetime
                 sessionAverageDatapoints = db.averageDepthForceDao().getAverageDepthForceDatapoints(localDataSet.get(pos));
                 sessionWaveformForce = db.waveformForceDao().getWaveformForceDatapoints(localDataSet.get(pos));
-
-                Toast.makeText(view.getContext(), "Changed Graph", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -83,10 +78,12 @@ public class CprSessionRecyclerViewAdapter extends RecyclerView.Adapter<CprSessi
         return localDataSet.size();
     }
 
+    // Returns the list of AverageDepthForce objects
     public List<AverageDepthForce> getSessionAverageDatapoints() {
         return sessionAverageDatapoints;
     }
 
+    // Returns the list of WaveformForce objects
     public List<WaveformForce> getSessionWaveformForce() {
         return sessionWaveformForce;
     }
