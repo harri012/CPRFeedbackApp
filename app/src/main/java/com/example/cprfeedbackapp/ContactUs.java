@@ -18,6 +18,7 @@ public class ContactUs extends AppCompatActivity {
         setupHyperlink();
     }
 
+    //Hyperlink Setup
     private void setupHyperlink() {
         contactUs = findViewById(R.id.aboutUsTextView);
         contactUs.setMovementMethod(LinkMovementMethod.getInstance());

@@ -94,6 +94,7 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        //for time of recording linking variables
         recordTimeTextView = fragmentView.findViewById(R.id.recordTimeTextView);
         recordTimeTextView.setText(Integer.toString(sharedPreferencesHelper.getCurrentRecordTime()));
 
@@ -162,7 +163,7 @@ public class SettingsFragment extends Fragment {
                 if (newRecordTime > 15)
                     recordTimeTextView.setText(String.valueOf(currentTimeValue - 15));
 
-                    //set the min value
+                //set the min value
                 else {
                     recordTimeTextView.setText(Integer.toString(15));
                     Toast.makeText(SettingsFragment.this.getContext(), "Minimum Record Time Value Reached!", Toast.LENGTH_SHORT).show();
@@ -172,7 +173,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        //ABOUT US
+        //About Us Redirect
         aboutUsButton = fragmentView.findViewById(R.id.aboutButton);
         aboutUsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +183,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        //ABOUT US
+        //Contact Us Redirect
         contactUsButton = fragmentView.findViewById(R.id.contactButton);
         contactUsButton.setOnClickListener(new View.OnClickListener() {
             @Override
