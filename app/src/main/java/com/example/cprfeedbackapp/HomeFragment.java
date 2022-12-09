@@ -160,8 +160,12 @@ public class HomeFragment extends Fragment {
         emergencyCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL); //Call number
-                callIntent.setData(Uri.parse("tel:5149268298")); //call this number
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+
+                //call emergency services
+                callIntent.setData(Uri.parse("tel:911"));
+
+                //redirect
                 startActivity(callIntent);
             }
         });
